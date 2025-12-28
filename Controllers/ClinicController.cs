@@ -39,13 +39,7 @@ namespace Alshifa_clinic_galgany.Controllers
             test.Result = result;
             test.Status = "Completed";
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Result Updated" });
-        }
-
-        [HttpGet("pharmacy/pending")]
-        public async Task<IActionResult> GetPendingPrescriptions() {
-            var items = await _context.Prescriptions.Where(p => !p.IsDispensed).ToListAsync();
-            return Ok(items);
+            return Ok(test);
         }
     }
 }
