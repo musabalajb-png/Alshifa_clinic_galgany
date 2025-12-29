@@ -25,3 +25,5 @@ namespace Alshifa_clinic_galgany.Data
         }
     }
 }
+// أضف السطر ده تحت الـ DbSets القديمة
+public DbSet<Medication> Medications { get; set; }
