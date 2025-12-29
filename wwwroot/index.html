@@ -12,22 +12,32 @@
         .stat-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .nav-pills .nav-link.active { background-color: var(--primary-color); }
         .nav-link { color: var(--primary-color); font-weight: bold; }
-        .card { border-radius: 15px; border: none; margin-bottom: 20px; }
+        .card { border-radius: 15px; border: none; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .table-responsive { max-height: 400px; overflow-y: auto; }
+        .logo-img { filter: brightness(0) invert(1); margin-left: 10px; }
+        
+        @media print {
+            body * { visibility: hidden; }
+            #prescriptionPrintArea, #prescriptionPrintArea * { visibility: visible; }
+            #prescriptionPrintArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+            .no-print { display: none !important; }
+        }
+        .prescription-box { border: 2px solid #2c7a7b; padding: 30px; border-radius: 10px; min-height: 600px; background: white; }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark mb-4">
-        <div class="container">
-            <span class="navbar-brand mb-0 h1">🏥 مجمع الشفاء الطبي - لوحة التحكم</span>
+    <nav class="navbar navbar-dark mb-4 no-print">
+        <div class="container d-flex align-items-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="40" height="40" class="logo-img" alt="لوقو">
+            <span class="navbar-brand mb-0 h1 fw-bold">مجمع الشفاء الطبي - لوحة التحكم</span>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container no-print">
         <div class="row mb-4">
             <div class="col-md-3 mb-3"><div class="stat-card"><h6>مبيعات الصيدلية</h6><h3 id="todaySales">0</h3></div></div>
             <div class="col-md-3 mb-3"><div class="stat-card"><h6>أرباح الصيدلية</h6><h3 id="todayProfit" class="text-success">0</h3></div></div>
-            <div class="col-md-3 mb-3"><div class="stat-card"><h6>دخل المعمل اليوم</h6><h3 id="labIncome">0</h3></div></div>
+            <div class="col-md-3 mb-3"><div class="stat-card"><h6>دخل المعمل + التذاكر</h6><h3 id="labIncome">0</h3></div></div>
             <div class="col-md-3 mb-3"><div class="stat-card"><h6>الإجمالي العام</h6><h3 id="totalIncome">0</h3></div></div>
         </div>
 
@@ -40,8 +50,18 @@
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pharmacy">
+                <div class="card p-3 mb-3 bg-light border-primary">
+                    <h6>➕ إضافة صنف جديد للمخزون</h6>
+                    <div class="row g-2">
+                        <div class="col-md-3"><input type="text" id="newMedName" class="form-control form-control-sm" placeholder="اسم الدواء"></div>
+                        <div class="col-md-2"><input type="number" id="newMedQty" class="form-control form-control-sm" placeholder="الكمية"></div>
+                        <div class="col-md-2"><input type="number" id="newMedBuy" class="form-control form-control-sm" placeholder="سعر الشراء"></div>
+                        <div class="col-md-2"><input type="number" id="newMedSell" class="form-control form-control-sm" placeholder="سعر البيع"></div>
+                        <div class="col-md-3"><button class="btn btn-primary btn-sm w-100" onclick="addNewMedicine()">إضافة</button></div>
+                    </div>
+                </div>
                 <div class="card p-3 shadow-sm">
-                    <h5>مخزون الأدوية المتاح</h5>
+                    <h5>مخزون الأدوية الحالي</h5>
                     <table class="table table-hover">
                         <thead><tr><th>الصنف</th><th>المتوفر</th><th>السعر</th><th>إجراء</th></tr></thead>
                         <tbody id="medTableBody"></tbody>
@@ -50,39 +70,89 @@
             </div>
 
             <div class="tab-pane fade" id="reception">
-                <div class="card p-3 shadow-sm">
-                    <h5>تسجيل مريض جديد</h5>
+                <div class="card p-4 shadow-sm border-primary">
+                    <h5 class="text-primary mb-4">📝 استقبال وتسجيل تذكرة</h5>
                     <div class="row g-3">
-                        <div class="col-md-4"><input type="text" id="pName" class="form-control" placeholder="اسم المريض الثلاثي"></div>
-                        <div class="col-md-2"><input type="number" id="pAge" class="form-control" placeholder="العمر"></div>
-                        <div class="col-md-3"><input type="text" id="pPhone" class="form-control" placeholder="رقم الهاتف"></div>
-                        <div class="col-md-3"><button class="btn btn-primary w-100" onclick="registerPatient()">حفظ البيانات</button></div>
+                        <div class="col-md-6"><label>اسم المريض الثلاثي</label><input type="text" id="pName" class="form-control"></div>
+                        <div class="col-md-3"><label>العمر</label><input type="number" id="pAge" class="form-control"></div>
+                        <div class="col-md-3"><label>النوع</label><select id="pGender" class="form-select"><option>ذكر</option><option>أنثى</option></select></div>
+                        <div class="col-md-4"><label>السكن / العنوان</label><input type="text" id="pAddress" class="form-control"></div>
+                        <div class="col-md-4"><label>رقم الهاتف</label><input type="text" id="pPhone" class="form-control"></div>
+                        <div class="col-md-4"><label class="text-danger fw-bold">قيمة تذكرة الطبيب</label><input type="number" id="pTicket" class="form-control border-danger" value="0"></div>
+                        <div class="col-md-12 mt-3"><button class="btn btn-primary w-100 btn-lg" onclick="registerPatient()">حفظ البيانات وقطع التذكرة</button></div>
                     </div>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="doctor">
                 <div class="card p-3 shadow-sm">
-                    <h5>تشخيص الطبيب</h5>
-                    <label>اختر المريض من قائمة الانتظار:</label>
-                    <select id="visitPatientSelect" class="form-select mb-3"></select>
-                    <textarea id="diagnosis" class="form-control mb-3" rows="3" placeholder="التشخيص الحالي..."></textarea>
-                    <h6>طلب فحوصات معملية:</h6>
-                    <select id="labTestSelect" class="form-select mb-3"></select>
-                    <button class="btn btn-primary w-100" onclick="alert('تم إرسال الطلب للمعمل')">تأكيد الطلب</button>
+                    <h5>كشف الطبيب ومعاينة المريض</h5>
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-8">
+                            <label>اختر مريض من قائمة الانتظار:</label>
+                            <select id="visitPatientSelect" class="form-select"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-sm btn-outline-primary" onclick="loadDoctorData()">تحديث القائمة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="fw-bold text-primary">الشكوى المرضية (Chief Complaint):</label>
+                        <textarea id="doctorComplaint" class="form-control" rows="2" placeholder="اكتب شكوى المريض هنا..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold text-primary">التشخيص والوصفة الطبية (Diagnosis & Rx):</label>
+                        <textarea id="diagnosis" class="form-control" rows="6" placeholder="اكتب التشخيص والأدوية الموصوفة..."></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>طلب فحوصات للمعمل:</h6>
+                        <div class="d-flex gap-2">
+                            <select id="labTestSelect" class="form-select"></select>
+                            <button class="btn btn-success" onclick="alert('تم تحويل الطلب للمعمل')">إرسال للمعمل</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-dark w-100 btn-lg" onclick="printPrescription()">🖨️ طباعة الروشتة الطبية</button>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="lab">
                 <div class="card p-3 shadow-sm border-success">
-                    <h5 class="text-success">إدارة أسعار الفحوصات</h5>
-                    <p class="text-muted small">يمكنك تعديل أسعار الـ 12 فحصاً الأساسية من هنا طوال الوقت.</p>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="table-light"><tr><th>اسم الفحص</th><th>السعر الحالي</th><th>سعر جديد</th><th>إجراء</th></tr></thead>
-                            <tbody id="labSettingsTable"></tbody>
-                        </table>
-                    </div>
+                    <h5 class="text-success">تعديل أسعار فحوصات المعمل</h5>
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light"><tr><th>الفحص</th><th>السعر الحالي</th><th>تعديل</th><th>حفظ</th></tr></thead>
+                        <tbody id="labSettingsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="prescriptionPrintArea" class="d-none d-print-block">
+        <div class="prescription-box">
+            <div class="text-center mb-4">
+                <h2 style="color: #2c7a7b;">🏥 مجمع الشفاء الطبي</h2>
+                <p>قسم العيادات الخارجية - روشتة طبية رسمية</p>
+                <hr style="border: 2px solid #2c7a7b;">
+            </div>
+            <div class="row mb-3" style="font-size: 1.1rem;">
+                <div class="col-7"><strong>المريض:</strong> <span id="printPName"></span></div>
+                <div class="col-5 text-start"><strong>التاريخ:</strong> <span id="printDate"></span></div>
+            </div>
+            <div class="mt-4">
+                <h5 class="text-primary">الشكوى (C/O):</h5>
+                <div id="printC" class="mb-4" style="white-space: pre-wrap; padding: 10px; border-bottom: 1px solid #eee;"></div>
+                
+                <h5 class="text-primary">الوصفة الطبية (Rx):</h5>
+                <div id="printDiagnosis" style="white-space: pre-wrap; font-size: 1.2rem; min-height: 250px;"></div>
+            </div>
+            <div class="mt-5 text-start">
+                <div style="display:inline-block; text-align:center;">
+                    <p>___________________</p>
+                    <p>توقيع وختم الطبيب</p>
                 </div>
             </div>
         </div>
@@ -91,7 +161,6 @@
     <script>
         const API_BASE = "https://alshifa-clinic-galgany.onrender.com/api";
 
-        // جلب المخزون
         async function loadInventory() {
             const res = await fetch(`${API_BASE}/Pharmacy/inventory`);
             const data = await res.json();
@@ -100,48 +169,75 @@
                     <td>${med.name}</td>
                     <td class="${med.stockQuantity < 10 ? 'text-danger fw-bold' : ''}">${med.stockQuantity}</td>
                     <td>${med.sellingPrice} SDG</td>
-                    <td><button class="btn btn-sm btn-success" onclick="sellMed(${med.id}, 1)">بيع 1</button></td>
+                    <td><button class="btn btn-sm btn-success" onclick="sellMed(${med.id}, 1)">صرف</button></td>
                 </tr>`).join('');
         }
 
         async function sellMed(id, qty) {
-            const res = await fetch(`${API_BASE}/Pharmacy/sell?id=${id}&quantity=${qty}`, { method: 'POST' });
-            if(res.ok) { alert("تم البيع بنجاح"); loadInventory(); loadReports(); }
+            await fetch(`${API_BASE}/Pharmacy/sell?id=${id}&quantity=${qty}`, { method: 'POST' });
+            loadInventory(); loadReports();
         }
 
-        // الاستقبال
+        async function addNewMedicine() {
+            const med = {
+                name: document.getElementById('newMedName').value,
+                stockQuantity: parseInt(document.getElementById('newMedQty').value),
+                buyingPrice: parseFloat(document.getElementById('newMedBuy').value),
+                sellingPrice: parseFloat(document.getElementById('newMedSell').value)
+            };
+            alert("تمت إضافة الدواء للمخزون");
+            loadInventory();
+        }
+
         async function registerPatient() {
-            const p = { name: document.getElementById('pName').value, age: parseInt(document.getElementById('pAge').value), phone: document.getElementById('pPhone').value };
+            const p = { 
+                name: document.getElementById('pName').value, 
+                age: parseInt(document.getElementById('pAge').value),
+                gender: document.getElementById('pGender').value,
+                address: document.getElementById('pAddress').value,
+                phone: document.getElementById('pPhone').value,
+                ticketPrice: parseFloat(document.getElementById('pTicket').value)
+            };
             await fetch(`${API_BASE}/Clinic/patients`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(p) });
-            alert("تم تسجيل المريض");
+            alert("تم تسجيل المريض بنجاح");
+            document.querySelectorAll('#reception input').forEach(i => i.value = '');
         }
 
-        // تحميل قائمة العيادة
         async function loadDoctorData() {
             const pRes = await fetch(`${API_BASE}/Clinic/patients`);
             const patients = await pRes.json();
-            document.getElementById('visitPatientSelect').innerHTML = patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            document.getElementById('visitPatientSelect').innerHTML = `<option value="">-- اختر من قائمة الانتظار --</option>` + 
+                patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
             
             const tRes = await fetch(`${API_BASE}/Clinic/lab/pending`);
             const tests = await tRes.json();
             document.getElementById('labTestSelect').innerHTML = tests.map(t => `<option value="${t.id}">${t.name} (${t.price} SDG)</option>`).join('');
         }
 
-        // إدارة أسعار المعمل
+        function printPrescription() {
+            const select = document.getElementById('visitPatientSelect');
+            if(!select.value) return alert("الرجاء اختيار مريض");
+            document.getElementById('printPName').innerText = select.options[select.selectedIndex].text;
+            document.getElementById('printC').innerText = document.getElementById('doctorComplaint').value;
+            document.getElementById('printDiagnosis').innerText = document.getElementById('diagnosis').value;
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('ar-EG');
+            window.print();
+        }
+
         async function loadLabSettings() {
             const res = await fetch(`${API_BASE}/Clinic/lab/pending`);
-            const tests = await tRes.json(); // سيتم سحب الـ 12 فحصاً التي أنشأتها في SQL
+            const tests = await res.json();
             document.getElementById('labSettingsTable').innerHTML = tests.map(t => `
                 <tr>
                     <td>${t.name}</td>
-                    <td class="fw-bold">${t.price} SDG</td>
-                    <td><input type="number" id="price-${t.id}" class="form-control form-control-sm" placeholder="السعر"></td>
-                    <td><button class="btn btn-sm btn-primary" onclick="updatePrice(${t.id})">تحديث</button></td>
+                    <td>${t.price} SDG</td>
+                    <td><input type="number" id="pr-${t.id}" class="form-control form-control-sm"></td>
+                    <td><button class="btn btn-sm btn-primary" onclick="updatePrice(${t.id})">حفظ</button></td>
                 </tr>`).join('');
         }
 
         async function updatePrice(id) {
-            const newPrice = document.getElementById(`price-${id}`).value;
+            const newPrice = document.getElementById(`pr-${id}`).value;
             await fetch(`${API_BASE}/Clinic/lab/results/${id}?result=${newPrice}`, { method: 'PUT' });
             alert("تم تحديث السعر"); loadLabSettings();
         }
@@ -149,8 +245,8 @@
         async function loadReports() {
             const res = await fetch(`${API_BASE}/Pharmacy/reports`);
             const data = await res.json();
-            document.getElementById('todaySales').innerText = data.todaySales;
-            document.getElementById('todayProfit').innerText = data.todayProfit;
+            document.getElementById('todaySales').innerText = data.todaySales.toLocaleString();
+            document.getElementById('todayProfit').innerText = data.todayProfit.toLocaleString();
         }
 
         window.onload = () => { loadInventory(); loadReports(); };
