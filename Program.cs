@@ -8,18 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// 2. إعداد Swagger بشكل احترافي
+// 2. إعداد Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Alshifa Clinic API", Version = "v1" });
 });
 
-// 3. إعداد قاعدة البيانات (تأكد من وجود ConnectionString في appsettings.json)
+// 3. إعداد قاعدة البيانات
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ClinicDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// 4. إعداد الـ CORS (ضروري جداً عشان تربط الفرونت-إند بالباك-إند)
+// 4. إعداد الـ CORS
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", b => b
         .AllowAnyOrigin()
@@ -29,19 +29,24 @@ builder.Services.AddCors(options => {
 
 var app = builder.Build();
 
-// 5. تفعيل Swagger في كل البيئات (مهم للتجربة على Render)
+// --- التعديل الجوهري هنا يا مصعب ---
+
+// 5. تفعيل ملفات الواجهة (HTML, CSS, JS)
+app.UseDefaultFiles(); // ضروري عشان يفتح index.html تلقائياً
+app.UseStaticFiles(); // ضروري عشان يقرأ الملفات من wwwroot
+
+// 6. تفعيل Swagger (حنخليه في رابط منفصل عشان الواجهة تشتغل)
 app.UseSwagger();
 app.UseSwaggerUI(c => {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Alshifa Clinic API v1");
-    c.RoutePrefix = string.Empty; // ده بيخلي Swagger يفتح أول ما تدخل رابط الموقع
+    // شلنا RoutePrefix عشان الموقع يفتح الواجهة الأساسية أولاً
 });
 
-// 6. الترتيب الصحيح للـ Middleware
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
-// 7. تحديد المنفذ (Port) بشكل آلي عشان Render ما يرفض الاتصال
+// 7. تحديد المنفذ لـ Render
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Run($"http://0.0.0.0:{port}");
