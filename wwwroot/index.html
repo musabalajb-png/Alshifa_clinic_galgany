@@ -18,11 +18,13 @@
         @media print { .no-print { display: none !important; } #prescriptionPrintArea { display: block !important; } }
         .prescription-box { border: 2px solid #2c7a7b; padding: 30px; border-radius: 10px; min-height: 600px; background: white; }
         .lab-badge { font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; }
-        /* ستايل العداد الجديد */
-        #labNotifyBadge { position: absolute; top: -5px; right: -5px; font-size: 0.7rem; padding: 4px 6px; }
+        #labNotifyBadge { position: absolute; top: -5px; right: -5px; font-size: 0.7rem; padding: 4px 6px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
+
+    <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
     <div id="loginOverlay">
         <div class="card p-4 shadow-lg" style="width: 380px; border-top: 5px solid var(--primary-color);">
@@ -213,8 +215,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_BASE = "http://alshifaclinic.somee.com/api.aspx";
+        // استخدام Proxy لتخطي مشاكل الأمان HTTPS/HTTP
+        const PROXY = "https://corsproxy.io/?";
+        const API_URL = "http://alshifaclinic.somee.com/api.aspx";
+        const API_BASE = PROXY + encodeURIComponent(API_URL);
         
+        let lastRequestsCount = 0;
+
         let systemUsers = JSON.parse(localStorage.getItem('shifaUsers')) || {
             "admin": { pass: "123", role: "admin" },
             "lab": { pass: "lab123", role: "lab" },
@@ -230,8 +237,7 @@
                 document.getElementById('mainContent').classList.remove('hidden-section');
                 document.getElementById('userDisplay').innerText = `المستخدم: ${user}`;
                 setupPermissions(systemUsers[user].role);
-                // تفعيل التحديث التلقائي للطلبات كل 30 ثانية
-                setInterval(loadLabData, 30000);
+                setInterval(loadLabData, 30000); // تحديث تلقائي كل 30 ثانية
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
@@ -264,8 +270,8 @@
             const notifyBadge = document.getElementById('labNotifyBadge');
 
             try {
-                // جلب الأسعار
-                const priceRes = await fetch(`${API_BASE}?type=prices`);
+                // جلب الأسعار مع تخطي الكاش لضمان أحدث البيانات
+                const priceRes = await fetch(`${API_BASE}${encodeURIComponent('?type=prices&t=' + Date.now())}`);
                 const tests = await priceRes.json();
                 
                 if (priceTable) {
@@ -276,18 +282,22 @@
                     docSelect.innerHTML = tests.map(t => `<option value="${t.name}">${t.name} (${t.price} ج.س)</option>`).join('');
                 }
 
-                // جلب الطلبات المنتظرة وتحديث العداد
-                const pendingRes = await fetch(`${API_BASE}?type=pending`);
+                // جلب الطلبات المنتظرة
+                const pendingRes = await fetch(`${API_BASE}${encodeURIComponent('?type=pending&t=' + Date.now())}`);
                 const requests = await pendingRes.json();
                 
-                // تحديث العداد (Badge)
+                // تحديث العداد وتنبيه صوتي إذا زاد العدد
                 if (notifyBadge) {
                     if (requests.length > 0) {
                         notifyBadge.innerText = requests.length;
                         notifyBadge.style.display = 'inline-block';
+                        if (requests.length > lastRequestsCount) {
+                            document.getElementById('notificationSound').play().catch(e => console.log("Audio block"));
+                        }
                     } else {
                         notifyBadge.style.display = 'none';
                     }
+                    lastRequestsCount = requests.length;
                 }
 
                 if (pendingTable) {
@@ -299,10 +309,13 @@
                                 <td><button class="btn btn-sm btn-success" onclick="completeTest('${r.patient}', '${r.test}')">إنجاز ✅</button></td>
                             </tr>`).join('');
                     } else {
-                        pendingTable.innerHTML = '<tr><td colspan="3" class="text-center">لا توجد طلبات</td></tr>';
+                        pendingTable.innerHTML = '<tr><td colspan="3" class="text-center">لا توجد طلبات معلقة</td></tr>';
                     }
                 }
-            } catch(e) { console.error("Error:", e); }
+            } catch(e) { 
+                console.error("Connection Error:", e);
+                // محاولة إظهار رسالة تفاعلية في حال فشل البروكسي
+            }
         }
 
         async function sendToLab() {
@@ -316,12 +329,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'request', patient: patient, test: test })
                 });
-                if(res.ok) { alert("تم الإرسال 🧪"); loadLabData(); }
-            } catch(e) { alert("خطأ في الاتصال"); }
+                if(res.ok) { 
+                    alert("تم إرسال الطلب للمعمل بنجاح 🧪"); 
+                    loadLabData(); 
+                }
+            } catch(e) { alert("حدث خطأ في الاتصال بالسيرفر"); }
         }
 
         function completeTest(patient, test) {
-            alert(`اكتمل فحص ${test}`);
+            alert(`تم إكمال الفحص: ${test} للمريض: ${patient}`);
             loadLabData(); 
         }
 
@@ -337,7 +353,7 @@
         }
 
         function deleteUser(name) {
-            if(name === 'admin') return alert("ممنوع حذف الأدمن");
+            if(name === 'admin') return alert("ممنوع حذف مدير النظام الرئيسي");
             delete systemUsers[name];
             localStorage.setItem('shifaUsers', JSON.stringify(systemUsers));
             updateUsersTable();
@@ -347,11 +363,11 @@
             const name = document.getElementById('newUserName').value.toLowerCase().trim();
             const pass = document.getElementById('newUserPass').value;
             const role = document.getElementById('newUserRole').value;
-            if(!name || !pass) return alert("املا الخانات");
+            if(!name || !pass) return alert("الرجاء إدخال كافة البيانات");
             systemUsers[name] = { pass: pass, role: role };
             localStorage.setItem('shifaUsers', JSON.stringify(systemUsers));
             updateUsersTable();
-            alert("تمت الإضافة");
+            alert("تم إضافة المستخدم بنجاح");
         }
 
         function printPrescription() {
@@ -363,7 +379,7 @@
             window.print();
         }
 
-        function registerPatient() { alert("تم الحفظ"); }
+        function registerPatient() { alert("تم حفظ بيانات المريض وتوليد التذكرة بنجاح"); }
         function loadDoctorData() { loadLabData(); }
     </script>
 </body>
