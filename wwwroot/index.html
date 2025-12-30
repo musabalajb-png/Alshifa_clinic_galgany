@@ -3,195 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام مجمع الشفاء الطبي</title>
+    <title>نظام مجمع الشفاء الطبي - جلقني</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
         :root { --primary-color: #2c7a7b; --secondary-color: #f0fdf4; }
         body { background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: var(--primary-color) !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .stat-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .nav-pills .nav-link.active { background-color: var(--primary-color); }
-        .card { border-radius: 15px; border: none; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo-img { filter: brightness(0) invert(1); margin-left: 10px; }
-        #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0fdf4; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .navbar { background-color: var(--primary-color) !important; }
+        .card { border-radius: 15px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .hidden-section { display: none !important; }
-        @media print { .no-print { display: none !important; } #prescriptionPrintArea { display: block !important; } }
-        .prescription-box { border: 2px solid #2c7a7b; padding: 30px; border-radius: 10px; min-height: 600px; background: white; }
-        .lab-badge { font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; }
-        #labNotifyBadge { position: absolute; top: -5px; right: -5px; font-size: 0.7rem; padding: 4px 6px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        
+        /* ضبط الطباعة الرسمي */
+        @media print { 
+            .no-print { display: none !important; } 
+            #prescriptionPrintArea { display: block !important; padding: 0; margin: 0; }
+            body { background: white; }
+            .prescription-box { border: none !important; width: 100%; height: auto; }
+        }
+
+        .prescription-box { border: 2px solid #2c7a7b; padding: 30px; border-radius: 10px; background: white; position: relative; min-height: 800px; }
+        .snake-logo { width: 80px; filter: contrast(1.2); }
+        .rx-symbol { font-size: 2.5rem; color: #2c7a7b; font-weight: bold; font-family: 'Times New Roman', serif; margin-bottom: 10px; }
+        .result-ready { background-color: #e6fffa; border-right: 5px solid #38b2ac; padding: 8px; border-radius: 8px; margin-bottom: 5px; font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
     <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
-    <div id="loginOverlay">
+    <div id="loginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0fdf4; z-index: 9999; display: flex; align-items: center; justify-content: center;">
         <div class="card p-4 shadow-lg" style="width: 380px; border-top: 5px solid var(--primary-color);">
             <div class="text-center mb-4">
-                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60" alt="لوقو">
+                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60">
                 <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي</h3>
-                <p class="text-muted small">نظام إدارة العيادات المتكامل</p>
+                <p class="text-muted small">جلقني - ولاية سنار</p>
             </div>
-            <div class="mb-3">
-                <label class="form-label">اسم المستخدم</label>
-                <input type="text" id="username" class="form-control" placeholder="أدخل الاسم">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">كلمة المرور</label>
-                <input type="password" id="password" class="form-control" placeholder="******">
-            </div>
+            <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
+            <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
             <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول للنظام</button>
-            <p id="loginError" class="text-danger small mt-2 text-center" style="display:none;">⚠️ خطأ في اسم المستخدم أو كلمة المرور</p>
         </div>
     </div>
 
     <div id="mainContent" class="hidden-section">
         <nav class="navbar navbar-dark mb-4 no-print">
             <div class="container d-flex justify-content-between">
-                <div class="d-flex align-items-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="40" class="logo-img">
-                    <span class="navbar-brand mb-0 h1 fw-bold">لوحة التحكم</span>
-                </div>
-                <div class="text-white">
-                    <span id="userDisplay" class="me-3 small"></span>
-                    <button class="btn btn-sm btn-outline-light" onclick="location.reload()">تسجيل خروج</button>
-                </div>
+                <span class="navbar-brand fw-bold">🏥 مركز صحي الشفاء - جلقني</span>
+                <button class="btn btn-sm btn-outline-light" onclick="location.reload()">خروج</button>
             </div>
         </nav>
 
         <div class="container">
-            <div id="adminStats" class="row mb-4 hidden-section">
-                <div class="col-md-3 mb-3"><div class="stat-card"><h6>مبيعات الصيدلية</h6><h3 id="todaySales">0</h3></div></div>
-                <div class="col-md-3 mb-3"><div class="stat-card"><h6>أرباح الصيدلية</h6><h3 id="todayProfit" class="text-success">0</h3></div></div>
-                <div class="col-md-3 mb-3"><div class="stat-card"><h6>دخل المعمل + التذاكر</h6><h3 id="labIncome">0</h3></div></div>
-                <div class="col-md-3 mb-3"><div class="stat-card"><h6>الإجمالي العام</h6><h3 id="totalIncome">0</h3></div></div>
-            </div>
-
-            <ul class="nav nav-pills mb-3 shadow-sm p-2 bg-white rounded no-print" id="pills-tab">
+            <ul class="nav nav-pills mb-4 no-print shadow-sm p-2 bg-white rounded">
                 <li class="nav-item tab-reception hidden-section"><button class="nav-link" id="btn-reception" data-bs-toggle="pill" data-bs-target="#reception">الاستقبال</button></li>
-                <li class="nav-item tab-doctor hidden-section"><button class="nav-link" id="btn-doctor" data-bs-toggle="pill" data-bs-target="#doctor" onclick="loadDoctorData()">العيادة</button></li>
-                <li class="nav-item tab-pharmacy hidden-section"><button class="nav-link" id="btn-pharmacy" data-bs-toggle="pill" data-bs-target="#pharmacy">الصيدلية</button></li>
-                <li class="nav-item tab-lab hidden-section">
-                    <button class="nav-link position-relative" id="btn-lab" data-bs-toggle="pill" data-bs-target="#lab" onclick="loadLabData()">
-                        المعمل
-                        <span id="labNotifyBadge" class="badge rounded-pill bg-danger" style="display: none;">0</span>
-                    </button>
-                </li>
-                <li class="nav-item tab-users hidden-section"><button class="nav-link" id="btn-users" data-bs-toggle="pill" data-bs-target="#usersAdmin">إدارة المستخدمين</button></li>
+                <li class="nav-item tab-doctor hidden-section"><button class="nav-link active" id="btn-doctor" data-bs-toggle="pill" data-bs-target="#doctor" onclick="loadDoctorData()">العيادة</button></li>
+                <li class="nav-item tab-lab hidden-section"><button class="nav-link" id="btn-lab" data-bs-toggle="pill" data-bs-target="#lab" onclick="loadLabData()">المعمل</button></li>
             </ul>
 
             <div class="tab-content no-print">
-                <div class="tab-pane fade hidden-section" id="reception">
-                    <div class="card p-4 shadow-sm">
-                        <h5 class="text-primary mb-4 border-bottom pb-2">📝 تسجيل مريض جديد</h5>
-                        <div class="row g-3">
-                            <div class="col-md-6"><label>الاسم الثلاثي</label><input type="text" id="pName" class="form-control"></div>
-                            <div class="col-md-3"><label>العمر</label><input type="number" id="pAge" class="form-control"></div>
-                            <div class="col-md-3"><label>النوع</label><select id="pGender" class="form-select"><option>ذكر</option><option>أنثى</option></select></div>
-                            <div class="col-md-4"><label>السكن</label><input type="text" id="pAddress" class="form-control"></div>
-                            <div class="col-md-4"><label>رقم الهاتف</label><input type="text" id="pPhone" class="form-control"></div>
-                            <div class="col-md-4"><label class="text-danger fw-bold">تذكرة الطبيب</label><input type="number" id="pTicket" class="form-control border-danger"></div>
-                            <button class="btn btn-primary w-100 btn-lg mt-4" onclick="registerPatient()">حفظ وتأكيد التذكرة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade hidden-section" id="doctor">
-                    <div class="card p-3 shadow-sm">
-                        <h5>معاينة المريض</h5>
-                        <select id="visitPatientSelect" class="form-select mb-3">
-                            <option>مريض عام</option>
-                        </select>
-                        <div class="row mb-3">
-                            <div class="col-md-8">
-                                <textarea id="doctorComplaint" class="form-control mb-2" rows="2" placeholder="اكتب شكوى المريض..."></textarea>
-                                <textarea id="diagnosis" class="form-control" rows="6" placeholder="التشخيص والوصفة Rx..."></textarea>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="p-2 border rounded bg-light">
-                                    <h6>طلب فحوصات معملية:</h6>
-                                    <select id="doctorTestSelect" class="form-select mb-2">
-                                        <option>جاري تحميل الفحوصات...</option>
-                                    </select>
-                                    <button class="btn btn-outline-danger w-100 btn-sm" onclick="sendToLab()">إرسال للمعمل 🧪</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-dark w-100" onclick="printPrescription()">🖨️ طباعة الروشتة</button>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade hidden-section" id="pharmacy">
-                    <div class="card p-3 mb-3 bg-light">
-                        <h6>➕ إضافة دواء للمخزون</h6>
-                        <div class="row g-2">
-                            <div class="col-md-4"><input type="text" id="newMedName" class="form-control" placeholder="اسم الصنف"></div>
-                            <div class="col-md-2"><input type="number" id="newMedQty" class="form-control" placeholder="الكمية"></div>
-                            <div class="col-md-2"><input type="number" id="newMedSell" class="form-control" placeholder="سعر البيع"></div>
-                            <div class="col-md-4"><button class="btn btn-success w-100" onclick="alert('تمت الإضافة')">إضافة</button></div>
-                        </div>
-                    </div>
-                    <div class="card p-3">
-                        <table class="table table-hover">
-                            <thead><tr><th>الصنف</th><th>المتوفر</th><th>السعر</th><th>إجراء</th></tr></thead>
-                            <tbody id="medTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade hidden-section" id="lab">
+                <div class="tab-pane fade show active" id="doctor">
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="card p-3 border-danger">
-                                <h5 class="text-danger mb-3">📩 طلبات الفحص من العيادة</h5>
-                                <table class="table table-bordered">
-                                    <thead class="table-danger">
-                                        <tr><th>المريض</th><th>الفحص المطلوب</th><th>الإجراء</th></tr>
-                                    </thead>
-                                    <tbody id="pendingRequestsTable">
-                                        <tr><td colspan="3" class="text-center">جاري التحميل...</td></tr>
-                                    </tbody>
-                                </table>
+                        <div class="col-md-8">
+                            <div class="card p-4">
+                                <h5 class="text-primary mb-3">👨‍⚕️ فحص المريض</h5>
+                                <select id="visitPatientSelect" class="form-select mb-3 border-primary shadow-sm"><option>مريض عام</option></select>
+                                <label class="fw-bold small">📝 الشكوى (للمتابعة فقط):</label>
+                                <textarea id="doctorComplaint" class="form-control mb-3 border-warning" rows="3" placeholder="تاريخ المريض والشكوى..."></textarea>
+                                <label class="fw-bold text-success">💊 الوصفة الطبية (Rx):</label>
+                                <textarea id="diagnosis" class="form-control border-success mb-3" rows="7" style="font-size: 1.2rem;" placeholder="اكتب العلاج هنا..."></textarea>
+                                <button class="btn btn-dark btn-lg w-100 fw-bold" onclick="printPrescription()">🖨️ طباعة الروشتة الرسمية</button>
                             </div>
                         </div>
-                        <div class="col-md-5">
-                            <div class="card p-3 border-success">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="text-success mb-0">💰 أسعار الفحوصات</h5>
-                                    <button class="btn btn-sm btn-outline-success" onclick="loadLabData()">تحديث 🔄</button>
-                                </div>
-                                <table class="table table-sm">
-                                    <thead><tr><th>الفحص</th><th>السعر</th><th>تعديل</th></tr></thead>
-                                    <tbody id="labSettingsTable">
-                                        <tr><td colspan="3" class="text-center">جاري التحميل...</td></tr>
-                                    </tbody>
-                                </table>
+                        <div class="col-md-4">
+                            <div class="card p-3 border-primary mb-3 shadow-sm">
+                                <h6>🧪 طلب فحص:</h6>
+                                <select id="doctorTestSelect" class="form-select mb-2"></select>
+                                <button class="btn btn-primary w-100 btn-sm" onclick="sendToLab()">إرسال للمعمل</button>
+                            </div>
+                            <div class="card p-3 border-success shadow-sm" style="height: 350px; overflow-y: auto;">
+                                <h6 class="text-success fw-bold border-bottom pb-2">✅ النتائج الواصلة:</h6>
+                                <div id="doctorResultsList"><p class="text-muted small">لا توجد نتائج جديدة</p></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane fade hidden-section" id="usersAdmin">
-                    <div class="card p-4 shadow-sm border-warning">
-                        <h5 class="text-warning mb-4">👥 إضافة مستخدم جديد للنظام</h5>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label>اسم المستخدم</label><input type="text" id="newUserName" class="form-control"></div>
-                            <div class="col-md-3"><label>كلمة المرور</label><input type="password" id="newUserPass" class="form-control"></div>
-                            <div class="col-md-3"><label>الصلاحية</label>
-                                <select id="newUserRole" class="form-select">
-                                    <option value="reception">استقبال</option>
-                                    <option value="doctor">طبيب</option>
-                                    <option value="lab">معمل</option>
-                                    <option value="pharmacy">صيدلية</option>
-                                    <option value="admin">مدير نظام</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 d-flex align-items-end"><button class="btn btn-warning w-100" onclick="addNewUser()">إضافة المستخدم</button></div>
-                        </div>
-                        <hr>
-                        <h6>المستخدمين الحاليين:</h6>
-                        <ul id="usersList" class="list-group"></ul>
+                <div class="tab-pane fade" id="lab">
+                    <div class="card p-3 border-danger shadow-sm">
+                        <h5 class="text-danger mb-3">📩 طلبات الفحص الواردة</h5>
+                        <table class="table align-middle">
+                            <thead class="table-danger"><tr><th>المريض</th><th>الفحص</th><th>النتيجة</th><th>إجراء</th></tr></thead>
+                            <tbody id="pendingRequestsTable"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -199,29 +100,52 @@
     </div>
 
     <div id="prescriptionPrintArea" class="d-none">
-        <div class="prescription-box text-end">
-            <h2 class="text-center" style="color:#2c7a7b;">🏥 مجمع الشفاء الطبي</h2>
-            <hr>
-            <div class="row">
-                <div class="col-6"><strong>المريض:</strong> <span id="printPName"></span></div>
-                <div class="col-6 text-start"><strong>التاريخ:</strong> <span id="printDate"></span></div>
+        <div class="prescription-box">
+            <div class="row align-items-center text-center mb-2">
+                <div class="col-4">
+                    <h6 class="fw-bold m-0">وزارة الصحة</h6>
+                    <h6 class="fw-bold m-0">ولاية سنار</h6>
+                </div>
+                <div class="col-4">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" class="snake-logo" alt="Medical Logo">
+                </div>
+                <div class="col-4">
+                    <h6 class="fw-bold m-0">مركز صحي الشفاء</h6>
+                    <h6 class="fw-bold m-0">منطقة جلقني</h6>
+                </div>
             </div>
-            <div class="mt-4">
-                <h5>الشكوى:</h5><p id="printC"></p>
-                <h5>الوصفة Rx:</h5><p id="printDiagnosis" style="white-space: pre-wrap; font-size: 1.3rem;"></p>
+            <div style="border-bottom: 3px solid #2c7a7b; margin-bottom: 20px;"></div>
+
+            <div class="row mb-4" style="font-size: 1.2rem; border-bottom: 1px dashed #ddd; padding-bottom: 10px;">
+                <div class="col-7"><strong>Name:</strong> <span id="printPName"></span></div>
+                <div class="col-5 text-start"><strong>Date:</strong> <span id="printDate"></span></div>
+            </div>
+
+            <div style="min-height: 450px; padding-right: 10px;">
+                <div class="rx-symbol">Rx</div>
+                <div id="printDiagnosis" style="white-space: pre-wrap; font-size: 1.6rem; line-height: 1.8; font-family: 'Segoe UI', sans-serif;"></div>
+            </div>
+
+            <div class="mt-5 pt-5">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="small text-muted">* الالتزام بالجرعة يسرع من عملية الشفاء</p>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p class="fw-bold mb-5">اسم وتوقيع الطبيب</p>
+                        <p>__________________________</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // استخدام Proxy لتخطي مشاكل الأمان HTTPS/HTTP
         const PROXY = "https://corsproxy.io/?";
         const API_URL = "http://alshifaclinic.somee.com/api.aspx";
         const API_BASE = PROXY + encodeURIComponent(API_URL);
         
-        let lastRequestsCount = 0;
-
         let systemUsers = JSON.parse(localStorage.getItem('shifaUsers')) || {
             "admin": { pass: "123", role: "admin" },
             "lab": { pass: "lab123", role: "lab" },
@@ -231,155 +155,93 @@
         function handleLogin() {
             const user = document.getElementById('username').value.toLowerCase().trim();
             const pass = document.getElementById('password').value;
-            
             if (systemUsers[user] && systemUsers[user].pass === pass) {
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('userDisplay').innerText = `المستخدم: ${user}`;
                 setupPermissions(systemUsers[user].role);
-                setInterval(loadLabData, 30000); // تحديث تلقائي كل 30 ثانية
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
+                setInterval(loadLabData, 15000); 
+            } else { alert("عذراً، خطأ في بيانات الدخول"); }
         }
 
         function setupPermissions(role) {
-            document.querySelectorAll('.nav-item, .tab-pane, #adminStats').forEach(el => el.classList.add('hidden-section'));
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-
+            document.querySelectorAll('.nav-item, .tab-pane').forEach(el => el.classList.add('hidden-section'));
             if (role === 'admin') {
-                document.querySelectorAll('.nav-item, .tab-pane, #adminStats').forEach(el => el.classList.remove('hidden-section'));
-                document.getElementById('btn-reception').click();
-                updateUsersTable();
-                loadLabData();
+                document.querySelectorAll('.nav-item, .tab-pane').forEach(el => el.classList.remove('hidden-section'));
             } else {
                 document.querySelectorAll(`.tab-${role}`).forEach(el => el.classList.remove('hidden-section'));
-                const content = document.getElementById(`${role}`);
-                content.classList.remove('hidden-section');
-                content.classList.add('active', 'show');
-                const btn = document.getElementById(`btn-${role}`);
-                if(btn) btn.classList.add('active');
-                loadLabData();
+                document.getElementById(`${role}`).classList.remove('hidden-section');
+                document.getElementById(`${role}`).classList.add('active', 'show');
             }
+            loadLabData();
         }
 
         async function loadLabData() {
-            const priceTable = document.getElementById('labSettingsTable');
-            const pendingTable = document.getElementById('pendingRequestsTable');
-            const docSelect = document.getElementById('doctorTestSelect');
-            const notifyBadge = document.getElementById('labNotifyBadge');
-
             try {
-                // جلب الأسعار مع تخطي الكاش لضمان أحدث البيانات
                 const priceRes = await fetch(`${API_BASE}${encodeURIComponent('?type=prices&t=' + Date.now())}`);
                 const tests = await priceRes.json();
-                
-                if (priceTable) {
-                    priceTable.innerHTML = tests.map(t => `<tr><td>${t.name}</td><td>${t.price}</td><td><button class="btn btn-sm btn-outline-primary">✎</button></td></tr>`).join('');
-                }
-                
-                if(docSelect) {
-                    docSelect.innerHTML = tests.map(t => `<option value="${t.name}">${t.name} (${t.price} ج.س)</option>`).join('');
-                }
+                const docSelect = document.getElementById('doctorTestSelect');
+                if (docSelect) docSelect.innerHTML = tests.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
 
-                // جلب الطلبات المنتظرة
                 const pendingRes = await fetch(`${API_BASE}${encodeURIComponent('?type=pending&t=' + Date.now())}`);
                 const requests = await pendingRes.json();
-                
-                // تحديث العداد وتنبيه صوتي إذا زاد العدد
-                if (notifyBadge) {
-                    if (requests.length > 0) {
-                        notifyBadge.innerText = requests.length;
-                        notifyBadge.style.display = 'inline-block';
-                        if (requests.length > lastRequestsCount) {
-                            document.getElementById('notificationSound').play().catch(e => console.log("Audio block"));
-                        }
-                    } else {
-                        notifyBadge.style.display = 'none';
-                    }
-                    lastRequestsCount = requests.length;
+                const pendingTable = document.getElementById('pendingRequestsTable');
+                if (pendingTable) {
+                    pendingTable.innerHTML = requests.map((r, i) => `
+                        <tr>
+                            <td>${r.patient}</td>
+                            <td><span class="badge bg-danger">${r.test}</span></td>
+                            <td><input type="text" id="lRes_${i}" class="form-control form-control-sm" placeholder="النتيجة..."></td>
+                            <td><button class="btn btn-sm btn-success" onclick="completeTest('${r.patient}', '${r.test}', 'lRes_${i}')">حفظ ✅</button></td>
+                        </tr>`).join('');
                 }
 
-                if (pendingTable) {
-                    if(requests.length > 0) {
-                        pendingTable.innerHTML = requests.map(r => `
-                            <tr>
-                                <td>${r.patient}</td>
-                                <td><span class="badge bg-danger">${r.test}</span></td>
-                                <td><button class="btn btn-sm btn-success" onclick="completeTest('${r.patient}', '${r.test}')">إنجاز ✅</button></td>
-                            </tr>`).join('');
-                    } else {
-                        pendingTable.innerHTML = '<tr><td colspan="3" class="text-center">لا توجد طلبات معلقة</td></tr>';
-                    }
+                const resList = document.getElementById('doctorResultsList');
+                if (resList) {
+                    const resultsRes = await fetch(`${API_BASE}${encodeURIComponent('?type=completed&t=' + Date.now())}`);
+                    const completed = await resultsRes.json();
+                    resList.innerHTML = completed.length > 0 ? completed.map(c => `
+                        <div class="result-ready">
+                            <strong>${c.patient}</strong><br>
+                            <span class="small">${c.test}:</span> <span class="text-danger fw-bold">${c.result}</span>
+                        </div>`).join('') : '<p class="text-muted small">لا توجد نتائج جديدة</p>';
                 }
-            } catch(e) { 
-                console.error("Connection Error:", e);
-                // محاولة إظهار رسالة تفاعلية في حال فشل البروكسي
-            }
+            } catch(e) {}
+        }
+
+        async function completeTest(p, t, id) {
+            const v = document.getElementById(id).value;
+            if(!v) return alert("أدخل النتيجة");
+            await fetch(API_BASE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'complete', patient: p, test: t, result: v })
+            });
+            loadLabData();
         }
 
         async function sendToLab() {
-            const test = document.getElementById('doctorTestSelect').value;
-            const patientSelect = document.getElementById('visitPatientSelect');
-            const patient = patientSelect.options[patientSelect.selectedIndex]?.text || "مريض عام";
-            
-            try {
-                const res = await fetch(API_BASE, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'request', patient: patient, test: test })
-                });
-                if(res.ok) { 
-                    alert("تم إرسال الطلب للمعمل بنجاح 🧪"); 
-                    loadLabData(); 
-                }
-            } catch(e) { alert("حدث خطأ في الاتصال بالسيرفر"); }
-        }
-
-        function completeTest(patient, test) {
-            alert(`تم إكمال الفحص: ${test} للمريض: ${patient}`);
-            loadLabData(); 
-        }
-
-        function updateUsersTable() {
-            const list = document.getElementById('usersList');
-            if(!list) return;
-            list.innerHTML = "";
-            for (let u in systemUsers) {
-                list.innerHTML += `<li class="list-group-item d-flex justify-content-between">
-                    <span><strong>${u}</strong> - ${systemUsers[u].role}</span>
-                    <button class="btn btn-sm btn-danger" onclick="deleteUser('${u}')">حذف</button></li>`;
-            }
-        }
-
-        function deleteUser(name) {
-            if(name === 'admin') return alert("ممنوع حذف مدير النظام الرئيسي");
-            delete systemUsers[name];
-            localStorage.setItem('shifaUsers', JSON.stringify(systemUsers));
-            updateUsersTable();
-        }
-
-        function addNewUser() {
-            const name = document.getElementById('newUserName').value.toLowerCase().trim();
-            const pass = document.getElementById('newUserPass').value;
-            const role = document.getElementById('newUserRole').value;
-            if(!name || !pass) return alert("الرجاء إدخال كافة البيانات");
-            systemUsers[name] = { pass: pass, role: role };
-            localStorage.setItem('shifaUsers', JSON.stringify(systemUsers));
-            updateUsersTable();
-            alert("تم إضافة المستخدم بنجاح");
+            const t = document.getElementById('doctorTestSelect').value;
+            const p = document.getElementById('visitPatientSelect').options[document.getElementById('visitPatientSelect').selectedIndex]?.text;
+            await fetch(API_BASE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'request', patient: p, test: t })
+            });
+            alert("تم إرسال الطلب للمعمل");
+            loadLabData();
         }
 
         function printPrescription() {
-            const select = document.getElementById('visitPatientSelect');
-            document.getElementById('printPName').innerText = select.options[select.selectedIndex]?.text || "مريض عام";
-            document.getElementById('printC').innerText = document.getElementById('doctorComplaint').value;
-            document.getElementById('printDiagnosis').innerText = document.getElementById('diagnosis').value;
+            const rxContent = document.getElementById('diagnosis').value;
+            if(!rxContent) return alert("من فضلك اكتب الدواء أولاً");
+            
+            document.getElementById('printPName').innerText = document.getElementById('visitPatientSelect').options[document.getElementById('visitPatientSelect').selectedIndex]?.text;
+            document.getElementById('printDiagnosis').innerText = rxContent;
             document.getElementById('printDate').innerText = new Date().toLocaleDateString('ar-EG');
+            
             window.print();
         }
 
-        function registerPatient() { alert("تم حفظ بيانات المريض وتوليد التذكرة بنجاح"); }
         function loadDoctorData() { loadLabData(); }
     </script>
 </body>
