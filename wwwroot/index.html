@@ -137,7 +137,8 @@
                                         <tr><th>المريض</th><th>الفحص المطلوب</th><th>الإجراء</th></tr>
                                     </thead>
                                     <tbody id="pendingRequestsTable">
-                                        </tbody>
+                                        <tr><td colspan="3" class="text-center">جاري التحميل...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -150,7 +151,8 @@
                                 <table class="table table-sm">
                                     <thead><tr><th>الفحص</th><th>السعر</th><th>تعديل</th></tr></thead>
                                     <tbody id="labSettingsTable">
-                                        </tbody>
+                                        <tr><td colspan="3" class="text-center">جاري التحميل...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -198,9 +200,10 @@
         </div>
     </div>
 
+    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // رابط الـ API الجديد حقك في Somee
         const API_BASE = "http://AlshifaClinic.somee.com/api.aspx";
         
         let systemUsers = JSON.parse(localStorage.getItem('shifaUsers')) || {
@@ -243,13 +246,12 @@
             }
         }
 
-        // دالة موحدة لجلب بيانات المعمل (أسعار + طلبات)
+        // دالة جلب البيانات الموحدة
         async function loadLabData() {
             // 1. جلب قائمة الأسعار
             const priceTable = document.getElementById('labSettingsTable');
-            priceTable.innerHTML = 'جاري التحميل...';
             try {
-                const res = await fetch(API_BASE);
+                const res = await fetch(`${API_BASE}?type=prices`);
                 const tests = await res.json();
                 priceTable.innerHTML = tests.map(t => `
                     <tr>
@@ -258,34 +260,60 @@
                         <td><button class="btn btn-sm btn-outline-primary" onclick="updatePrice('${t.name}')">✎</button></td>
                     </tr>`).join('');
                 
-                // تحديث قائمة الفحوصات في شاشة الطبيب
                 const docSelect = document.getElementById('doctorTestSelect');
-                if(docSelect) docSelect.innerHTML = tests.map(t => `<option value="${t.name}">${t.name} (${t.price} SDG)</option>`).join('');
-            } catch(e) {
-                priceTable.innerHTML = 'خطأ في الربط';
-            }
+                if(docSelect) docSelect.innerHTML = tests.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+            } catch(e) { priceTable.innerHTML = 'خطأ في جلب الأسعار'; }
 
-            // 2. جلب الطلبات المنتظرة (تجريبي)
-            document.getElementById('pendingRequestsTable').innerHTML = `
-                <tr><td colspan="3" class="text-center">لا توجد طلبات جديدة من الطبيب حالياً</td></tr>
-            `;
+            // 2. جلب الطلبات المنتظرة
+            const pendingTable = document.getElementById('pendingRequestsTable');
+            try {
+                const res = await fetch(`${API_BASE}?type=pending`);
+                const requests = await res.json();
+                if(requests.length > 0) {
+                    pendingTable.innerHTML = requests.map(r => `
+                        <tr>
+                            <td>${r.patient}</td>
+                            <td><span class="badge bg-danger">${r.test}</span></td>
+                            <td><button class="btn btn-sm btn-success" onclick="completeTest('${r.patient}', '${r.test}')">تم الإنجاز ✅</button></td>
+                        </tr>`).join('');
+                } else {
+                    pendingTable.innerHTML = '<tr><td colspan="3" class="text-center">لا توجد طلبات جديدة</td></tr>';
+                }
+            } catch(e) { pendingTable.innerHTML = 'خطأ في جلب الطلبات'; }
         }
 
-        function updatePrice(testName) {
+        async function updatePrice(testName) {
             const newPrice = prompt(`أدخل السعر الجديد لفحص (${testName}):`);
             if(newPrice) {
-                alert(`سيتم تحديث سعر ${testName} إلى ${newPrice} في قاعدة البيانات.`);
-                // هنا مستقبلاً حنرسل الطلب للسيرفر
+                try {
+                    const res = await fetch(API_BASE, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'updatePrice', name: testName, price: newPrice })
+                    });
+                    if(res.ok) { alert("تم تحديث السعر بنجاح"); loadLabData(); }
+                } catch(e) { alert("فشل الاتصال بالسيرفر"); }
             }
         }
 
-        function sendToLab() {
+        async function sendToLab() {
             const test = document.getElementById('doctorTestSelect').value;
             const patient = document.getElementById('visitPatientSelect').options[document.getElementById('visitPatientSelect').selectedIndex]?.text || "مريض عام";
-            alert(`تم إرسال طلب (${test}) للمريض (${patient}) إلى المعمل بنجاح!`);
+            
+            try {
+                const res = await fetch(API_BASE, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'request', patient: patient, test: test })
+                });
+                if(res.ok) { alert("تم إرسال الطلب للمعمل"); }
+            } catch(e) { alert("فشل في إرسال الطلب"); }
         }
 
-        // الأكواد الباقية كما هي لضمان عدم حذف أي ميزة
+        function completeTest(patient, test) {
+            alert(`تم إكمال فحص ${test} للمريض ${patient}`);
+            // هنا ممكن مستقبلاً تضيف كود لحذف الطلب من السيرفر
+        }
+
+        // باقي الأكواد القديمة بدون حذف
         function addNewUser() {
             const name = document.getElementById('newUserName').value.toLowerCase().trim();
             const pass = document.getElementById('newUserPass').value;
