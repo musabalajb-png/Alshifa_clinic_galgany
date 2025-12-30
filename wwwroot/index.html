@@ -214,7 +214,9 @@
             } else { alert("بيانات خاطئة"); }
         }
 
+        // --- تعديل الصلاحيات لإظهار الأزرار للأدمن ---
         function setupPermissions(role) {
+            // إخفاء كل التابات والأزرار في البداية
             document.querySelectorAll('.nav-item, .tab-pane').forEach(el => {
                 el.classList.add('hidden-section');
                 el.classList.remove('active', 'show');
@@ -222,12 +224,14 @@
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
 
             if (role === 'admin') {
+                // للأدمن: إظهار كل أزرار التابات وكل محتويات الأقسام
                 document.querySelectorAll('.nav-item, .tab-pane').forEach(el => el.classList.remove('hidden-section'));
+                // فتح تاب المدير افتراضياً
                 document.getElementById('btn-admin').classList.add('active');
-                document.getElementById('admin').classList.remove('hidden-section');
                 document.getElementById('admin').classList.add('active', 'show');
                 renderUsersTable();
             } else {
+                // للمستخدم العادي: إظهار التاب الخاص بدوره فقط
                 document.querySelectorAll(`.tab-${role}`).forEach(el => el.classList.remove('hidden-section'));
                 document.getElementById(`${role}`).classList.remove('hidden-section');
                 document.getElementById(`${role}`).classList.add('active', 'show');
@@ -235,7 +239,6 @@
             }
         }
 
-        // --- وظائف العيادة والروشتة ---
         function filterMeds(val) {
             const datalist = document.getElementById('stockMeds');
             datalist.innerHTML = inventory
@@ -258,17 +261,13 @@
             const rx = document.getElementById('diagnosis').value;
             const patient = document.getElementById('visitPatientSelect').value;
             if(!rx) return alert("الروشتة فارغة");
-            await fetch(API_BASE, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'send_rx', patient, rx })
-            });
+            await fetch(API_BASE, { method: 'POST', body: JSON.stringify({ action: 'send_rx', patient, rx }) });
             alert("تم الإرسال للصيدلية ✅");
             document.getElementById('diagnosis').value = "";
             currentRxCount = 0;
             document.getElementById('rxCounter').innerText = "0";
         }
 
-        // --- وظائف الصيدلية والمخزون ---
         function addMed() {
             const name = document.getElementById('medName').value;
             const cost = parseFloat(document.getElementById('medCost').value);
@@ -301,7 +300,6 @@
             } catch(e) { }
         }
 
-        // --- وظائف المدير ---
         function renderUsersTable() {
             document.getElementById('usersTableBody').innerHTML = Object.keys(systemUsers).map(u => `
                 <tr><td>${u}</td><td>${systemUsers[u].role}</td>
@@ -318,13 +316,13 @@
 
         function deleteUser(u) { if(confirm("حذف؟")) { delete systemUsers[u]; saveUsers(); renderUsersTable(); } }
         function updateAdminPass() { systemUsers['admin'].pass = document.getElementById('adminNewPass').value; saveUsers(); alert("تم تحديث باسورد المدير"); }
+        
         function loadAdminReports() {
             document.getElementById('clinicIncome').innerText = financials.clinic;
             document.getElementById('labIncome').innerText = financials.lab;
             document.getElementById('pharmacyIncome').innerText = financials.pharmacySales.toFixed(2);
         }
 
-        // --- المساعدة ---
         function saveInventory() { localStorage.setItem('shifaInventory', JSON.stringify(inventory)); }
         function saveUsers() { localStorage.setItem('shifaUsers', JSON.stringify(systemUsers)); }
         function autoSync() { if(document.getElementById('pharmacy').classList.contains('active')) loadPharmacyOrders(); }
@@ -336,7 +334,7 @@
         async function loadLabData() { 
              const res = await fetch(`${API_BASE}${encodeURIComponent('?type=prices')}`);
              const tests = await res.json();
-             document.getElementById('doctorTestSelect').innerHTML = tests.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+             if(tests) document.getElementById('doctorTestSelect').innerHTML = tests.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
         }
     </script>
 </body>
