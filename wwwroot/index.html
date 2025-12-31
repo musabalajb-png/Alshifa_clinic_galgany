@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c7a7b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/822/822118.png">
+    
     <title>مجمع الشفاء - النسخة الماسية 2025 (إدارة كاملة)</title>
+    
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22%D9%85%D8%AC%D9%85%D8%B1%20%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1%22,%22short_name%22:%22%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f8fafc%22,%22theme_color%22:%22%232c7a7b%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/822/822118.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
         :root { --primary-color: #2c7a7b; --secondary-color: #f0fdf4; --accent-blue: #0d6efd; --accent-red: #dc3545; --accent-green: #198754; }
-        body { background-color: #f8fafc; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f8fafc; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
         .navbar { background-color: var(--primary-color) !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; transition: transform 0.2s; }
         .card:hover { transform: translateY(-2px); }
@@ -211,6 +219,13 @@
     </div>
 
     <script>
+        // --- تسجيل خدمة الـ Service Worker (تحويل الموقع لتطبيق) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
+            });
+        }
+
         // --- 1. البيانات الأساسية ---
         let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
         let labRequests = JSON.parse(localStorage.getItem('shifa_lab')) || [];
@@ -222,7 +237,6 @@
             {u: "lab", p: "lab123", r: "lab"}, {u: "pharmacy", p: "ph123", r: "pharmacy"}, {u: "reception", p: "rec123", r: "reception"}
         ];
         
-        // لستة الفحوصات المحدثة يا مصعب
         let labTests = JSON.parse(localStorage.getItem('shifa_tests')) || [
             {name: "BFFM", price: 3000}, {name: "Widal for entrica", price: 4000}, {name: "Brucella test", price: 4000},
             {name: "H. pylori Ag", price: 4000}, {name: "ASO", price: 5000}, {name: "U. G", price: 3000},
@@ -288,7 +302,6 @@
             document.getElementById(`btn-${id}`)?.classList.add('active');
         }
 
-        // --- 4. وظائف الاستقبال والعيادة ---
         function registerPatient() {
             const name = document.getElementById('pName').value;
             const age = document.getElementById('pAge').value;
@@ -326,7 +339,6 @@
             refreshAll();
         }
 
-        // --- 5. وظائف المدير المتقدمة ---
         function addNewStaff() {
             const u = document.getElementById('newStaffUser').value;
             const p = document.getElementById('newStaffPass').value;
@@ -382,7 +394,6 @@
             }
         }
 
-        // --- 6. التحديث والحفظ ---
         function saveData() {
             localStorage.setItem('shifa_pats', JSON.stringify(patients));
             localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
@@ -392,25 +403,16 @@
         }
 
         function refreshAll() {
-            // تحديث القوائم والترتيب
             document.getElementById('doctorPatientSelect').innerHTML = '<option value="">-- اختر مريض --</option>' + patients.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
             document.getElementById('testSelect').innerHTML = labTests.map(t => `<option>${t.name} (${t.price})</option>`).join('');
-            
-            // جدول المعمل
             document.getElementById('labWorkTable').innerHTML = labRequests.map((r, i) => 
                 r.status === 'pending' ? `<tr><td>${r.patient}</td><td>${r.test}</td><td>${r.time}</td><td><input id="labInput_${i}" class="form-control form-control-sm"></td><td><button class="btn btn-success btn-sm" onclick="submitLabResult(${i})">إرسال</button></td></tr>` : ''
             ).join('');
-
-            // نتائج المعمل للطبيب
             document.getElementById('doctorLabResults').innerHTML = labRequests.map(r => 
                 r.status === 'done' ? `<div class="alert alert-info p-2 mb-1 shadow-sm"><b>${r.patient}:</b> ${r.test} ← <span class="text-danger">${r.result}</span></div>` : ''
             ).join('');
-
-            // جداول المدير
             document.getElementById('staffTableBody').innerHTML = staffMembers.map((s, i) => `<tr><td>${s.u}</td><td>${s.r}</td><td><button class="btn btn-sm btn-outline-danger" onclick="staffMembers.splice(${i},1);localStorage.setItem('shifa_staff',JSON.stringify(staffMembers));refreshAll();">x</button></td></tr>`).join('');
             document.getElementById('testsTableBody').innerHTML = labTests.map((t, i) => `<tr><td>${t.name}</td><td>${t.price}</td><td><button class="btn btn-sm btn-outline-danger" onclick="labTests.splice(${i},1);localStorage.setItem('shifa_tests',JSON.stringify(labTests));refreshAll();">x</button></td></tr>`).join('');
-
-            // تحديث العدادات المالية
             document.getElementById('finClinic').innerText = financials.clinic.toLocaleString();
             document.getElementById('finLab').innerText = financials.lab.toLocaleString();
             document.getElementById('finPhar').innerText = financials.pharSales.toLocaleString();
