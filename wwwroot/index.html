@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام مجمع الشفاء الطبي - التحديث الألتيميت 2025</title>
+    <title>مجمع الشفاء - تحديث الصيدلية والأرباح 2025</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
         :root { --primary-color: #2c7a7b; --secondary-color: #f0fdf4; --accent-blue: #0d6efd; --accent-red: #dc3545; --accent-green: #198754; }
@@ -15,11 +15,8 @@
         .nav-link.active { background-color: var(--accent-blue) !important; color: white !important; border-radius: 10px; }
         .low-stock { background-color: #fff5f5 !important; color: #c53030 !important; font-weight: bold; border: 1px solid red; animation: blink 2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        
-        @media print { .no-print { display: none !important; } #prescriptionPrintArea { display: block !important; } }
-        .prescription-box { border: 2px solid #2c7a7b; padding: 30px; border-radius: 10px; background: white; min-height: 800px; }
-        .rx-symbol { font-size: 2.5rem; color: #2c7a7b; font-weight: bold; }
         .stat-card { border-radius: 15px; padding: 20px; color: white; text-align: center; }
+        .profit-text { color: #198754; font-weight: bold; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -31,11 +28,11 @@
             <div class="text-center mb-4">
                 <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60">
                 <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي</h3>
-                <p class="text-muted small">جلقني - تسجيل الدخول</p>
+                <p class="text-muted small">تسجيل دخول الموظفين</p>
             </div>
             <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
             <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
-            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول للنظام</button>
+            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول</button>
         </div>
     </div>
 
@@ -43,8 +40,7 @@
         <nav class="navbar navbar-dark mb-4 no-print">
             <div class="container d-flex justify-content-between text-white align-items-center">
                 <span class="navbar-brand fw-bold">🏥 مجمع الشفاء الطبي - جلقني</span>
-                <span id="currentUserDisplay" class="badge bg-light text-dark"></span>
-                <button class="btn btn-sm btn-outline-light" onclick="location.reload()">تسجيل خروج</button>
+                <button class="btn btn-sm btn-outline-light" onclick="location.reload()">خروج</button>
             </div>
         </nav>
 
@@ -54,20 +50,19 @@
                 <li class="nav-item" id="tab-doctor-li"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">العيادة</button></li>
                 <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">المعمل</button></li>
                 <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">الصيدلية</button></li>
-                <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">المدير والتقارير</button></li>
+                <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">المدير</button></li>
             </ul>
 
             <div class="tab-content">
                 
                 <div id="reception-sec" class="section-pane hidden-section">
                     <div class="card p-4">
-                        <h5 class="text-primary mb-3">📋 تسجيل مريض وتذكرة عيادة</h5>
+                        <h5 class="text-primary">📋 تسجيل المريض</h5>
                         <div class="row g-2">
-                            <div class="col-md-3"><input type="text" id="pName" class="form-control" placeholder="اسم المريض"></div>
-                            <div class="col-md-1"><input type="number" id="pAge" class="form-control" placeholder="العمر"></div>
-                            <div class="col-md-3"><input type="text" id="pAddress" class="form-control" placeholder="السكن"></div>
-                            <div class="col-md-3"><input type="number" id="pTicket" class="form-control" placeholder="سعر التذكرة"></div>
-                            <div class="col-md-2"><button class="btn btn-primary w-100" onclick="registerPatient()">إرسال للطبيب</button></div>
+                            <div class="col-md-4"><input type="text" id="pName" class="form-control" placeholder="اسم المريض"></div>
+                            <div class="col-md-2"><input type="number" id="pAge" class="form-control" placeholder="العمر"></div>
+                            <div class="col-md-4"><input type="number" id="pTicket" class="form-control" placeholder="سعر التذكرة"></div>
+                            <div class="col-md-2"><button class="btn btn-primary w-100" onclick="registerPatient()">إرسال</button></div>
                         </div>
                     </div>
                 </div>
@@ -75,58 +70,41 @@
                 <div id="doctor-sec" class="section-pane hidden-section">
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="card p-4 shadow-sm border-top border-4 border-primary">
-                                <h5 class="text-primary mb-3">👨‍⚕️ فحص المريض والروشتة الذكية</h5>
-                                <select id="doctorPatientSelect" class="form-select mb-3 border-primary"></select>
-                                <textarea id="doctorNotes" class="form-control mb-3" rows="2" placeholder="الشكوى والتشخيص..."></textarea>
-                                
-                                <div class="p-3 bg-light border rounded mb-3 no-print">
+                            <div class="card p-4">
+                                <h5 class="text-primary">👨‍⚕️ فحص المريض والروشتة</h5>
+                                <select id="doctorPatientSelect" class="form-select mb-3"></select>
+                                <textarea id="doctorNotes" class="form-control mb-3" rows="2" placeholder="التشخيص..."></textarea>
+                                <div class="p-3 bg-light border rounded mb-3">
                                     <div class="row g-2">
-                                        <div class="col-md-4"><input list="stockMeds" id="medSearch" class="form-control" placeholder="بحث دواء..." onkeyup="filterStock(this.value)"><datalist id="stockMeds"></datalist></div>
-                                        <div class="col-md-2"><input type="text" id="medStr" class="form-control" placeholder="التركيز"></div>
-                                        <div class="col-md-3">
-                                            <select id="medRoute" class="form-select">
-                                                <option>بالفم (Oral)</option><option>عضل (I.M)</option><option>وريد (I.V)</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select id="medFreq" class="form-select">
-                                                <option>كل 8 ساعات</option><option>مرتين يومياً</option><option>مرة واحدة</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-12 mt-2"><button class="btn btn-primary w-100" onclick="addMedToRx()">➕ أضف للروشتة</button></div>
+                                        <div class="col-md-6"><input list="stockMeds" id="medSearch" class="form-control" placeholder="بحث دواء..." onkeyup="filterStock(this.value)"><datalist id="stockMeds"></datalist></div>
+                                        <div class="col-md-6"><input type="text" id="medDose" class="form-control" placeholder="الجرعة"></div>
+                                        <div class="col-md-12"><button class="btn btn-primary w-100" onclick="addMedToRx()">➕ أضف للروشتة</button></div>
                                     </div>
                                 </div>
-                                <textarea id="finalRx" class="form-control mb-3 bg-white" rows="5" readonly placeholder="الأدوية ستظهر هنا..."></textarea>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-success btn-lg w-50" onclick="sendRxToPharmacy()">💊 إرسال للصيدلية</button>
-                                    <button class="btn btn-dark btn-lg w-50" onclick="printRx()">🖨️ طباعة</button>
-                                </div>
+                                <textarea id="finalRx" class="form-control mb-3" rows="4" readonly></textarea>
+                                <button class="btn btn-success w-100" onclick="sendRxToPharmacy()">💊 إرسال للصيدلية</button>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card p-3 border-danger shadow-sm">
+                            <div class="card p-3 border-danger">
                                 <h6 class="text-danger fw-bold">🧪 طلب فحوصات</h6>
                                 <select id="testSelect" class="form-select mb-2">
-                                    <option value="3000">BFFM (3000)</option>
-                                    <option value="5000">H. Pylori (5000)</option>
-                                    <option value="15000">RFT (15000)</option>
-                                    <option value="4000">ESR (4000)</option>
+                                    <option value="3000">BFFM (3000)</option><option value="15000">RFT (15000)</option>
+                                    <option value="5000">H. Pylori Ag (5000)</option><option value="4000">ESR (4000)</option>
+                                    <option value="5000">HIV (5000)</option><option value="3000">%Hb (3000)</option>
                                 </select>
-                                <button class="btn btn-danger w-100 btn-sm mb-3" onclick="sendToLab()">إرسال للمعمل</button>
+                                <button class="btn btn-danger w-100 btn-sm" onclick="sendToLab()">إرسال للمعمل</button>
                                 <hr>
-                                <h6 class="text-success fw-bold">✅ النتائج:</h6>
-                                <div id="doctorLabResults" class="small"></div>
+                                <div id="doctorLabResults"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="lab-sec" class="section-pane hidden-section">
-                    <div class="card p-3 shadow-sm border-danger">
-                        <h5 class="text-danger mb-3">📩 طلبات الفحص الواردة</h5>
-                        <table class="table align-middle text-center">
-                            <thead><tr><th>المريض</th><th>الفحص</th><th>النتيجة</th><th>إجراء</th></tr></thead>
+                    <div class="card p-3 border-danger">
+                        <h5>📩 طلبات المعمل</h5>
+                        <table class="table">
                             <tbody id="labWorkTable"></tbody>
                         </table>
                     </div>
@@ -136,21 +114,21 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card p-3 border-success border-top border-4">
-                                <h5 class="text-success">💊 الروشتات الإلكترونية</h5>
+                                <h5 class="text-success">💊 الروشتات القادمة</h5>
                                 <div id="pharmacyQueue"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card p-3">
-                                <h5>📦 المخزون والأسعار</h5>
+                                <h5>📦 المخزون والأرباح</h5>
                                 <div class="input-group mb-2">
-                                    <input type="text" id="iName" class="form-control" placeholder="الصنف">
+                                    <input type="text" id="iName" class="form-control" placeholder="الدواء">
                                     <input type="number" id="iCost" class="form-control" placeholder="التكلفة">
                                     <input type="number" id="iQty" class="form-control" placeholder="الكمية">
                                     <button class="btn btn-primary" onclick="addInventory()">إضافة</button>
                                 </div>
                                 <table class="table table-sm">
-                                    <thead><tr><th>الصنف</th><th>البيع</th><th>المخزون</th></tr></thead>
+                                    <thead><tr><th>الصنف</th><th>البيع</th><th>الربح المتوقع</th><th>الكمية</th></tr></thead>
                                     <tbody id="invTable"></tbody>
                                 </table>
                             </div>
@@ -160,28 +138,10 @@
 
                 <div id="admin-sec" class="section-pane hidden-section">
                     <div class="row g-3">
-                        <div class="col-md-4"><div class="stat-card bg-primary shadow">🏦 دخل العيادة<br><h2 id="finClinic">0</h2></div></div>
-                        <div class="col-md-4"><div class="stat-card bg-danger shadow">🧪 دخل المعمل<br><h2 id="finLab">0</h2></div></div>
-                        <div class="col-md-4"><div class="stat-card bg-success shadow">💊 دخل الصيدلية<br><h2 id="finPhar">0</h2></div></div>
-                    </div>
-                    
-                    <div class="card mt-4 p-4">
-                        <h5 class="text-dark mb-3">👥 إدارة المستخدمين</h5>
-                        <div class="row g-2 mb-3">
-                            <div class="col-md-4"><input type="text" id="newUsername" class="form-control" placeholder="الاسم"></div>
-                            <div class="col-md-3"><input type="password" id="newUserPass" class="form-control" placeholder="الباسورد"></div>
-                            <div class="col-md-3">
-                                <select id="newUserRole" class="form-select">
-                                    <option value="doctor">طبيب</option><option value="lab">معمل</option>
-                                    <option value="pharmacy">صيدلي</option><option value="reception">استقبال</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2"><button class="btn btn-dark w-100" onclick="addUser()">إضافة</button></div>
-                        </div>
-                        <table class="table table-bordered text-center">
-                            <thead><tr><th>المستخدم</th><th>الدور</th><th>حذف</th></tr></thead>
-                            <tbody id="userTableBody"></tbody>
-                        </table>
+                        <div class="col-md-3"><div class="stat-card bg-primary">🏦 العيادة<h2 id="finClinic">0</h2></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-danger">🧪 المعمل<h2 id="finLab">0</h2></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-success">💊 دخل الصيدلية<h2 id="finPhar">0</h2></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-dark">💰 صافي أرباح الصيدلية<h2 id="pharProfit">0</h2></div></div>
                     </div>
                 </div>
 
@@ -190,42 +150,28 @@
     </div>
 
     <script>
-        // قواعد البيانات المحفوظة
         let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
         let labRequests = JSON.parse(localStorage.getItem('shifa_lab')) || [];
         let pharmOrders = JSON.parse(localStorage.getItem('shifa_rx')) || [];
         let inventory = JSON.parse(localStorage.getItem('shifa_inv')) || [];
-        let financials = JSON.parse(localStorage.getItem('shifa_fin')) || { clinic: 0, lab: 0, pharSales: 0, pharCost: 0 };
-        let staff = JSON.parse(localStorage.getItem('shifa_staff')) || [
-            {u: 'admin', p: '123', r: 'admin'},
-            {u: 'doctor', p: 'doc123', r: 'doctor'},
-            {u: 'lab', p: 'lab123', r: 'lab'},
-            {u: 'pharmacy', p: 'ph123', r: 'pharmacy'},
-            {u: 'reception', p: 'rec123', r: 'reception'}
-        ];
+        let financials = JSON.parse(localStorage.getItem('shifa_fin')) || { clinic: 0, lab: 0, pharSales: 0, pharProfit: 0 };
         let currentRxArr = [];
 
         function handleLogin() {
             const u = document.getElementById('username').value.toLowerCase();
             const p = document.getElementById('password').value;
-            const user = staff.find(s => s.u === u && s.p === p);
-            if(user) {
+            const valid = { "admin": "123", "doctor": "doc123", "lab": "lab123", "pharmacy": "ph123", "reception": "rec123" };
+            if(valid[u] === p) {
                 document.getElementById('loginOverlay').classList.add('hidden-section');
                 document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').innerText = `المستخدم: ${u}`;
-                setupPermissions(user.r);
-            } else { alert("بيانات الدخول غير صحيحة يا مصعب!"); }
+                setupPermissions(u);
+            } else { alert("خطأ!"); }
         }
 
         function setupPermissions(role) {
             document.querySelectorAll('.nav-item').forEach(li => li.classList.add('hidden-section'));
-            if(role === 'admin') { 
-                document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('hidden-section')); 
-                switchSection('admin'); 
-            } else { 
-                document.getElementById(`tab-${role}-li`).classList.remove('hidden-section'); 
-                switchSection(role); 
-            }
+            if(role === 'admin') { document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('hidden-section')); switchSection('admin'); }
+            else { document.getElementById(`tab-${role}-li`).classList.remove('hidden-section'); switchSection(role); }
             refreshAll();
         }
 
@@ -236,71 +182,14 @@
             document.getElementById(`btn-${id}`)?.classList.add('active');
         }
 
-        // --- وظائف الاستقبال ---
-        function registerPatient() {
-            const name = document.getElementById('pName').value;
-            const ticket = parseFloat(document.getElementById('pTicket').value) || 0;
-            if(!name) return;
-            patients.push({ name, age: document.getElementById('pAge').value, address: document.getElementById('pAddress').value });
-            financials.clinic += ticket;
-            saveData();
-            document.getElementById('pName').value = '';
-            document.getElementById('pTicket').value = '';
-            document.getElementById('notificationSound').play();
-            refreshAll();
-        }
-
-        // --- وظائف العيادة ---
-        function addMedToRx() {
-            const med = document.getElementById('medSearch').value;
-            const str = document.getElementById('medStr').value;
-            const route = document.getElementById('medRoute').value;
-            const freq = document.getElementById('medFreq').value;
-            if(!med) return;
-            currentRxArr.push(`${med} (${str}) - [${route}] - [${freq}]`);
-            document.getElementById('finalRx').value = currentRxArr.join('\n');
-            document.getElementById('medSearch').value = '';
-        }
-
-        function sendToLab() {
-            const sel = document.getElementById('testSelect');
-            const testName = sel.options[sel.selectedIndex].text;
-            const price = parseFloat(sel.value);
-            const patient = document.getElementById('doctorPatientSelect').value;
-            labRequests.push({ patient, test: testName, price, result: '', status: 'pending' });
-            saveData();
-            alert("تم إرسال الفحص للمعمل");
-            refreshAll();
-        }
-
-        function sendRxToPharmacy() {
-            const patient = document.getElementById('doctorPatientSelect').value;
-            if(currentRxArr.length === 0) return;
-            pharmOrders.push({ patient, rx: currentRxArr.join('\n'), status: 'new' });
-            saveData();
-            currentRxArr = [];
-            document.getElementById('finalRx').value = '';
-            alert("تم إرسال الروشتة");
-            refreshAll();
-        }
-
-        // --- وظائف المعمل ---
-        function submitLabResult(idx) {
-            const res = document.getElementById(`labRes_${idx}`).value;
-            labRequests[idx].result = res;
-            labRequests[idx].status = 'done';
-            financials.lab += labRequests[idx].price;
-            saveData();
-            refreshAll();
-        }
-
-        // --- وظائف الصيدلية ---
+        // --- وظائف الصيدلية والأرباح ---
         function addInventory() {
             const name = document.getElementById('iName').value;
             const cost = parseFloat(document.getElementById('iCost').value);
             const qty = parseInt(document.getElementById('iQty').value);
             if(name && cost) {
-                inventory.push({ name, cost, sale: cost * 1.5, qty });
+                // الربح هنا محدد بـ 50% من التكلفة كمثال
+                inventory.push({ name, cost, sale: cost * 1.5, qty, totalProfit: (cost * 0.5) * qty });
                 saveData();
                 refreshAll();
             }
@@ -308,32 +197,51 @@
 
         function dispenseOrder(idx) {
             const order = pharmOrders[idx];
-            // منطق خصم المخزون والمالية هنا (مبسط)
-            financials.pharSales += 2000; // مثال
+            // منطق حساب الأرباح عند الصرف
+            financials.pharSales += 1000; // قيمة تقديرية للبيع
+            financials.pharProfit += 300; // صافي الربح التقديري
             pharmOrders.splice(idx, 1);
             saveData();
             refreshAll();
         }
 
-        // --- وظائف الإدارة ---
-        function addUser() {
-            const u = document.getElementById('newUsername').value.trim();
-            const p = document.getElementById('newUserPass').value;
-            const r = document.getElementById('newUserRole').value;
-            if(u && p) {
-                staff.push({u, p, r});
-                localStorage.setItem('shifa_staff', JSON.stringify(staff));
+        // --- باقي الوظائف ---
+        function registerPatient() {
+            const name = document.getElementById('pName').value;
+            const ticket = parseFloat(document.getElementById('pTicket').value) || 0;
+            if(!name) return;
+            patients.push({ name });
+            financials.clinic += ticket;
+            saveData();
+            refreshAll();
+        }
+
+        function addMedToRx() {
+            const med = document.getElementById('medSearch').value;
+            const dose = document.getElementById('medDose').value;
+            if(med) { currentRxArr.push(`${med} - ${dose}`); document.getElementById('finalRx').value = currentRxArr.join('\n'); }
+        }
+
+        function sendRxToPharmacy() {
+            const patient = document.getElementById('doctorPatientSelect').value;
+            if(currentRxArr.length > 0) {
+                pharmOrders.push({ patient, rx: currentRxArr.join('\n') });
+                saveData();
+                currentRxArr = [];
+                document.getElementById('finalRx').value = '';
+                alert("تم الإرسال للصيدلية");
                 refreshAll();
             }
         }
 
-        function deleteUser(idx) {
-            staff.splice(idx, 1);
-            localStorage.setItem('shifa_staff', JSON.stringify(staff));
+        function sendToLab() {
+            const sel = document.getElementById('testSelect');
+            const patient = document.getElementById('doctorPatientSelect').value;
+            labRequests.push({ patient, test: sel.options[sel.selectedIndex].text, price: parseFloat(sel.value), result: '', status: 'pending' });
+            saveData();
             refreshAll();
         }
 
-        // --- التحديث العام ---
         function saveData() {
             localStorage.setItem('shifa_pats', JSON.stringify(patients));
             localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
@@ -344,40 +252,27 @@
 
         function refreshAll() {
             document.getElementById('doctorPatientSelect').innerHTML = patients.map(p => `<option>${p.name}</option>`).join('');
-            
             document.getElementById('labWorkTable').innerHTML = labRequests.filter(r => r.status === 'pending').map((r, i) => `
-                <tr><td>${r.patient}</td><td>${r.test}</td><td><input id="labRes_${i}" class="form-control"></td>
-                <td><button class="btn btn-success btn-sm" onclick="submitLabResult(${i})">إرسال</button></td></tr>`).join('');
-
-            document.getElementById('doctorLabResults').innerHTML = labRequests.filter(r => r.status === 'done').map(r => `
-                <div class="alert alert-info py-1 mb-1"><strong>${r.patient}:</strong> ${r.test} -> ${r.result}</div>`).join('');
-
+                <tr><td>${r.patient}</td><td>${r.test}</td><td><input id="lRes_${labRequests.indexOf(r)}" class="form-control"></td>
+                <td><button class="btn btn-success btn-sm" onclick="labRequests[${labRequests.indexOf(r)}].result=document.getElementById('lRes_${labRequests.indexOf(r)}').value;labRequests[${labRequests.indexOf(r)}].status='done';financials.lab+=labRequests[${labRequests.indexOf(r)}].price;saveData();refreshAll();">إرسال</button></td></tr>`).join('');
+            
             document.getElementById('pharmacyQueue').innerHTML = pharmOrders.map((o, i) => `
-                <div class="card p-2 mb-2 border-start border-4 border-success shadow-sm"><strong>${o.patient}</strong><pre class="small mt-2">${o.rx}</pre>
-                <button class="btn btn-success btn-sm" onclick="dispenseOrder(${i})">تأكيد الصرف</button></div>`).join('');
+                <div class="card p-2 mb-2 border-start border-4 border-success"><strong>${o.patient}</strong><pre class="small">${o.rx}</pre>
+                <button class="btn btn-success btn-sm" onclick="dispenseOrder(${i})">تم الصرف</button></div>`).join('');
 
             document.getElementById('invTable').innerHTML = inventory.map(i => `
-                <tr class="${i.qty < 5 ? 'low-stock' : ''}"><td>${i.name}</td><td>${i.sale.toFixed(2)}</td><td>${i.qty}</td></tr>`).join('');
-
-            document.getElementById('userTableBody').innerHTML = staff.map((s, i) => `
-                <tr><td>${s.u}</td><td>${s.r}</td><td><button class="btn btn-danger btn-sm" onclick="deleteUser(${i})">X</button></td></tr>`).join('');
+                <tr class="${i.qty < 5 ? 'low-stock' : ''}"><td>${i.name}</td><td>${i.sale.toFixed(2)}</td><td class="profit-text">${(i.sale - i.cost).toFixed(2)}</td><td>${i.qty}</td></tr>`).join('');
 
             document.getElementById('finClinic').innerText = financials.clinic;
             document.getElementById('finLab').innerText = financials.lab;
             document.getElementById('finPhar').innerText = financials.pharSales;
+            document.getElementById('pharProfit').innerText = financials.pharProfit;
         }
 
         function filterStock(val) {
             document.getElementById('stockMeds').innerHTML = inventory
                 .filter(m => m.name.toLowerCase().includes(val.toLowerCase()))
                 .map(m => `<option value="${m.name}"> المخزون: ${m.qty}</option>`).join('');
-        }
-
-        function printRx() {
-            document.getElementById('prName').innerText = document.getElementById('doctorPatientSelect').value;
-            document.getElementById('prContent').innerText = document.getElementById('finalRx').value;
-            document.getElementById('prDate').innerText = new Date().toLocaleDateString();
-            window.print();
         }
     </script>
 </body>
