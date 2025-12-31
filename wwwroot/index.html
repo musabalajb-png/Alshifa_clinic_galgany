@@ -52,6 +52,7 @@
             <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
             <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
             <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول للنظام</button>
+            <div class="mt-3 text-center small text-muted">استخدم حسابك المخصص (طبيب، معمل، صيدلية، استقبال)</div>
         </div>
     </div>
 
@@ -219,14 +220,12 @@
     </div>
 
     <script>
-        // --- تسجيل خدمة الـ Service Worker (تحويل الموقع لتطبيق) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
             });
         }
 
-        // --- 1. البيانات الأساسية ---
         let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
         let labRequests = JSON.parse(localStorage.getItem('shifa_lab')) || [];
         let pharmOrders = JSON.parse(localStorage.getItem('shifa_rx')) || [];
@@ -245,9 +244,7 @@
         ];
 
         let currentUser = localStorage.getItem('shifa_user') ? JSON.parse(localStorage.getItem('shifa_user')) : null;
-        let currentRxArr = [];
 
-        // --- 2. محرك الربط السحابي (Somee) ---
         async function syncWithSumi(type, data) {
             const API_URL = "https://alshifaclinic.somee.com/api.aspx/SyncData";
             try {
@@ -259,7 +256,6 @@
             } catch (e) { console.warn("Offline sync"); }
         }
 
-        // --- 3. إدارة الجلسة والدخول ---
         window.onload = function() {
             updateClock(); setInterval(updateClock, 1000);
             if(currentUser) {
@@ -270,27 +266,54 @@
             }
         };
 
+        // --- تعديل تسجيل الدخول ليعمل حسب الواجهة ---
         function handleLogin() {
-            const u = document.getElementById('username').value.toLowerCase();
-            const p = document.getElementById('password').value;
+            const u = document.getElementById('username').value.trim().toLowerCase();
+            const p = document.getElementById('password').value.trim();
+            
             const user = staffMembers.find(s => s.u === u && s.p === p);
+            
             if(user) {
                 currentUser = user;
                 localStorage.setItem('shifa_user', JSON.stringify(user));
-                location.reload();
-            } else { alert("بيانات الدخول غير صحيحة!"); }
+                
+                // إخفاء واجهة الدخول وإظهار المحتوى
+                document.getElementById('loginOverlay').classList.add('hidden-section');
+                document.getElementById('mainContent').classList.remove('hidden-section');
+                document.getElementById('currentUserDisplay').innerText = `👤 ${user.u}`;
+                
+                // توجيه الموظف لواجهته فوراً
+                setupPermissions(user.r);
+                alert(`مرحباً بك في نظام الشفاء - قسم ${user.r}`);
+            } else { 
+                alert("بيانات الدخول غير صحيحة! تأكد من اسم المستخدم وكلمة السر."); 
+            }
         }
 
-        function logout() { localStorage.removeItem('shifa_user'); location.reload(); }
+        function logout() { 
+            localStorage.removeItem('shifa_user'); 
+            location.reload(); 
+        }
 
+        // --- تعديل الصلاحيات لإخفاء التبويبات غير المسموح بها ---
         function setupPermissions(role) {
+            // إخفاء كل التبويبات أولاً
             document.querySelectorAll('.nav-item').forEach(li => li.classList.add('hidden-section'));
+            
             if(role === 'admin') { 
+                // المدير يرى كل شيء
                 document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('hidden-section')); 
                 switchSection('admin'); 
             } else { 
-                document.getElementById(`tab-${role}-li`).classList.remove('hidden-section'); 
-                switchSection(role); 
+                // الموظف يرى تبويبه الخاص فقط
+                const myTab = document.getElementById(`tab-${role}-li`);
+                if(myTab) {
+                    myTab.classList.remove('hidden-section');
+                    switchSection(role); 
+                } else {
+                    alert("خطأ في تحديد القسم، راجع المدير.");
+                    logout();
+                }
             }
             refreshAll();
         }
@@ -302,6 +325,7 @@
             document.getElementById(`btn-${id}`)?.classList.add('active');
         }
 
+        // --- بقية الوظائف البرمجية (بدون تغيير) ---
         function registerPatient() {
             const name = document.getElementById('pName').value;
             const age = document.getElementById('pAge').value;
@@ -347,7 +371,7 @@
                 staffMembers.push({u, p, r});
                 localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
                 refreshAll();
-                alert("تمت إضافة الموظف");
+                alert("تمت إضافة الموظف بنجاح");
             }
         }
 
