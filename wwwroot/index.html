@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مجمع الشفاء - تحديث الصيدلية والأرباح 2025</title>
+    <title>مجمع الشفاء - النسخة المتكاملة 2025</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
         :root { --primary-color: #2c7a7b; --secondary-color: #f0fdf4; --accent-blue: #0d6efd; --accent-red: #dc3545; --accent-green: #198754; }
@@ -11,8 +11,9 @@
         .navbar { background-color: var(--primary-color) !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; }
         .hidden-section { display: none !important; }
-        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 10px 20px !important; }
+        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 10px 20px !important; position: relative; }
         .nav-link.active { background-color: var(--accent-blue) !important; color: white !important; border-radius: 10px; }
+        .badge-notify { position: absolute; top: -5px; right: -5px; background: var(--accent-red); color: white; border-radius: 50%; padding: 3px 7px; font-size: 0.7rem; }
         .low-stock { background-color: #fff5f5 !important; color: #c53030 !important; font-weight: bold; border: 1px solid red; animation: blink 2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .stat-card { border-radius: 15px; padding: 20px; color: white; text-align: center; }
@@ -32,7 +33,7 @@
             </div>
             <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
             <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
-            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول</button>
+            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">دخول للنظام</button>
         </div>
     </div>
 
@@ -40,6 +41,7 @@
         <nav class="navbar navbar-dark mb-4 no-print">
             <div class="container d-flex justify-content-between text-white align-items-center">
                 <span class="navbar-brand fw-bold">🏥 مجمع الشفاء الطبي - جلقني</span>
+                <span id="currentUserDisplay" class="badge bg-light text-dark"></span>
                 <button class="btn btn-sm btn-outline-light" onclick="location.reload()">خروج</button>
             </div>
         </nav>
@@ -48,13 +50,12 @@
             <ul class="nav nav-pills mb-4 no-print shadow-sm p-2 bg-white rounded justify-content-center">
                 <li class="nav-item" id="tab-reception-li"><button class="nav-link" id="btn-reception" onclick="switchSection('reception')">الاستقبال</button></li>
                 <li class="nav-item" id="tab-doctor-li"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">العيادة</button></li>
-                <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">المعمل</button></li>
-                <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">الصيدلية</button></li>
+                <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">المعمل <span id="labBadge" class="badge-notify hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">الصيدلية <span id="pharBadge" class="badge-notify hidden-section">0</span></button></li>
                 <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">المدير</button></li>
             </ul>
 
             <div class="tab-content">
-                
                 <div id="reception-sec" class="section-pane hidden-section">
                     <div class="card p-4">
                         <h5 class="text-primary">📋 تسجيل المريض</h5>
@@ -88,14 +89,11 @@
                         <div class="col-md-4">
                             <div class="card p-3 border-danger">
                                 <h6 class="text-danger fw-bold">🧪 طلب فحوصات</h6>
-                                <select id="testSelect" class="form-select mb-2">
-                                    <option value="3000">BFFM (3000)</option><option value="15000">RFT (15000)</option>
-                                    <option value="5000">H. Pylori Ag (5000)</option><option value="4000">ESR (4000)</option>
-                                    <option value="5000">HIV (5000)</option><option value="3000">%Hb (3000)</option>
-                                </select>
+                                <select id="testSelect" class="form-select mb-2"></select>
                                 <button class="btn btn-danger w-100 btn-sm" onclick="sendToLab()">إرسال للمعمل</button>
                                 <hr>
-                                <div id="doctorLabResults"></div>
+                                <h6 class="fw-bold">✅ النتائج المكتملة:</h6>
+                                <div id="doctorLabResults" class="small mt-2"></div>
                             </div>
                         </div>
                     </div>
@@ -103,8 +101,9 @@
 
                 <div id="lab-sec" class="section-pane hidden-section">
                     <div class="card p-3 border-danger">
-                        <h5>📩 طلبات المعمل</h5>
+                        <h5>📩 طلبات المعمل الواردة</h5>
                         <table class="table">
+                            <thead class="table-danger"><tr><th>المريض</th><th>الفحص</th><th>النتيجة</th><th>إجراء</th></tr></thead>
                             <tbody id="labWorkTable"></tbody>
                         </table>
                     </div>
@@ -128,7 +127,7 @@
                                     <button class="btn btn-primary" onclick="addInventory()">إضافة</button>
                                 </div>
                                 <table class="table table-sm">
-                                    <thead><tr><th>الصنف</th><th>البيع</th><th>الربح المتوقع</th><th>الكمية</th></tr></thead>
+                                    <thead><tr><th>الصنف</th><th>البيع</th><th>الربح</th><th>الكمية</th></tr></thead>
                                     <tbody id="invTable"></tbody>
                                 </table>
                             </div>
@@ -141,10 +140,22 @@
                         <div class="col-md-3"><div class="stat-card bg-primary">🏦 العيادة<h2 id="finClinic">0</h2></div></div>
                         <div class="col-md-3"><div class="stat-card bg-danger">🧪 المعمل<h2 id="finLab">0</h2></div></div>
                         <div class="col-md-3"><div class="stat-card bg-success">💊 دخل الصيدلية<h2 id="finPhar">0</h2></div></div>
-                        <div class="col-md-3"><div class="stat-card bg-dark">💰 صافي أرباح الصيدلية<h2 id="pharProfit">0</h2></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-dark">💰 أرباح الصيدلية<h2 id="pharProfit">0</h2></div></div>
+                    </div>
+                    <div class="card mt-4 p-4 border-danger">
+                        <h5 class="fw-bold text-danger">🔬 إعدادات الفحوصات</h5>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-5"><input type="text" id="newTestName" class="form-control" placeholder="اسم الفحص"></div>
+                            <div class="col-md-5"><input type="number" id="newTestPrice" class="form-control" placeholder="السعر"></div>
+                            <div class="col-md-2"><button class="btn btn-danger w-100" onclick="addNewTest()">حفظ</button></div>
+                        </div>
+                        <table class="table table-sm table-bordered"><tbody id="testsTableBody"></tbody></table>
+                    </div>
+                    <div class="card mt-4 p-4">
+                        <h5 class="fw-bold">👥 إدارة الموظفين</h5>
+                        <table class="table table-bordered text-center table-sm"><tbody id="staffTableBody"></tbody></table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -155,17 +166,25 @@
         let pharmOrders = JSON.parse(localStorage.getItem('shifa_rx')) || [];
         let inventory = JSON.parse(localStorage.getItem('shifa_inv')) || [];
         let financials = JSON.parse(localStorage.getItem('shifa_fin')) || { clinic: 0, lab: 0, pharSales: 0, pharProfit: 0 };
+        let staffMembers = JSON.parse(localStorage.getItem('shifa_staff')) || [
+            {u: "admin", p: "123", r: "admin"}, {u: "doctor", p: "doc123", r: "doctor"},
+            {u: "lab", p: "lab123", r: "lab"}, {u: "pharmacy", p: "ph123", r: "pharmacy"}, {u: "reception", p: "rec123", r: "reception"}
+        ];
+        let labTests = JSON.parse(localStorage.getItem('shifa_tests')) || [
+            {name: "BFFM", price: 3000}, {name: "RFT", price: 15000}, {name: "HB%", price: 3000}, {name: "Malaria", price: 3000}
+        ];
         let currentRxArr = [];
 
         function handleLogin() {
             const u = document.getElementById('username').value.toLowerCase();
             const p = document.getElementById('password').value;
-            const valid = { "admin": "123", "doctor": "doc123", "lab": "lab123", "pharmacy": "ph123", "reception": "rec123" };
-            if(valid[u] === p) {
+            const user = staffMembers.find(s => s.u === u && s.p === p);
+            if(user) {
                 document.getElementById('loginOverlay').classList.add('hidden-section');
                 document.getElementById('mainContent').classList.remove('hidden-section');
-                setupPermissions(u);
-            } else { alert("خطأ!"); }
+                document.getElementById('currentUserDisplay').innerText = `الموظف: ${user.u}`;
+                setupPermissions(user.r);
+            } else { alert("خطأ في البيانات!"); }
         }
 
         function setupPermissions(role) {
@@ -182,30 +201,6 @@
             document.getElementById(`btn-${id}`)?.classList.add('active');
         }
 
-        // --- وظائف الصيدلية والأرباح ---
-        function addInventory() {
-            const name = document.getElementById('iName').value;
-            const cost = parseFloat(document.getElementById('iCost').value);
-            const qty = parseInt(document.getElementById('iQty').value);
-            if(name && cost) {
-                // الربح هنا محدد بـ 50% من التكلفة كمثال
-                inventory.push({ name, cost, sale: cost * 1.5, qty, totalProfit: (cost * 0.5) * qty });
-                saveData();
-                refreshAll();
-            }
-        }
-
-        function dispenseOrder(idx) {
-            const order = pharmOrders[idx];
-            // منطق حساب الأرباح عند الصرف
-            financials.pharSales += 1000; // قيمة تقديرية للبيع
-            financials.pharProfit += 300; // صافي الربح التقديري
-            pharmOrders.splice(idx, 1);
-            saveData();
-            refreshAll();
-        }
-
-        // --- باقي الوظائف ---
         function registerPatient() {
             const name = document.getElementById('pName').value;
             const ticket = parseFloat(document.getElementById('pTicket').value) || 0;
@@ -213,19 +208,41 @@
             patients.push({ name });
             financials.clinic += ticket;
             saveData();
+            document.getElementById('pName').value = '';
+            document.getElementById('notificationSound').play();
             refreshAll();
         }
 
-        function addMedToRx() {
-            const med = document.getElementById('medSearch').value;
-            const dose = document.getElementById('medDose').value;
-            if(med) { currentRxArr.push(`${med} - ${dose}`); document.getElementById('finalRx').value = currentRxArr.join('\n'); }
+        function submitLabResult(idx) {
+            const resVal = document.getElementById(`labInput_${idx}`).value;
+            if(!resVal) return;
+            labRequests[idx].result = resVal;
+            labRequests[idx].status = 'done';
+            financials.lab += labRequests[idx].price;
+            saveData();
+            refreshAll();
+        }
+
+        function dispenseOrder(idx) {
+            const order = pharmOrders[idx];
+            // منطق الربط مع المخزون: استعادة الخصم الفعلي
+            order.items.forEach(medName => {
+                const item = inventory.find(i => i.name === medName.split(' - ')[0]);
+                if(item && item.qty > 0) {
+                    item.qty--;
+                    financials.pharSales += item.sale;
+                    financials.pharProfit += (item.sale - item.cost);
+                }
+            });
+            pharmOrders.splice(idx, 1);
+            saveData();
+            refreshAll();
         }
 
         function sendRxToPharmacy() {
             const patient = document.getElementById('doctorPatientSelect').value;
             if(currentRxArr.length > 0) {
-                pharmOrders.push({ patient, rx: currentRxArr.join('\n') });
+                pharmOrders.push({ patient, rx: currentRxArr.join('\n'), items: [...currentRxArr] });
                 saveData();
                 currentRxArr = [];
                 document.getElementById('finalRx').value = '';
@@ -237,9 +254,29 @@
         function sendToLab() {
             const sel = document.getElementById('testSelect');
             const patient = document.getElementById('doctorPatientSelect').value;
-            labRequests.push({ patient, test: sel.options[sel.selectedIndex].text, price: parseFloat(sel.value), result: '', status: 'pending' });
+            const testObj = labTests[sel.selectedIndex];
+            labRequests.push({ patient, test: testObj.name, price: testObj.price, result: '', status: 'pending' });
             saveData();
             refreshAll();
+        }
+
+        function addNewTest() {
+            const name = document.getElementById('newTestName').value;
+            const price = parseFloat(document.getElementById('newTestPrice').value);
+            if(name && price) { labTests.push({name, price}); localStorage.setItem('shifa_tests', JSON.stringify(labTests)); refreshAll(); }
+        }
+
+        function addInventory() {
+            const name = document.getElementById('iName').value;
+            const cost = parseFloat(document.getElementById('iCost').value);
+            const qty = parseInt(document.getElementById('iQty').value);
+            if(name && cost) { inventory.push({ name, cost, sale: cost * 1.5, qty }); saveData(); refreshAll(); }
+        }
+
+        function addMedToRx() {
+            const med = document.getElementById('medSearch').value;
+            const dose = document.getElementById('medDose').value;
+            if(med) { currentRxArr.push(`${med} - ${dose}`); document.getElementById('finalRx').value = currentRxArr.join('\n'); }
         }
 
         function saveData() {
@@ -251,17 +288,35 @@
         }
 
         function refreshAll() {
+            // تحديث العدادات (Badges)
+            const labCount = labRequests.filter(r => r.status === 'pending').length;
+            const pharCount = pharmOrders.length;
+            document.getElementById('labBadge').innerText = labCount;
+            document.getElementById('labBadge').classList.toggle('hidden-section', labCount === 0);
+            document.getElementById('pharBadge').innerText = pharCount;
+            document.getElementById('pharBadge').classList.toggle('hidden-section', pharCount === 0);
+
+            // تحديث القوائم
             document.getElementById('doctorPatientSelect').innerHTML = patients.map(p => `<option>${p.name}</option>`).join('');
-            document.getElementById('labWorkTable').innerHTML = labRequests.filter(r => r.status === 'pending').map((r, i) => `
-                <tr><td>${r.patient}</td><td>${r.test}</td><td><input id="lRes_${labRequests.indexOf(r)}" class="form-control"></td>
-                <td><button class="btn btn-success btn-sm" onclick="labRequests[${labRequests.indexOf(r)}].result=document.getElementById('lRes_${labRequests.indexOf(r)}').value;labRequests[${labRequests.indexOf(r)}].status='done';financials.lab+=labRequests[${labRequests.indexOf(r)}].price;saveData();refreshAll();">إرسال</button></td></tr>`).join('');
+            document.getElementById('testSelect').innerHTML = labTests.map(t => `<option>${t.name} (${t.price})</option>`).join('');
             
+            document.getElementById('labWorkTable').innerHTML = labRequests.map((r, i) => 
+                r.status === 'pending' ? `<tr><td>${r.patient}</td><td>${r.test}</td><td><input id="labInput_${i}" class="form-control form-control-sm"></td><td><button class="btn btn-success btn-sm" onclick="submitLabResult(${i})">إرسال</button></td></tr>` : ''
+            ).join('');
+
+            document.getElementById('doctorLabResults').innerHTML = labRequests.map(r => 
+                r.status === 'done' ? `<div class="alert alert-info p-1 mb-1 small"><b>${r.patient}:</b> ${r.test} -> <span class="text-danger">${r.result}</span></div>` : ''
+            ).join('');
+
             document.getElementById('pharmacyQueue').innerHTML = pharmOrders.map((o, i) => `
-                <div class="card p-2 mb-2 border-start border-4 border-success"><strong>${o.patient}</strong><pre class="small">${o.rx}</pre>
-                <button class="btn btn-success btn-sm" onclick="dispenseOrder(${i})">تم الصرف</button></div>`).join('');
+                <div class="card p-2 mb-2 border-start border-4 border-success"><strong>${o.patient}</strong><pre class="small m-0">${o.rx}</pre>
+                <button class="btn btn-success btn-sm mt-1" onclick="dispenseOrder(${i})">تم الصرف وخصم المخزن</button></div>`).join('');
 
             document.getElementById('invTable').innerHTML = inventory.map(i => `
-                <tr class="${i.qty < 5 ? 'low-stock' : ''}"><td>${i.name}</td><td>${i.sale.toFixed(2)}</td><td class="profit-text">${(i.sale - i.cost).toFixed(2)}</td><td>${i.qty}</td></tr>`).join('');
+                <tr class="${i.qty < 5 ? 'low-stock' : ''}"><td>${i.name}</td><td>${i.sale.toFixed(0)}</td><td class="profit-text">${(i.sale - i.cost).toFixed(0)}</td><td>${i.qty}</td></tr>`).join('');
+
+            document.getElementById('testsTableBody').innerHTML = labTests.map((t, i) => `<tr><td>${t.name}</td><td>${t.price}</td><td><button class="btn btn-sm btn-danger" onclick="labTests.splice(${i},1);localStorage.setItem('shifa_tests',JSON.stringify(labTests));refreshAll();">حذف</button></td></tr>`).join('');
+            document.getElementById('staffTableBody').innerHTML = staffMembers.map((s, i) => `<tr><td>${s.u}</td><td>${s.r}</td><td><button class="btn btn-sm btn-danger" onclick="staffMembers.splice(${i},1);localStorage.setItem('shifa_staff',JSON.stringify(staffMembers));refreshAll();">حذف</button></td></tr>`).join('');
 
             document.getElementById('finClinic').innerText = financials.clinic;
             document.getElementById('finLab').innerText = financials.lab;
@@ -270,9 +325,7 @@
         }
 
         function filterStock(val) {
-            document.getElementById('stockMeds').innerHTML = inventory
-                .filter(m => m.name.toLowerCase().includes(val.toLowerCase()))
-                .map(m => `<option value="${m.name}"> المخزون: ${m.qty}</option>`).join('');
+            document.getElementById('stockMeds').innerHTML = inventory.filter(m => m.name.toLowerCase().includes(val.toLowerCase())).map(m => `<option value="${m.name}"> مخزون: ${m.qty}</option>`).join('');
         }
     </script>
 </body>
