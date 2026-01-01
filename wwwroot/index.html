@@ -54,6 +54,12 @@
         .stock-critical { background: #f8d7da; border-left: 5px solid #dc3545; }
         .library-card { height: 100%; transition: all 0.3s; }
         .library-card:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .form-check { padding-right: 1.5em; margin-bottom: 0.5rem; }
+        .form-check-input { margin-right: -1.5em; }
+        #labTestsChecklist { scrollbar-width: thin; scrollbar-color: var(--primary-color) #f1f1f1; }
+        #labTestsChecklist::-webkit-scrollbar { width: 8px; }
+        #labTestsChecklist::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        #labTestsChecklist::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -350,9 +356,15 @@
                                 </div>
                                 
                                 <div id="doc-sub-lab" class="hidden-section">
-                                    <div class="input-group mb-3">
-                                        <select id="testSelect" class="form-select"></select>
-                                        <button class="btn btn-danger" onclick="sendToLab()">🧪 إرسال للمعمل</button>
+                                    <div class="mb-3">
+                                        <h6 class="fw-bold text-success mb-2">اختر الفحوصات المطلوبة:</h6>
+                                        <div id="labTestsChecklist" style="max-height: 200px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; background: #f8f9fa;">
+                                            <!-- سيتم ملؤها بواسطة JavaScript -->
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button class="btn btn-danger w-100" onclick="sendSelectedTestsToLab()">🧪 إرسال الفحوصات المختارة للمعمل</button>
+                                        <button class="btn btn-outline-secondary w-100 mt-2" onclick="selectAllLabTests()">✅ تحديد الكل</button>
                                     </div>
                                     <h6 class="fw-bold text-success mt-3">📋 طلبات الفحوصات المرسلة:</h6>
                                     <div id="doctorLabRequests"></div>
@@ -1279,6 +1291,11 @@
             showDocSubSection('rx');
             
             updateDoctorLabRequests(p.name);
+            
+            // تحميل قائمة الفحوصات إذا كانت معروضة
+            if (!document.getElementById('doc-sub-lab').classList.contains('hidden-section') && document.getElementById('labTestsChecklist')) {
+                loadLabTestsChecklist();
+            }
         }
 
         function viewFullMedicalRecord() {
@@ -1384,6 +1401,208 @@
                 alertDiv.classList.remove('hidden-section');
             } else {
                 alertDiv.classList.add('hidden-section');
+            }
+        }
+
+        // ============================================
+        // دوال الفحوصات المتعددة
+        // ============================================
+
+        function loadLabTestsChecklist() {
+            const container = document.getElementById('labTestsChecklist');
+            if (!container) return;
+            
+            container.innerHTML = labTests.map((test, index) => `
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="${test.name}" id="testCheck${index}">
+                    <label class="form-check-label" for="testCheck${index}">
+                        ${test.name} - <span class="text-success">${test.price} ج</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function selectAllLabTests() {
+            const checkboxes = document.querySelectorAll('#labTestsChecklist input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+            });
+        }
+
+        async function sendSelectedTestsToLab() {
+            if (!selectedPatientId) {
+                alert("اختر مريضاً أولاً!");
+                return;
+            }
+            
+            const checkboxes = document.querySelectorAll('#labTestsChecklist input[type="checkbox"]:checked');
+            if (checkboxes.length === 0) {
+                alert("اختر فحصًا واحدًا على الأقل!");
+                return;
+            }
+            
+            const p = patients.find(pat => pat.id === selectedPatientId);
+            
+            // إرسال جميع الفحوصات المختارة
+            for (let checkbox of checkboxes) {
+                const testName = checkbox.value;
+                const test = labTests.find(t => t.name === testName);
+                
+                if (test) {
+                    const req = { 
+                        patient: p.name, 
+                        patientId: p.id,
+                        test: test.name, 
+                        price: test.price, 
+                        status: 'pending', 
+                        time: new Date().toLocaleTimeString(),
+                        date: new Date().toLocaleDateString()
+                    };
+                    
+                    labRequests.push(req);
+                    
+                    if (OPERATION_MODE === "server") {
+                        const result = await apiCall('addLabRequest', req);
+                        if (!result.success) {
+                            addToPendingSync('addLabRequest', req);
+                        }
+                    }
+                    
+                    // إلغاء تحديد المربع بعد الإرسال
+                    checkbox.checked = false;
+                }
+            }
+            
+            saveLocalData();
+            
+            // تحديث عرض طلبات الفحوصات
+            updateDoctorLabRequests(p.name);
+            
+            document.getElementById('notificationSound').play();
+            refreshAll();
+            updateBadges();
+            
+            alert(`✅ تم إرسال ${checkboxes.length} فحص للمعمل`);
+        }
+
+        function updateDoctorLabRequests(patientName) {
+            const requests = labRequests.filter(r => r.patient === patientName && r.status === 'pending');
+            if (requests.length === 0) {
+                document.getElementById('doctorLabRequests').innerHTML = "<p class='text-muted'>لا توجد طلبات فحوصات معلقة</p>";
+                return;
+            }
+            
+            // تجميع الفحوصات حسب الوقت
+            const groupedRequests = {};
+            requests.forEach(req => {
+                const timeKey = req.time;
+                if (!groupedRequests[timeKey]) {
+                    groupedRequests[timeKey] = [];
+                }
+                groupedRequests[timeKey].push(req);
+            });
+            
+            let html = '';
+            Object.keys(groupedRequests).forEach(timeKey => {
+                const reqs = groupedRequests[timeKey];
+                const totalPrice = reqs.reduce((sum, r) => sum + r.price, 0);
+                
+                html += `
+                    <div class="card border-warning mb-2">
+                        <div class="card-header py-2 bg-warning bg-opacity-10">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold">🕒 ${timeKey}</span>
+                                <span class="badge bg-warning text-dark">${reqs.length} فحص</span>
+                            </div>
+                        </div>
+                        <div class="card-body py-2">
+                            ${reqs.map(r => `
+                                <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                                    <span>${r.test}</span>
+                                    <span class="text-success">${r.price} ج</span>
+                                </div>
+                            `).join('')}
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <strong>الإجمالي:</strong>
+                                <strong class="text-danger">${totalPrice} ج</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('doctorLabRequests').innerHTML = html;
+        }
+
+        function showPatientResults(name) {
+            const results = labRequests.filter(r => r.patient === name && r.status === 'done');
+            if (results.length === 0) {
+                document.getElementById('patientSpecificLabResults').innerHTML = 
+                    `<div class="alert alert-secondary">لا توجد نتائج فحوصات بعد</div>`;
+                return;
+            }
+            
+            // تجميع النتائج حسب الوقت
+            const groupedResults = {};
+            results.forEach(r => {
+                const timeKey = r.doneTime || r.time;
+                if (!groupedResults[timeKey]) {
+                    groupedResults[timeKey] = [];
+                }
+                groupedResults[timeKey].push(r);
+            });
+            
+            let html = '';
+            Object.keys(groupedResults).forEach(timeKey => {
+                const reqs = groupedResults[timeKey];
+                
+                html += `
+                    <div class="card border-success mb-3 shadow-sm">
+                        <div class="card-header py-2 bg-success bg-opacity-10">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">✅ مجموعة فحوصات</span>
+                                <small class="text-muted">${timeKey}</small>
+                            </div>
+                        </div>
+                        <div class="card-body py-2">
+                            ${reqs.map(r => `
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <b>${r.test}</b><br>
+                                            <small class="text-muted">سعر الفحص: ${r.price} ج</small>
+                                        </div>
+                                        <span class="badge bg-success">${r.price} ج</span>
+                                    </div>
+                                    <div class="mt-1 p-2 bg-light rounded">
+                                        <strong>النتيجة:</strong> ${r.result || 'لا توجد نتيجة'}
+                                    </div>
+                                </div>
+                                ${reqs.indexOf(r) < reqs.length - 1 ? '<hr class="my-2">' : ''}
+                            `).join('')}
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                <strong>إجمالي سعر الفحوصات:</strong>
+                                <strong class="text-danger">${reqs.reduce((sum, r) => sum + r.price, 0)} ج</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('patientSpecificLabResults').innerHTML = html;
+        }
+
+        function showDocSubSection(sub) {
+            document.getElementById('doc-sub-rx').classList.toggle('hidden-section', sub !== 'rx');
+            document.getElementById('doc-sub-lab').classList.toggle('hidden-section', sub !== 'lab');
+            document.getElementById('doc-sub-results').classList.toggle('hidden-section', sub !== 'results');
+            document.getElementById('doc-sub-nursing').classList.toggle('hidden-section', sub !== 'nursing');
+            
+            // عند عرض قسم الفحوصات، قم بتحميل القائمة
+            if (sub === 'lab' && document.getElementById('labTestsChecklist')) {
+                loadLabTestsChecklist();
             }
         }
 
@@ -2208,13 +2427,6 @@
             }).join('');
         }
 
-        function showDocSubSection(sub) {
-            document.getElementById('doc-sub-rx').classList.toggle('hidden-section', sub !== 'rx');
-            document.getElementById('doc-sub-lab').classList.toggle('hidden-section', sub !== 'lab');
-            document.getElementById('doc-sub-results').classList.toggle('hidden-section', sub !== 'results');
-            document.getElementById('doc-sub-nursing').classList.toggle('hidden-section', sub !== 'nursing');
-        }
-
         function filterStock(query) {
             const datalist = document.getElementById('stockMeds');
             const select = document.getElementById('medSelect');
@@ -2368,188 +2580,6 @@
             alert(`✅ تم إرسال الروشتة للصيدلية للمريض ${p.name}`);
         }
 
-        async function sendToLab() {
-            if (!selectedPatientId) {
-                alert("اختر مريضاً أولاً!");
-                return;
-            }
-            
-            const sel = document.getElementById('testSelect');
-            const p = patients.find(pat => pat.id === selectedPatientId);
-            const test = labTests[sel.selectedIndex];
-            
-            if (!test) {
-                alert("اختر فحصاً من القائمة!");
-                return;
-            }
-            
-            const req = { 
-                patient: p.name, 
-                patientId: p.id,
-                test: test.name, 
-                price: test.price, 
-                status: 'pending', 
-                time: new Date().toLocaleTimeString() 
-            };
-            
-            labRequests.push(req);
-            saveLocalData();
-            
-            if (OPERATION_MODE === "server") {
-                const result = await apiCall('addLabRequest', req);
-                if (!result.success) {
-                    addToPendingSync('addLabRequest', req);
-                }
-            }
-            
-            updateDoctorLabRequests(p.name);
-            alert(`✅ تم إرسال طلب فحص ${test.name} للمعمل`);
-        }
-
-        function updateDoctorLabRequests(patientName) {
-            const requests = labRequests.filter(r => r.patient === patientName && r.status === 'pending');
-            document.getElementById('doctorLabRequests').innerHTML = requests.map(r => 
-                `<div class="alert alert-warning p-2 mb-1">${r.test} - ${r.price} ج (معلق)</div>`
-            ).join('') || "<p class='text-muted'>لا توجد طلبات فحوصات معلقة</p>";
-        }
-
-        function showPatientResults(name) {
-            const results = labRequests.filter(r => r.patient === name && r.status === 'done');
-            document.getElementById('patientSpecificLabResults').innerHTML = results.map(r => 
-                `<div class="alert alert-info p-3 mb-2 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <b>${r.test}</b><br>
-                            <small class="text-muted">${r.time}</small>
-                        </div>
-                        <span class="badge bg-success">${r.price} ج</span>
-                    </div>
-                    <hr class="my-2">
-                    <div class="mt-2"><strong>النتيجة:</strong> ${r.result}</div>
-                </div>`
-            ).join('') || `<div class="alert alert-secondary">لا توجد نتائج فحوصات بعد</div>`;
-        }
-
-        function printRx() {
-            if (!selectedPatientId) {
-                alert("اختر مريضاً أولاً!");
-                return;
-            }
-            
-            const p = patients.find(pat => pat.id === selectedPatientId);
-            const complaint = document.getElementById('pComplaint').value;
-            const rxText = document.getElementById('finalRx').value;
-            const vitalSigns = p.vitalSigns || {};
-            
-            document.getElementById('printTitle').innerText = `روشتة طبية - ${p.name}`;
-            document.getElementById('printDate').innerText = new Date().toLocaleString('ar-EG');
-            
-            let content = `
-                <div class="mb-4">
-                    <h4>${p.name}</h4>
-                    <p>العمر: ${p.age} سنة | ${p.gender || ''} | ${p.phone || ''}</p>
-                    <p>التاريخ: ${new Date().toLocaleDateString('ar-EG')}</p>
-                    <hr>
-                    <h5>العلامات الحيوية:</h5>
-                    <p>الضغط: ${vitalSigns.bp || '--'} | النبض: ${vitalSigns.pulse || '--'} | الحرارة: ${vitalSigns.temp || '--'}°C</p>
-                    <hr>
-                    <h5>التشخيص:</h5>
-                    <p>${complaint || 'لا يوجد'}</p>
-                    <hr>
-                    <h5>خطة العلاج:</h5>
-                    <p>${rxText.replace(/\n/g, '<br>') || 'لا يوجد'}</p>
-                    ${currentNursingOrders.length > 0 ? `
-                        <hr>
-                        <h5>أوامر التمريض:</h5>
-                        <p>${currentNursingOrders.map(o => `${o.procedure} - ${o.frequency}`).join('<br>')}</p>
-                    ` : ''}
-                </div>
-            `;
-            
-            document.getElementById('printContent').innerHTML = content;
-            
-            setTimeout(() => {
-                window.print();
-            }, 500);
-        }
-
-        function addInventory() {
-            const name = document.getElementById('iName').value;
-            const cost = parseFloat(document.getElementById('iCost').value) || 0;
-            const qty = parseInt(document.getElementById('iQty').value) || 0;
-            
-            if(!name) {
-                alert("أدخل اسم الصنف!");
-                return;
-            }
-            
-            const existing = inventory.find(item => item.name === name);
-            if (existing) {
-                existing.qty += qty;
-                existing.cost = cost;
-                existing.sale = cost * 1.5;
-            } else {
-                inventory.push({
-                    id: Date.now(),
-                    name, 
-                    cost, 
-                    sale: cost * 1.5, 
-                    qty,
-                    minLevel: 10,
-                    maxLevel: 100,
-                    expiryDate: "2026-12-31",
-                    category: "أدوية عامة"
-                });
-            }
-            
-            saveLocalData();
-            
-            if (OPERATION_MODE === "server") {
-                addToPendingSync('updateInventory', inventory);
-            }
-            
-            document.getElementById('iName').value = '';
-            document.getElementById('iCost').value = '';
-            document.getElementById('iQty').value = '';
-            
-            refreshAll();
-            alert(`✅ تم ${existing ? 'تحديث' : 'إضافة'} ${name} في المخزون`);
-        }
-
-        function deleteInventoryItem(idx) {
-            if (confirm(`هل تريد حذف ${inventory[idx].name} من المخزون؟`)) {
-                inventory.splice(idx, 1);
-                saveLocalData();
-                refreshAll();
-            }
-        }
-
-        function addNewStaff() {
-            const u = document.getElementById('newStaffUser').value.trim();
-            const p = document.getElementById('newStaffPass').value;
-            const r = document.getElementById('newStaffRole').value;
-            
-            if(!u || !p) {
-                alert("أدخل اسم المستخدم وكلمة المرور!");
-                return;
-            }
-            
-            const exists = staffMembers.find(s => s.u === u);
-            if (exists) {
-                alert("اسم المستخدم موجود مسبقاً!");
-                return;
-            }
-            
-            staffMembers.push({u, p, r, name: u});
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            
-            document.getElementById('newStaffUser').value = '';
-            document.getElementById('newStaffPass').value = '';
-            
-            refreshAll();
-            alert(`✅ تم إضافة المستخدم ${u} بنجاح!`);
-        }
-
         function addNewTest() {
             const name = document.getElementById('newTestName').value;
             const price = parseFloat(document.getElementById('newTestPrice').value);
@@ -2566,15 +2596,20 @@
             document.getElementById('newTestPrice').value = '';
             
             refreshAll();
+            // تحديث قائمة الفحوصات في قسم العيادة
+            if (document.getElementById('labTestsChecklist')) {
+                loadLabTestsChecklist();
+            }
             alert(`✅ تم إضافة فحص ${name} بنجاح!`);
         }
 
         function refreshAll() {
-            refreshPatientList(patients.filter(p => p.status === 'waiting'));
+            // تحميل قائمة الفحوصات
+            if (document.getElementById('labTestsChecklist')) {
+                loadLabTestsChecklist();
+            }
             
-            document.getElementById('testSelect').innerHTML = labTests.map(t => 
-                `<option value="${t.name}">${t.name} (${t.price} ج)</option>`
-            ).join('');
+            refreshPatientList(patients.filter(p => p.status === 'waiting'));
             
             document.getElementById('labWorkTable').innerHTML = labRequests.map((r, i) => 
                 r.status === 'pending' ? `
@@ -2747,6 +2782,83 @@
             updateBadges();
             
             alert(`✅ تم صرف الدواء للمريض ${order.patient}`);
+        }
+
+        function addInventory() {
+            const name = document.getElementById('iName').value;
+            const cost = parseFloat(document.getElementById('iCost').value) || 0;
+            const qty = parseInt(document.getElementById('iQty').value) || 0;
+            
+            if(!name) {
+                alert("أدخل اسم الصنف!");
+                return;
+            }
+            
+            const existing = inventory.find(item => item.name === name);
+            if (existing) {
+                existing.qty += qty;
+                existing.cost = cost;
+                existing.sale = cost * 1.5;
+            } else {
+                inventory.push({
+                    id: Date.now(),
+                    name, 
+                    cost, 
+                    sale: cost * 1.5, 
+                    qty,
+                    minLevel: 10,
+                    maxLevel: 100,
+                    expiryDate: "2026-12-31",
+                    category: "أدوية عامة"
+                });
+            }
+            
+            saveLocalData();
+            
+            if (OPERATION_MODE === "server") {
+                addToPendingSync('updateInventory', inventory);
+            }
+            
+            document.getElementById('iName').value = '';
+            document.getElementById('iCost').value = '';
+            document.getElementById('iQty').value = '';
+            
+            refreshAll();
+            alert(`✅ تم ${existing ? 'تحديث' : 'إضافة'} ${name} في المخزون`);
+        }
+
+        function deleteInventoryItem(idx) {
+            if (confirm(`هل تريد حذف ${inventory[idx].name} من المخزون؟`)) {
+                inventory.splice(idx, 1);
+                saveLocalData();
+                refreshAll();
+            }
+        }
+
+        function addNewStaff() {
+            const u = document.getElementById('newStaffUser').value.trim();
+            const p = document.getElementById('newStaffPass').value;
+            const r = document.getElementById('newStaffRole').value;
+            
+            if(!u || !p) {
+                alert("أدخل اسم المستخدم وكلمة المرور!");
+                return;
+            }
+            
+            const exists = staffMembers.find(s => s.u === u);
+            if (exists) {
+                alert("اسم المستخدم موجود مسبقاً!");
+                return;
+            }
+            
+            staffMembers.push({u, p, r, name: u});
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            document.getElementById('newStaffUser').value = '';
+            document.getElementById('newStaffPass').value = '';
+            
+            refreshAll();
+            alert(`✅ تم إضافة المستخدم ${u} بنجاح!`);
         }
     </script>
 </body>
