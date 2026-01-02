@@ -4,16 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2c7a7b">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/822/822118.png">
+    <title>مجمع الشفاء - النظام المتكامل 2026</title>
     
-    <title>مجمع الشفاء - النسخة الذكية الشاملة 2025</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22%D9%85%D8%AC%D9%85%D8%B9%20%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1%22,%22short_name%22:%22%D8%A7%D9%84%D8%B4%D9%81%D8%A1%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f8fafc%22,%22theme_color%22:%22%232c7a7b%22,%22description%22:%22%D9%86%D8%B8%D8%A7%D9%85%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%B4%D9%81%D9%8A%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%B9%D9%8A%D8%A7%D8%AF%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/822/822118.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%22},{%22src%22:%22https://cdn-icons-png.flaticon.com/512/822/822118.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22maskable%22}]}">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
         :root { 
             --primary-color: #2c7a7b; 
@@ -22,2177 +17,261 @@
             --accent-red: #dc3545; 
             --accent-green: #198754; 
             --accent-gold: #d4af37;
-            --accent-warning: #ffc107;
-            --accent-info: #17a2b8;
-            --accent-purple: #6f42c1;
+            --accent-purple: #6f42c1; /* لون جديد لقسم التمريض */
         }
-        body { background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        .navbar { background-color: var(--primary-color) !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-2px); }
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background: linear-gradient(135deg, var(--primary-color), #1f5a5a) !important; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+        .card { border-radius: 18px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .hidden-section { display: none !important; }
-        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 10px 20px !important; position: relative; }
-        .nav-link.active { background-color: var(--accent-blue) !important; color: white !important; border-radius: 10px; }
-        .badge-notify { position: absolute; top: -5px; right: -5px; background: var(--accent-red); color: white; border-radius: 50%; padding: 3px 7px; font-size: 0.7rem; }
-        .stat-card { border-radius: 15px; padding: 20px; color: white; text-align: center; }
-        .patient-btn { text-align: right; margin-bottom: 8px; border-right: 5px solid var(--primary-color); width: 100%; transition: 0.3s; padding: 12px 15px; background: white; border: 1px solid #dee2e6; border-radius: 10px; }
-        .patient-btn.ready { border-right-color: #28a745; background-color: #f0fff4; }
-        .patient-btn:hover { background-color: #f8f9fa; }
-        .lab-result-item { background: #e9ecef; padding: 10px; border-radius: 8px; margin-bottom: 5px; border-left: 4px solid var(--accent-blue); }
-        .section-pane { animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media print { .no-print { display: none !important; } body * { visibility: hidden; } #printArea, #printArea * { visibility: visible; } #printArea { position: absolute; left: 0; top: 0; width: 100%; direction: rtl; padding: 20px; } }
-        .search-box { position: relative; }
-        .search-box input { padding-right: 40px; }
-        .rx-item { background: #f8f9fa; padding: 8px 12px; margin: 5px 0; border-radius: 8px; border-left: 4px solid var(--accent-green); }
-        .status-online { color: #28a745; font-weight: bold; }
-        .status-offline { color: #dc3545; font-weight: bold; }
-        .sync-status { position: fixed; bottom: 10px; left: 10px; z-index: 1000; }
-        .sync-btn { position: fixed; bottom: 10px; right: 10px; z-index: 1000; }
-        .medical-record { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .nursing-schedule { border-left: 5px solid var(--accent-purple); }
-        .expiry-warning { background: #fff3cd; border-left: 5px solid #ffc107; }
-        .stock-critical { background: #f8d7da; border-left: 5px solid #dc3545; }
-        .library-card { height: 100%; transition: all 0.3s; }
-        .library-card:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-        .form-check { padding-right: 1.5em; margin-bottom: 0.5rem; }
-        .form-check-input { margin-right: -1.5em; }
-        #labTestsChecklist { scrollbar-width: thin; scrollbar-color: var(--primary-color) #f1f1f1; }
-        #labTestsChecklist::-webkit-scrollbar { width: 8px; }
-        #labTestsChecklist::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        #labTestsChecklist::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
-        
-        /* PWA Styles */
-        .install-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 50px; padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; }
-        .install-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-        .pwa-status { position: fixed; top: 10px; left: 10px; z-index: 9999; }
-        .pwa-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 20px; z-index: 10000; max-width: 400px; direction: rtl; }
-        .offline-banner { position: fixed; top: 0; left: 0; right: 0; background: #dc3545; color: white; text-align: center; padding: 10px; z-index: 9998; }
-        .online-banner { position: fixed; top: 0; left: 0; right: 0; background: #28a745; color: white; text-align: center; padding: 10px; z-index: 9998; }
-        #appVersion { font-size: 0.8em; color: #6c757d; }
-        
-        /* Advanced Permissions Styles */
-        .permission-badge { font-size: 0.7em; padding: 2px 6px; margin-right: 3px; }
-        .permission-row { border-bottom: 1px solid #eee; padding: 8px 0; }
-        .permission-header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 10px; border-radius: 8px; }
-        .permission-toggle { transform: scale(0.9); }
-        .user-status-online { color: #28a745; animation: pulse 2s infinite; }
-        .user-status-offline { color: #dc3545; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-        .role-badge { font-size: 0.75em; padding: 3px 8px; }
-        .permission-modal { max-height: 80vh; overflow-y: auto; }
-        .password-strength { height: 5px; border-radius: 2px; margin-top: 5px; transition: all 0.3s; }
-        
-        /* New Styles for Workflow */
-        .workflow-step { border-left: 4px solid; padding: 10px; margin: 5px 0; border-radius: 8px; }
-        .step-reception { border-color: #0d6efd; background: #e7f1ff; }
-        .step-doctor { border-color: #198754; background: #e8f5e8; }
-        .step-lab { border-color: #dc3545; background: #fde8e8; }
-        .step-pharmacy { border-color: #ffc107; background: #fff8e1; }
-        .step-nursing { border-color: #6f42c1; background: #f0e8ff; }
-        .step-completed { background: #d4edda !important; }
-        .patient-flow { display: flex; justify-content: space-between; margin: 10px 0; }
-        .flow-arrow { color: #6c757d; margin: 0 10px; }
-        
-        /* Admin Dashboard Styles */
-        .admin-stat-card { border-radius: 12px; padding: 15px; color: white; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
-        .admin-chart-container { height: 300px; position: relative; }
-        .quick-action-btn { width: 100%; margin: 5px 0; }
-        .system-health { font-size: 0.9em; }
-        .health-good { color: #28a745; }
-        .health-warning { color: #ffc107; }
-        .health-critical { color: #dc3545; }
-        .transaction-item { border-left: 4px solid; padding: 8px; margin: 5px 0; border-radius: 6px; }
-        .transaction-income { border-color: #28a745; background: #d4edda; }
-        .transaction-expense { border-color: #dc3545; background: #f8d7da; }
-        .staff-avatar { width: 40px; height: 40px; border-radius: 50%; background: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 12px 15px !important; }
+        .nav-link.active { background-color: var(--primary-color) !important; color: white !important; border-radius: 12px; }
+        .patient-card { border-right: 6px solid var(--primary-color); cursor: pointer; transition: 0.3s; background: white; }
+        .patient-card:hover { background-color: #e6fffa; }
+        .stat-card { border-radius: 18px; padding: 25px; color: white; text-align: center; }
+        .btn-action { border-radius: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
-    <!-- منطقة الطباعة -->
-    <div id="printArea" class="hidden-section">
-        <div class="text-center border-bottom pb-3 mb-3">
-            <h2 style="color: var(--primary-color);">🏥 مجمع الشفاء الطبي</h2>
-            <p>السودان - جلقني</p>
-            <h5 id="printTitle">روشتة طبية / فاتورة</h5>
-            <small id="printDate"></small>
-        </div>
-        <div id="printContent" class="fs-5"></div>
-        <div class="mt-5 pt-3 border-top text-center"><p>نتمنى لكم عاجل الشفاء</p></div>
-    </div>
-
-    <!-- شاشة تسجيل الدخول -->
-    <div id="loginOverlay" class="no-print" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0fdf4; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-        <div class="card p-4 shadow-lg" style="width: 380px; border-top: 8px solid var(--primary-color);">
+    <div id="loginOverlay" class="no-print" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(44, 122, 123, 0.9), rgba(44, 122, 123, 0.8)); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 380px; border-top: 8px solid var(--accent-gold);">
             <div class="text-center mb-4">
-                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60">
-                <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي</h3>
-                <p class="text-muted small">النظام الذكي الشامل - إدارة متكاملة</p>
-                <div class="mt-2">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="loginMode" id="modeLocal" value="local" checked>
-                        <label class="form-check-label" for="modeLocal">💾 عمل محلي</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="loginMode" id="modeServer" value="server">
-                        <label class="form-check-label" for="modeServer">☁️ قاعدة بيانات</label>
-                    </div>
-                </div>
+                <h3 class="fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي</h3>
+                <p class="text-muted small">تسجيل دخول الطاقم الطبي</p>
             </div>
-            <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم" value="admin">
-            <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور" value="123">
-            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">🚀 دخول للنظام</button>
-            <div class="mt-3 text-center small text-muted" id="loginStatus">جاهز للتشغيل</div>
-            
-            <!-- PWA Install Button -->
-            <button id="installButton" class="install-btn hidden-section w-100 mt-3">
-                📲 تثبيت التطبيق على الجهاز
-            </button>
-            
-            <div id="appVersion" class="mt-2">الإصدار 3.0.0 - نظام الإدارة المتكامل</div>
+            <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
+            <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
+            <button class="btn btn-primary w-100 fw-bold btn-action" onclick="handleLogin()">🚀 دخول للنظام</button>
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
-    <div id="mainContent" class="hidden-section">
-        <!-- PWA Status -->
-        <div class="pwa-status no-print">
-            <div id="pwaStatus" class="badge bg-info">PWA: نشط</div>
-        </div>
-        
-        <!-- شريط التنقل -->
-        <nav class="navbar navbar-dark mb-4 no-print">
-            <div class="container d-flex justify-content-between text-white align-items-center">
-                <span class="navbar-brand fw-bold">🏥 مجمع الشفاء - النظام الذكي</span>
-                <div>
-                    <span id="currentUserDisplay" class="badge bg-light text-dark mx-2"></span>
-                    <span id="clockDisplay" class="badge bg-info text-dark"></span>
-                    <span id="connectionStatus" class="badge bg-success mx-2">متصل محلياً</span>
-                    <button class="btn btn-sm btn-outline-light ms-2" onclick="openUserMenu()">👤</button>
+    <div id="mainContent" class="hidden-section animate__animated animate__fadeIn">
+        <nav class="navbar navbar-dark mb-4 no-print py-3">
+            <div class="container d-flex justify-content-between">
+                <span class="navbar-brand fw-bold fs-4">🏥 مجمع الشفاء الذكي</span>
+                <div class="d-flex align-items-center">
+                    <span id="currentUserDisplay" class="badge bg-white text-dark p-2 mx-2"></span>
+                    <button class="btn btn-sm btn-outline-light rounded-pill" onclick="logout()">خروج</button>
                 </div>
-                <button class="btn btn-sm btn-outline-light" onclick="logout()">خروج</button>
             </div>
         </nav>
 
-        <!-- تبويبات التنقل -->
         <div class="container">
-            <ul class="nav nav-pills mb-4 shadow-sm p-2 bg-white rounded justify-content-center no-print" id="mainTabs">
-                <li class="nav-item" id="tab-reception-li"><button class="nav-link" id="btn-reception" onclick="switchSection('reception')">📋 الاستقبال</button></li>
-                <li class="nav-item" id="tab-doctor-li"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">👨‍⚕️ العيادة <span id="doctorBadge" class="badge-notify hidden-section">0</span></button></li>
-                <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">🧪 المعمل <span id="labBadge" class="badge-notify hidden-section">0</span></button></li>
-                <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">💊 الصيدلية <span id="pharBadge" class="badge-notify hidden-section">0</span></button></li>
-                <li class="nav-item" id="tab-nursing-li"><button class="nav-link" id="btn-nursing" onclick="switchSection('nursing')">💉 التمريض <span id="nurseBadge" class="badge-notify hidden-section">0</span></button></li>
-                <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">👑 المدير</button></li>
+            <ul class="nav nav-pills mb-4 shadow-sm p-2 bg-white rounded-4 justify-content-center no-print" id="mainTabs">
+                <li class="nav-item"><button class="nav-link" id="btn-reception" onclick="switchSection('reception')">📋 الاستقبال</button></li>
+                <li class="nav-item"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">👨‍⚕️ الطبيب <span id="doctorBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item"><button class="nav-link" id="btn-nurse" onclick="switchSection('nurse')">💉 التمريض <span id="nurseBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">🧪 المعمل <span id="labBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">💊 الصيدلية <span id="pharBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">👑 المدير</button></li>
             </ul>
 
-            <!-- أزرار المزامنة -->
-            <div class="sync-status no-print">
-                <div id="syncStatusText" class="badge bg-secondary">جاهز</div>
-            </div>
-            <div class="sync-btn no-print">
-                <button class="btn btn-sm btn-outline-primary" onclick="manualSync()" title="مزامنة يدوية">
-                    🔄 مزامنة
-                </button>
-            </div>
-
-            <!-- محتوى الأقسام -->
-            <div class="tab-content">
-                <!-- قسم الاستقبال (محفوظ) -->
-                <!-- قسم العيادة (محفوظ) -->
-                <!-- قسم المعمل (محفوظ) -->
-                <!-- قسم الصيدلية (محفوظ) -->
-                <!-- قسم التمريض (محفوظ) -->
-
-                <!-- قسم المدير الجديد الكامل -->
-                <div id="admin-sec" class="section-pane hidden-section">
-                    <div class="row g-3 mb-4 text-white">
-                        <div class="col-md-3">
-                            <div class="stat-card bg-primary shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">🏦 عيادة اليوم</h6>
-                                        <h2 id="finClinic">0</h2>
-                                        <small>جنيه</small>
-                                    </div>
-                                    <div class="fs-1">💰</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="stat-card bg-danger shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">🧪 معمل اليوم</h6>
-                                        <h2 id="finLab">0</h2>
-                                        <small>جنيه</small>
-                                    </div>
-                                    <div class="fs-1">🔬</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="stat-card bg-success shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">💊 صيدلية اليوم</h6>
-                                        <h2 id="finPhar">0</h2>
-                                        <small>جنيه</small>
-                                    </div>
-                                    <div class="fs-1">💊</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="stat-card bg-dark shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">💰 إجمالي اليوم</h6>
-                                        <h2 id="totalProfit">0</h2>
-                                        <small>جنيه</small>
-                                    </div>
-                                    <div class="fs-1">📊</div>
-                                </div>
-                            </div>
+            <div id="reception-sec" class="section-pane hidden-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card p-4 border-top border-primary border-4">
+                            <h5 class="fw-bold mb-3">تسجيل مريض</h5>
+                            <input type="text" id="pName" class="form-control mb-2" placeholder="اسم المريض">
+                            <input type="number" id="pAge" class="form-control mb-2" placeholder="العمر">
+                            <button class="btn btn-primary w-100 btn-action" onclick="registerPatient()">✅ إرسال للكشف</button>
                         </div>
                     </div>
+                    <div class="col-md-8">
+                        <div class="card p-4">
+                            <h5 class="fw-bold mb-3">الانتظار</h5>
+                            <div id="receptionList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="row">
-                        <!-- لوحة التحكم الرئيسية -->
-                        <div class="col-md-8">
-                            <div class="card p-4 border-top border-3 border-info shadow">
-                                <h5 class="fw-bold mb-3">📊 لوحة التحكم الشاملة</h5>
-                                
-                                <ul class="nav nav-tabs mb-3">
-                                    <li class="nav-item"><button class="nav-link active" onclick="showAdminTab('dashboard')">اللوحة الرئيسية</button></li>
-                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('reports')">التقارير</button></li>
-                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('patients')">المرضى</button></li>
-                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('staff')">👥 الموظفين</button></li>
-                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('financial')">💰 المالية</button></li>
-                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('settings')">⚙️ الإعدادات</button></li>
-                                </ul>
-                                
-                                <!-- لوحة التحكم الرئيسية -->
-                                <div id="admin-dashboard">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card p-3 bg-light">
-                                                <h6>📈 نشاط اليوم</h6>
-                                                <div class="mt-3">
-                                                    <div class="d-flex justify-content-between mb-2">
-                                                        <span>المرضى الجدد</span>
-                                                        <strong id="todayNewPatients">0</strong>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between mb-2">
-                                                        <span>الفحوصات المكتملة</span>
-                                                        <strong id="todayCompletedTests">0</strong>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between mb-2">
-                                                        <span>الروشتات المصرّفة</span>
-                                                        <strong id="todayDispensedRx">0</strong>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span>مهام التمريض</span>
-                                                        <strong id="todayNursingTasks">0</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card p-3 bg-light">
-                                                <h6>👥 الموظفين النشطين</h6>
-                                                <div id="activeStaffList" class="mt-2" style="max-height: 150px; overflow-y: auto;"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="card p-3 bg-light">
-                                                <h6>📋 التحذيرات والإشعارات</h6>
-                                                <div id="adminAlerts" style="max-height: 200px; overflow-y: auto;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- التقارير -->
-                                <div id="admin-reports" class="hidden-section">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card p-3 bg-light">
-                                                <h6>📈 الإيرادات اليومية</h6>
-                                                <div class="text-center py-4">
-                                                    <canvas id="dailyRevenueChart" height="150"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card p-3 bg-light">
-                                                <h6>👥 توزيع المرضى</h6>
-                                                <div class="text-center py-4">
-                                                    <canvas id="patientsChart" height="150"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card p-3 bg-light">
-                                                <h6>📊 تقرير الأداء</h6>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <p class="mb-1">متوسط وقت الكشف: <strong id="avgConsultationTime">0</strong> د</p>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <p class="mb-1">عدد المرضى/طبيب: <strong id="patientsPerDoctor">0</strong></p>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <p class="mb-1">معدل الإشغال: <strong id="occupancyRate">0%</strong></p>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <p class="mb-1">رضا المرضى: <strong id="patientSatisfaction">0%</strong></p>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <button class="btn btn-sm btn-outline-primary" onclick="generatePerformanceReport()">📊 توليد تقرير أداء</button>
-                                                    <button class="btn btn-sm btn-outline-success" onclick="exportReportToExcel()">📥 تصدير لإكسل</button>
-                                                    <button class="btn btn-sm btn-outline-info" onclick="printDailyReport()">🖨️ طباعة التقرير</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- إدارة المرضى -->
-                                <div id="admin-patients" class="hidden-section">
-                                    <h6 class="fw-bold">👥 إدارة السجلات الطبية</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" placeholder="بحث في سجلات المرضى..." id="adminPatientSearch" onkeyup="searchAdminPatients(this.value)">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button class="btn btn-info w-100" onclick="exportMedicalRecords()">📥 تصدير السجلات</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button class="btn btn-danger w-100" onclick="clearAllPatientData()">🗑️ مسح جميع البيانات</button>
-                                        </div>
-                                    </div>
-                                    <div id="adminPatientsTable" style="max-height: 300px; overflow-y: auto;"></div>
-                                </div>
-                                
-                                <!-- إدارة الموظفين -->
-                                <div id="admin-staff" class="hidden-section">
-                                    <h6 class="fw-bold">👥 إدارة الموظفين والأداء</h6>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-4">
-                                            <input type="text" id="newStaffUser" class="form-control form-control-sm" placeholder="اسم المستخدم">
-                                        </div>
-                                        <div class="col-4">
-                                            <input type="text" id="newStaffPass" class="form-control form-control-sm" placeholder="كلمة المرور">
-                                        </div>
-                                        <div class="col-4">
-                                            <select id="newStaffRole" class="form-select form-select-sm">
-                                                <option value="admin">مدير نظام</option>
-                                                <option value="super_admin">مدير عام</option>
-                                                <option value="head_doctor">رئيس أطباء</option>
-                                                <option value="doctor">طبيب</option>
-                                                <option value="lab_manager">مدير معمل</option>
-                                                <option value="lab_tech">فني معمل</option>
-                                                <option value="pharmacy_manager">مدير صيدلية</option>
-                                                <option value="pharmacist">صيدلي</option>
-                                                <option value="head_nurse">رئيس تمريض</option>
-                                                <option value="nurse">ممرض</option>
-                                                <option value="reception_supervisor">مشرف استقبال</option>
-                                                <option value="reception">موظف استقبال</option>
-                                                <option value="accountant">محاسب</option>
-                                                <option value="auditor">مراجع</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12">
-                                            <button class="btn btn-dark btn-sm w-100" onclick="addNewStaff()">➕ إضافة موظف جديد</button>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-6">
-                                            <button class="btn btn-outline-info btn-sm w-100" onclick="resetUserPassword()">🔄 إعادة تعيين كلمة المرور</button>
-                                        </div>
-                                        <div class="col-6">
-                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="exportUserActivity()">📊 تصدير نشاط المستخدمين</button>
-                                        </div>
-                                    </div>
-                                    <table class="table table-bordered text-center table-sm table-hover">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>الاسم</th>
-                                                <th>الصلاحية</th>
-                                                <th>النشاط</th>
-                                                <th>الحالة</th>
-                                                <th>إجراء</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="staffTableBody"></tbody>
-                                    </table>
-                                </div>
-                                
-                                <!-- الإدارة المالية -->
-                                <div id="admin-financial" class="hidden-section">
-                                    <h6 class="fw-bold">💰 الإدارة المالية والإيرادات</h6>
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <div class="card bg-light p-3">
-                                                <h6>💵 الإيرادات اليومية</h6>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>العيادة:</span>
-                                                    <strong id="dailyClinicRevenue">0</strong>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>المعمل:</span>
-                                                    <strong id="dailyLabRevenue">0</strong>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>الصيدلية:</span>
-                                                    <strong id="dailyPharmacyRevenue">0</strong>
-                                                </div>
-                                                <hr>
-                                                <div class="d-flex justify-content-between text-success">
-                                                    <span>الإجمالي:</span>
-                                                    <strong id="dailyTotalRevenue">0</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card bg-light p-3">
-                                                <h6>📅 الإيرادات الشهرية</h6>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>الشهر الحالي:</span>
-                                                    <strong id="monthlyRevenue">0</strong>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>الشهر الماضي:</span>
-                                                    <strong id="lastMonthRevenue">0</strong>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span>نسبة النمو:</span>
-                                                    <strong id="revenueGrowth">0%</strong>
-                                                </div>
-                                                <hr>
-                                                <button class="btn btn-sm btn-outline-primary w-100" onclick="generateFinancialReport()">📄 تقرير مالي مفصل</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card bg-light p-3">
-                                        <h6>📊 حركة المعاملات المالية اليوم</h6>
-                                        <div id="financialTransactions" style="max-height: 200px; overflow-y: auto;"></div>
-                                    </div>
-                                </div>
-                                
-                                <!-- إعدادات النظام -->
-                                <div id="admin-settings" class="hidden-section">
-                                    <h6 class="fw-bold">⚙️ إعدادات النظام المتقدمة</h6>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card bg-light p-3">
-                                                <h6>🔔 إعدادات التنبيهات</h6>
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="notificationsEnabled" checked>
-                                                    <label class="form-check-label" for="notificationsEnabled">تمكين التنبيهات</label>
-                                                </div>
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="soundEnabled" checked>
-                                                    <label class="form-check-label" for="soundEnabled">تمكين الصوت</label>
-                                                </div>
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="autoBackupEnabled">
-                                                    <label class="form-check-label" for="autoBackupEnabled">نسخ احتياطي تلقائي</label>
-                                                </div>
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="autoSyncEnabled">
-                                                    <label class="form-check-label" for="autoSyncEnabled">مزامنة تلقائية</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card bg-light p-3">
-                                                <h6>🔄 إعدادات المزامنة</h6>
-                                                <div class="mb-2">
-                                                    <label class="form-label">فترة المزامنة</label>
-                                                    <select class="form-select" id="syncInterval">
-                                                        <option value="5">كل 5 دقائق</option>
-                                                        <option value="15" selected>كل 15 دقيقة</option>
-                                                        <option value="30">كل 30 دقيقة</option>
-                                                        <option value="60">كل ساعة</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <label class="form-label">حد النسخ الاحتياطي</label>
-                                                    <select class="form-select" id="backupLimit">
-                                                        <option value="7">7 أيام</option>
-                                                        <option value="15" selected>15 يوم</option>
-                                                        <option value="30">30 يوم</option>
-                                                        <option value="90">90 يوم</option>
-                                                    </select>
-                                                </div>
-                                                <button class="btn btn-sm btn-outline-primary w-100" onclick="saveSystemSettings()">💾 حفظ الإعدادات</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="card bg-light p-3">
-                                                <h6>📋 معلومات النظام</h6>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <p><strong>الإصدار:</strong> 3.0.0</p>
-                                                        <p><strong>آخر تحديث:</strong> <span id="lastUpdate">2025-01-01</span></p>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <p><strong>مساحة التخزين:</strong> <span id="storageUsage">0 KB</span></p>
-                                                        <p><strong>عدد النسخ الاحتياطية:</strong> <span id="backupCount">0</span></p>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <p><strong>حالة النظام:</strong> <span id="systemHealth" class="health-good">جيدة</span></p>
-                                                        <p><strong>آخر فحص:</strong> <span id="lastSystemCheck">الآن</span></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div id="doctor-sec" class="section-pane hidden-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card p-3">
+                            <h6 class="fw-bold">بانتظار الطبيب</h6>
+                            <div id="doctorQueue"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div id="doctorWorkArea" class="card p-4 hidden-section border-top border-success border-5">
+                            <h4 id="currentPatientName" class="text-success fw-bold"></h4>
+                            <hr>
+                            <textarea id="diagnosis" class="form-control mb-3" rows="3" placeholder="التشخيص..."></textarea>
                             
-                            <!-- أدوات التحكم السريع -->
-                            <div class="card mt-3 p-3 bg-light border-danger">
-                                <h6 class="fw-bold text-danger">⚠️ أدوات تحكم سريعة</h6>
-                                <div class="row g-2">
-                                    <div class="col-md-3">
-                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('pats')">
-                                            <small>🔄 تصفير الاستقبال</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('lab')">
-                                            <small>🔄 تصفير المعمل</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('rx')">
-                                            <small>🔄 تصفير الصيدلية</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('nursing')">
-                                            <small>🔄 تصفير التمريض</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-danger btn-sm w-100" onclick="resetAllDay()">
-                                            <small>📊 إغلاق اليوم</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-success btn-sm w-100" onclick="generateDailyReport()">
-                                            <small>📄 تقرير يومي</small>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-info btn-sm w-100" onclick="backupAllData()">
-                                            <small>💾 نسخ احتياطي</small>
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label class="fw-bold text-purple small">💉 أوامر التمريض (حقن/دريبات):</label>
+                                <input type="text" id="nurseOrders" class="form-control border-purple" placeholder="مثال: درب ملحي + حقنة ديكسا">
                             </div>
-                        </div>
-                        
-                        <!-- الشريط الجانبي -->
-                        <div class="col-md-4">
-                            <!-- المكتبة الطبية -->
-                            <div class="card p-4 border-top border-3 border-warning shadow library-card">
-                                <h5 class="fw-bold text-warning mb-3">📚 المكتبة الطبية</h5>
-                                <div class="input-group mb-3">
-                                    <input type="text" id="searchMedicalLibrary" class="form-control" placeholder="بحث عن مرض، دواء، إجراء...">
-                                    <button class="btn btn-warning" onclick="searchMedicalLibrary()">🔍</button>
-                                </div>
-                                <div class="mb-3">
-                                    <select class="form-select" onchange="filterLibrary(this.value)">
-                                        <option value="all">جميع الأقسام</option>
-                                        <option value="diseases">الأمراض</option>
-                                        <option value="drugs">الأدوية</option>
-                                        <option value="procedures">الإجراءات</option>
-                                        <option value="tests">الفحوصات</option>
-                                    </select>
-                                </div>
-                                <div id="medicalLibraryContent" style="max-height: 300px; overflow-y: auto;"></div>
-                                <button class="btn btn-outline-warning w-100 mt-3" onclick="addToLibrary()">➕ إضافة مادة علمية</button>
+
+                            <div class="row g-2">
+                                <div class="col-md-4"><button class="btn btn-outline-purple w-100" onclick="orderNurse()">💉 إرسال للتمريض</button></div>
+                                <div class="col-md-4"><button class="btn btn-outline-danger w-100" onclick="orderLab()">🧪 طلب معمل</button></div>
+                                <div class="col-md-4"><button class="btn btn-outline-warning w-100" onclick="orderPharmacy()">💊 طلب دواء</button></div>
                             </div>
-                            
-                            <!-- إحصائيات سريعة -->
-                            <div class="card p-3 mt-3 border-info">
-                                <h6 class="fw-bold text-info">📊 إحصائيات سريعة</h6>
-                                <div class="row text-center">
-                                    <div class="col-6 mb-2">
-                                        <div class="bg-light p-2 rounded">
-                                            <h5 id="totalPatientsCount">0</h5>
-                                            <small>إجمالي المرضى</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-2">
-                                        <div class="bg-light p-2 rounded">
-                                            <h5 id="totalStaffCount">0</h5>
-                                            <small>الموظفين</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="bg-light p-2 rounded">
-                                            <h5 id="totalInventoryItems">0</h5>
-                                            <small>أصناف المخزون</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="bg-light p-2 rounded">
-                                            <h5 id="totalRevenueAll">0</h5>
-                                            <small>إجمالي الإيرادات</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- آخر الأنشطة -->
-                            <div class="card p-3 mt-3 border-success">
-                                <h6 class="fw-bold text-success">📝 آخر الأنشطة</h6>
-                                <div id="recentActivities" style="max-height: 200px; overflow-y: auto;"></div>
-                            </div>
+                            <button class="btn btn-success w-100 mt-3 btn-action" onclick="completeVisit()">🏁 إنهاء الزيارة</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Modals -->
-    <div id="changePasswordModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">🔐 تغيير كلمة المرور</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">كلمة المرور الحالية</label>
-                        <input type="password" id="currentPassword" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">كلمة المرور الجديدة</label>
-                        <input type="password" id="newPassword" class="form-control" onkeyup="checkPasswordStrength()">
-                        <div class="password-strength" id="passwordStrength"></div>
-                        <small class="text-muted">يجب أن تحتوي على 8 أحرف على الأقل، حروف كبيرة وصغيرة، وأرقام</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
-                        <input type="password" id="confirmPassword" class="form-control">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="confirmPasswordChange()">تغيير</button>
+            <div id="nurse-sec" class="section-pane hidden-section">
+                <div class="card p-4 border-top border-purple border-5" style="border-top-color: var(--accent-purple) !important;">
+                    <h5 class="fw-bold mb-4">💉 قسم التمريض - تنفيذ الجرعات والعلاجات</h5>
+                    <div id="nurseList" class="row g-3"></div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="userMenuModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title">👤 إدارة الحساب</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <span class="fs-3">👤</span>
-                        </div>
-                        <h5 class="mt-2" id="userNameDisplay"></h5>
-                        <span class="badge bg-primary" id="userRoleDisplay"></span>
-                    </div>
-                    <div class="list-group">
-                        <button class="list-group-item list-group-item-action" onclick="changePasswordModal()">
-                            🔐 تغيير كلمة المرور
-                        </button>
-                        <button class="list-group-item list-group-item-action" onclick="viewMyActivity()">
-                            📋 سجل نشاطي
-                        </button>
-                        <button class="list-group-item list-group-item-action" onclick="showMyPermissions()">
-                            ⚙️ صلاحياتي
-                        </button>
-                        <button class="list-group-item list-group-item-action" onclick="toggleDarkMode()">
-                            🌙 الوضع الليلي
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <small class="text-muted" id="lastLoginDisplay"></small>
-                </div>
+            <div id="lab-sec" class="section-pane hidden-section">
+                <div class="card p-4 border-top border-danger border-5"><h5>🧪 طلبات المعمل</h5><div id="labList"></div></div>
             </div>
-        </div>
-    </div>
-
-    <div id="permissionsModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title">⚙️ تفاصيل الصلاحيات</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body permission-modal">
-                    <div id="permissionsDetails"></div>
-                </div>
+            <div id="pharmacy-sec" class="section-pane hidden-section">
+                <div class="card p-4 border-top border-warning border-5"><h5>💊 الصيدلية</h5><div id="pharmacyList"></div></div>
             </div>
+            <div id="admin-sec" class="section-pane hidden-section">
+                <div class="row g-3 mb-4" id="adminStats"></div>
+                <div class="card p-4"><h5>📊 سجل العمليات</h5><table class="table"><tbody id="adminLogs"></tbody></table></div>
+            </div>
+
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // ============================================
-        // نظام الصلاحيات المتقدم
-        // ============================================
-
-        // تعريف الأدوار والصلاحيات
-        const ROLES = {
-            SUPER_ADMIN: 'super_admin',
-            ADMIN: 'admin',
-            HEAD_DOCTOR: 'head_doctor',
-            DOCTOR: 'doctor',
-            LAB_MANAGER: 'lab_manager',
-            LAB_TECH: 'lab_tech',
-            PHARMACY_MANAGER: 'pharmacy_manager',
-            PHARMACIST: 'pharmacist',
-            HEAD_NURSE: 'head_nurse',
-            NURSE: 'nurse',
-            RECEPTION_SUPERVISOR: 'reception_supervisor',
-            RECEPTION: 'reception',
-            ACCOUNTANT: 'accountant',
-            AUDITOR: 'auditor'
-        };
-
-        // ============================================
-        // إعدادات النظام المتقدمة
-        // ============================================
-
-        const SERVER_URL = "http://alshifaclinic.somee.com/api.aspx";
-        let OPERATION_MODE = "local";
-        let IS_ONLINE = navigator.onLine;
-        let PENDING_SYNC = [];
-        let SYNC_INTERVAL = null;
-        let SESSION_TIMEOUT = null;
-
-        // قواعد البيانات المحلية
         let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
-        let labRequests = JSON.parse(localStorage.getItem('shifa_lab')) || [];
-        let pharmOrders = JSON.parse(localStorage.getItem('shifa_rx')) || [];
-        let nursingOrders = JSON.parse(localStorage.getItem('shifa_nursing')) || [];
-        let nursingTasks = JSON.parse(localStorage.getItem('shifa_nursing_tasks')) || [];
-        let inventory = JSON.parse(localStorage.getItem('shifa_inv')) || [];
-        let financials = JSON.parse(localStorage.getItem('shifa_fin')) || { clinic: 0, lab: 0, pharSales: 0, pharProfit: 0, total: 0 };
-        let staffMembers = JSON.parse(localStorage.getItem('shifa_staff')) || [];
-        let labTests = JSON.parse(localStorage.getItem('shifa_tests')) || [];
-        let medicalLibrary = JSON.parse(localStorage.getItem('shifa_library')) || [];
-        let nurses = JSON.parse(localStorage.getItem('shifa_nurses')) || [];
-        let systemLogs = JSON.parse(localStorage.getItem('shifa_logs')) || [];
-        let backups = JSON.parse(localStorage.getItem('shifa_backups')) || [];
+        let currentUser = null;
+        let activePatient = null;
 
-        // المستخدم الحالي
-        let currentUser = localStorage.getItem('shifa_user') ? JSON.parse(localStorage.getItem('shifa_user')) : null;
-        let selectedPatientId = null;
-        let currentRxItems = [];
-        let currentNursingOrders = [];
-        let currentLabTest = null;
-
-        // ============================================
-        // دوال نظام المدير المتقدمة
-        // ============================================
-
-        // تحديث الإحصائيات المالية
-        function updateFinancialStats() {
-            const today = new Date().toDateString();
-            
-            // حساب إيرادات اليوم
-            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
-            const todayLab = labRequests.filter(l => new Date(l.requestedAt).toDateString() === today && l.status === 'completed');
-            const todayRx = pharmOrders.filter(r => new Date(r.createdAt).toDateString() === today && r.status === 'dispensed');
-            
-            const dailyClinic = todayPatients.reduce((sum, p) => sum + (p.ticket || 0), 0);
-            const dailyLab = todayLab.reduce((sum, l) => sum + (l.price || 0), 0);
-            const dailyPharmacy = todayRx.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
-            
-            // تحديث البطاقات الرئيسية
-            document.getElementById('finClinic').textContent = dailyClinic.toLocaleString();
-            document.getElementById('finLab').textContent = dailyLab.toLocaleString();
-            document.getElementById('finPhar').textContent = dailyPharmacy.toLocaleString();
-            document.getElementById('totalProfit').textContent = (dailyClinic + dailyLab + dailyPharmacy).toLocaleString();
-            
-            // تحديث لوحة الإيرادات اليومية
-            document.getElementById('dailyClinicRevenue').textContent = dailyClinic.toLocaleString();
-            document.getElementById('dailyLabRevenue').textContent = dailyLab.toLocaleString();
-            document.getElementById('dailyPharmacyRevenue').textContent = dailyPharmacy.toLocaleString();
-            document.getElementById('dailyTotalRevenue').textContent = (dailyClinic + dailyLab + dailyPharmacy).toLocaleString();
-            
-            // تحديث الإحصائيات السريعة
-            document.getElementById('totalPatientsCount').textContent = patients.length;
-            document.getElementById('totalStaffCount').textContent = staffMembers.length;
-            document.getElementById('totalInventoryItems').textContent = inventory.length;
-            document.getElementById('totalRevenueAll').textContent = (financials.total || 0).toLocaleString();
-            
-            // تحديث نشاط اليوم
-            document.getElementById('todayNewPatients').textContent = todayPatients.length;
-            document.getElementById('todayCompletedTests').textContent = todayLab.length;
-            document.getElementById('todayDispensedRx').textContent = todayRx.length;
-            document.getElementById('todayNursingTasks').textContent = nursingTasks.filter(t => 
-                new Date(t.createdAt).toDateString() === today && t.status === 'completed'
-            ).length;
-        }
-
-        // تحديث حركة المعاملات المالية
-        function updateFinancialTransactions() {
-            const container = document.getElementById('financialTransactions');
-            const today = new Date().toDateString();
-            
-            const transactions = [];
-            
-            // إضافة معاملات العيادة
-            patients.filter(p => new Date(p.createdAt).toDateString() === today).forEach(patient => {
-                transactions.push({
-                    type: 'عيادة',
-                    amount: patient.ticket || 0,
-                    patient: patient.name,
-                    time: new Date(patient.createdAt).toLocaleTimeString('ar-EG'),
-                    icon: '🏥'
-                });
-            });
-            
-            // إضافة معاملات المعمل
-            labRequests.filter(l => new Date(l.requestedAt).toDateString() === today && l.status === 'completed').forEach(test => {
-                transactions.push({
-                    type: 'معمل',
-                    amount: test.price || 0,
-                    patient: test.patientName,
-                    time: new Date(test.requestedAt).toLocaleTimeString('ar-EG'),
-                    icon: '🧪'
-                });
-            });
-            
-            // إضافة معاملات الصيدلية
-            pharmOrders.filter(r => new Date(r.createdAt).toDateString() === today && r.status === 'dispensed').forEach(rx => {
-                transactions.push({
-                    type: 'صيدلية',
-                    amount: rx.totalAmount || 0,
-                    patient: rx.patientName,
-                    time: new Date(rx.createdAt).toLocaleTimeString('ar-EG'),
-                    icon: '💊'
-                });
-            });
-            
-            // ترتيب حسب الوقت (الأحدث أولاً)
-            transactions.sort((a, b) => new Date('1970/01/01 ' + b.time) - new Date('1970/01/01 ' + a.time));
-            
-            let html = '';
-            transactions.slice(0, 10).forEach(transaction => {
-                html += `
-                    <div class="transaction-item transaction-income">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fs-5">${transaction.icon}</span>
-                            </div>
-                            <div class="flex-grow-1 mx-2">
-                                <div class="d-flex justify-content-between">
-                                    <small><strong>${transaction.type}</strong></small>
-                                    <small class="text-success"><strong>${transaction.amount.toLocaleString()} ج</strong></small>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <small>${transaction.patient}</small>
-                                    <small class="text-muted">${transaction.time}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (transactions.length === 0) {
-                html = '<p class="text-muted text-center py-3">لا توجد معاملات اليوم</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // تحديث الموظفين النشطين
-        function updateActiveStaff() {
-            const container = document.getElementById('activeStaffList');
-            const activeStaff = staffMembers.filter(s => s.status === 'active').slice(0, 5);
-            
-            let html = '';
-            activeStaff.forEach(staff => {
-                const roleName = staff.r === 'admin' ? 'مدير' : 
-                               staff.r === 'doctor' ? 'طبيب' : 
-                               staff.r === 'reception' ? 'استقبال' : 
-                               staff.r === 'lab_tech' ? 'معمل' : 
-                               staff.r === 'pharmacist' ? 'صيدلي' : 
-                               staff.r === 'nurse' ? 'تمريض' : staff.r;
-                
-                html += `
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="staff-avatar">${staff.name.charAt(0)}</div>
-                        <div class="ms-2 flex-grow-1">
-                            <div class="d-flex justify-content-between">
-                                <small><strong>${staff.name}</strong></small>
-                                <small class="badge bg-info">${roleName}</small>
-                            </div>
-                            <small class="text-muted">${staff.u}</small>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (activeStaff.length === 0) {
-                html = '<p class="text-muted text-center py-2">لا يوجد موظفين نشطين</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // تحديث التحذيرات والإشعارات
-        function updateAdminAlerts() {
-            const container = document.getElementById('adminAlerts');
-            const alerts = [];
-            
-            // تحقق من المخزون المنخفض
-            const lowStock = inventory.filter(item => item.qty < (item.minLevel || 10));
-            if (lowStock.length > 0) {
-                alerts.push({
-                    type: 'warning',
-                    message: `⚠️ ${lowStock.length} صنف مخزونه منخفض`,
-                    icon: '📦'
-                });
-            }
-            
-            // تحقق من الأدوية المنتهية الصلاحية
-            const expiredItems = inventory.filter(item => {
-                if (!item.expiryDate) return false;
-                const expiry = new Date(item.expiryDate);
-                const today = new Date();
-                const diffTime = expiry - today;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                return diffDays <= 30 && diffDays > 0;
-            });
-            
-            if (expiredItems.length > 0) {
-                alerts.push({
-                    type: 'danger',
-                    message: `⏰ ${expiredItems.length} صنف قرب انتهاء الصلاحية`,
-                    icon: '⏳'
-                });
-            }
-            
-            // تحقق من المعاملات غير المكتملة
-            const pendingLab = labRequests.filter(l => l.status === 'pending').length;
-            const pendingRx = pharmOrders.filter(r => r.status === 'pending').length;
-            
-            if (pendingLab > 0) {
-                alerts.push({
-                    type: 'info',
-                    message: `🧪 ${pendingLab} فحص قيد الانتظار`,
-                    icon: '⏱️'
-                });
-            }
-            
-            if (pendingRx > 0) {
-                alerts.push({
-                    type: 'info',
-                    message: `💊 ${pendingRx} روشتة قيد الانتظار`,
-                    icon: '⏱️'
-                });
-            }
-            
-            let html = '';
-            alerts.forEach(alert => {
-                const alertClass = alert.type === 'danger' ? 'alert-danger' : 
-                                 alert.type === 'warning' ? 'alert-warning' : 'alert-info';
-                
-                html += `
-                    <div class="alert ${alertClass} alert-dismissible fade show py-2" role="alert">
-                        <div class="d-flex align-items-center">
-                            <span class="fs-5 me-2">${alert.icon}</span>
-                            <small>${alert.message}</small>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                `;
-            });
-            
-            if (alerts.length === 0) {
-                html = '<p class="text-muted text-center py-3">لا توجد تحذيرات حالياً</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // تحديث آخر الأنشطة
-        function updateRecentActivities() {
-            const container = document.getElementById('recentActivities');
-            const activities = [];
-            
-            // جمع الأنشطة من المرضى
-            const recentPatients = patients.slice(-3).reverse();
-            recentPatients.forEach(patient => {
-                activities.push({
-                    type: 'patient',
-                    message: `تم تسجيل ${patient.name}`,
-                    time: new Date(patient.createdAt).toLocaleTimeString('ar-EG'),
-                    icon: '👤'
-                });
-            });
-            
-            // جمع الأنشطة من المعمل
-            const recentLab = labRequests.slice(-2).reverse();
-            recentLab.forEach(test => {
-                activities.push({
-                    type: 'lab',
-                    message: `فحص ${test.name} لـ ${test.patientName}`,
-                    time: new Date(test.requestedAt).toLocaleTimeString('ar-EG'),
-                    icon: '🧪'
-                });
-            });
-            
-            // ترتيب حسب الوقت
-            activities.sort((a, b) => new Date('1970/01/01 ' + b.time) - new Date('1970/01/01 ' + a.time));
-            
-            let html = '';
-            activities.slice(0, 5).forEach(activity => {
-                html += `
-                    <div class="border-bottom pb-2 mb-2">
-                        <div class="d-flex align-items-center">
-                            <span class="fs-6 me-2">${activity.icon}</span>
-                            <div class="flex-grow-1">
-                                <small>${activity.message}</small>
-                                <div class="text-muted"><small>${activity.time}</small></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (activities.length === 0) {
-                html = '<p class="text-muted text-center py-3">لا توجد أنشطة حديثة</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // عرض تبويبات المدير
-        function showAdminTab(tab) {
-            const tabs = ['dashboard', 'reports', 'patients', 'staff', 'financial', 'settings'];
-            tabs.forEach(t => document.getElementById(`admin-${t}`).classList.add('hidden-section'));
-            document.getElementById(`admin-${tab}`).classList.remove('hidden-section');
-            
-            switch(tab) {
-                case 'dashboard':
-                    updateFinancialStats();
-                    updateActiveStaff();
-                    updateAdminAlerts();
-                    break;
-                case 'reports':
-                    generatePerformanceReport();
-                    createCharts();
-                    break;
-                case 'patients':
-                    loadAdminPatientsTable();
-                    break;
-                case 'staff':
-                    refreshStaffTable();
-                    break;
-                case 'financial':
-                    updateFinancialStats();
-                    updateFinancialTransactions();
-                    break;
-                case 'settings':
-                    loadSystemSettings();
-                    break;
-            }
-        }
-
-        // توليد تقرير الأداء
-        function generatePerformanceReport() {
-            const today = new Date().toDateString();
-            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
-            const activeDoctors = staffMembers.filter(s => s.r === 'doctor' || s.r === 'head_doctor').length;
-            
-            // حسابات افتراضية للعرض
-            const avgConsultationTime = todayPatients.length > 0 ? Math.floor(Math.random() * 20) + 10 : 0;
-            const patientsPerDoctor = activeDoctors > 0 ? Math.floor(todayPatients.length / Math.max(activeDoctors, 1)) : 0;
-            const occupancyRate = Math.floor(Math.random() * 30) + 70;
-            const patientSatisfaction = Math.floor(Math.random() * 20) + 80;
-            
-            document.getElementById('avgConsultationTime').textContent = avgConsultationTime;
-            document.getElementById('patientsPerDoctor').textContent = patientsPerDoctor;
-            document.getElementById('occupancyRate').textContent = `${occupancyRate}%`;
-            document.getElementById('patientSatisfaction').textContent = `${patientSatisfaction}%`;
-        }
-
-        // إنشاء الرسوم البيانية
-        function createCharts() {
-            const today = new Date();
-            const last7Days = [];
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date(today);
-                date.setDate(date.getDate() - i);
-                last7Days.push(date.toLocaleDateString('ar-EG', { weekday: 'short' }));
-            }
-            
-            // رسم بياني للإيرادات اليومية
-            const revenueCtx = document.getElementById('dailyRevenueChart');
-            if (revenueCtx) {
-                new Chart(revenueCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: last7Days,
-                        datasets: [{
-                            label: 'الإيرادات',
-                            data: Array.from({length: 7}, () => Math.floor(Math.random() * 1000000) + 500000),
-                            backgroundColor: 'rgba(40, 167, 69, 0.5)',
-                            borderColor: 'rgb(40, 167, 69)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value / 1000 + 'K';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // رسم بياني لتوزيع المرضى
-            const patientsCtx = document.getElementById('patientsChart');
-            if (patientsCtx) {
-                new Chart(patientsCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['ذكور', 'إناث'],
-                        datasets: [{
-                            data: [
-                                patients.filter(p => p.gender === 'ذكر').length,
-                                patients.filter(p => p.gender === 'أنثى').length
-                            ],
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.5)',
-                                'rgba(255, 99, 132, 0.5)'
-                            ],
-                            borderColor: [
-                                'rgb(54, 162, 235)',
-                                'rgb(255, 99, 132)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        // تحميل جدول المرضى للمدير
-        function loadAdminPatientsTable() {
-            const container = document.getElementById('adminPatientsTable');
-            let html = '';
-            
-            patients.slice(-20).reverse().forEach(patient => {
-                const date = new Date(patient.createdAt).toLocaleDateString('ar-EG');
-                const status = patient.department === 'completed' ? 'مكتمل' : 
-                             patient.department === 'pharmacy' ? 'في الصيدلية' :
-                             patient.department === 'lab' ? 'في المعمل' :
-                             patient.department === 'doctor' ? 'في العيادة' : 'في الانتظار';
-                
-                const statusClass = patient.department === 'completed' ? 'bg-success' :
-                                 patient.department === 'pharmacy' ? 'bg-warning' :
-                                 patient.department === 'lab' ? 'bg-danger' :
-                                 patient.department === 'doctor' ? 'bg-info' : 'bg-secondary';
-                
-                html += `
-                    <div class="border-bottom pb-2 mb-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>${patient.name}</strong><br>
-                                <small class="text-muted">${patient.age} سنة | ${patient.gender || 'غير محدد'} | ${date}</small>
-                            </div>
-                            <div class="text-end">
-                                <span class="badge ${statusClass}">${status}</span><br>
-                                <small class="text-muted">${patient.phone || 'لا يوجد'}</small>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (patients.length === 0) {
-                html = '<div class="text-center text-muted p-4">لا توجد سجلات مرضى</div>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // بحث المرضى في قسم المدير
-        function searchAdminPatients(query) {
-            const container = document.getElementById('adminPatientsTable');
-            const filtered = patients.filter(p => 
-                p.name.toLowerCase().includes(query.toLowerCase()) ||
-                p.phone.includes(query) ||
-                p.id.toString().includes(query)
-            );
-            
-            let html = '';
-            filtered.slice(0, 20).forEach(patient => {
-                const date = new Date(patient.createdAt).toLocaleDateString('ar-EG');
-                html += `
-                    <div class="border-bottom pb-2 mb-2">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <strong>${patient.name}</strong><br>
-                                <small class="text-muted">${patient.age} سنة | ${date}</small>
-                            </div>
-                            <div class="text-end">
-                                <small>${patient.phone || 'لا يوجد'}</small>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (filtered.length === 0) {
-                html = '<div class="text-center text-muted p-4">لا توجد نتائج</div>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // إدارة الموظفين
-        function refreshStaffTable() {
-            const tbody = document.getElementById('staffTableBody');
-            let html = '';
-            
-            staffMembers.forEach(staff => {
-                const roleName = staff.r === 'admin' ? 'مدير' : 
-                               staff.r === 'doctor' ? 'طبيب' : 
-                               staff.r === 'reception' ? 'استقبال' : 
-                               staff.r === 'lab_tech' ? 'معمل' : 
-                               staff.r === 'pharmacist' ? 'صيدلي' : 
-                               staff.r === 'nurse' ? 'تمريض' : staff.r;
-                
-                const lastLogin = staff.lastLogin ? new Date(staff.lastLogin).toLocaleDateString('ar-EG') : 'لم يسجل دخول';
-                const statusBadge = staff.status === 'active' ? 
-                    '<span class="badge bg-success">نشط</span>' : 
-                    '<span class="badge bg-danger">معطل</span>';
-                
-                html += `
-                    <tr>
-                        <td>${staff.name}</td>
-                        <td><span class="badge bg-info">${roleName}</span></td>
-                        <td><small>${lastLogin}</small></td>
-                        <td>${statusBadge}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-warning me-1" onclick="editStaff('${staff.u}')">✏️</button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteStaff('${staff.u}')" ${staff.u === currentUser.u ? 'disabled' : ''}>🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            if (staffMembers.length === 0) {
-                html = `
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">لا توجد سجلات موظفين</td>
-                    </tr>
-                `;
-            }
-            
-            tbody.innerHTML = html;
-        }
-
-        function addNewStaff() {
-            const username = document.getElementById('newStaffUser').value.trim();
-            const password = document.getElementById('newStaffPass').value.trim();
-            const role = document.getElementById('newStaffRole').value;
-            
-            if (!username || !password) {
-                alert('⚠️ الرجاء إدخال اسم المستخدم وكلمة المرور!');
-                return;
-            }
-            
-            if (staffMembers.find(s => s.u === username)) {
-                alert('⚠️ اسم المستخدم موجود مسبقاً!');
-                return;
-            }
-            
-            if (password.length < 4) {
-                alert('⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل!');
-                return;
-            }
-            
-            const newStaff = {
-                u: username,
-                p: password,
-                r: role,
-                name: username,
-                status: 'active',
-                permissions: [],
-                created: new Date().toISOString(),
-                lastLogin: null
-            };
-            
-            staffMembers.push(newStaff);
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            
-            document.getElementById('newStaffUser').value = '';
-            document.getElementById('newStaffPass').value = '';
-            
-            refreshStaffTable();
-            updateActiveStaff();
-            showNotification('✅ تم إضافة الموظف', `تم إضافة الموظف ${username} بنجاح`);
-        }
-
-        function editStaff(username) {
-            const staff = staffMembers.find(s => s.u === username);
-            if (!staff) return;
-            
-            const newName = prompt('أدخل الاسم الجديد:', staff.name);
-            if (!newName) return;
-            
-            const newRole = prompt('أدخل الدور الجديد:', staff.r);
-            if (!newRole) return;
-            
-            const newStatus = confirm(`هل تريد ${staff.status === 'active' ? 'تعطيل' : 'تفعيل'} الحساب؟`) ? 
-                (staff.status === 'active' ? 'inactive' : 'active') : staff.status;
-            
-            staff.name = newName;
-            staff.r = newRole;
-            staff.status = newStatus;
-            
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            refreshStaffTable();
-            updateActiveStaff();
-            showNotification('✅ تم تحديث بيانات الموظف', `تم تحديث بيانات ${username} بنجاح`);
-        }
-
-        function deleteStaff(username) {
-            if (!confirm(`هل أنت متأكد من حذف الموظف ${username}؟\nهذا الإجراء لا يمكن التراجع عنه.`)) return;
-            
-            if (username === currentUser.u) {
-                alert('⚠️ لا يمكنك حذف حسابك الخاص!');
-                return;
-            }
-            
-            staffMembers = staffMembers.filter(s => s.u !== username);
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            refreshStaffTable();
-            updateActiveStaff();
-            showNotification('✅ تم حذف الموظف', `تم حذف الموظف ${username} بنجاح`);
-        }
-
-        function resetUserPassword() {
-            const username = prompt('أدخل اسم المستخدم لإعادة تعيين كلمة المرور:');
-            if (!username) return;
-            
-            const staff = staffMembers.find(s => s.u === username);
-            if (!staff) {
-                alert('⚠️ المستخدم غير موجود!');
-                return;
-            }
-            
-            const newPassword = prompt('أدخل كلمة المرور الجديدة:');
-            if (!newPassword) return;
-            
-            const confirmPassword = prompt('أعد إدخال كلمة المرور:');
-            if (newPassword !== confirmPassword) {
-                alert('⚠️ كلمات المرور غير متطابقة!');
-                return;
-            }
-            
-            staff.p = newPassword;
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            showNotification('✅ تم إعادة تعيين كلمة المرور', `تم إعادة تعيين كلمة مرور ${username} بنجاح`);
-        }
-
-        function exportUserActivity() {
-            const activityData = staffMembers.map(staff => ({
-                username: staff.u,
-                name: staff.name,
-                role: staff.r,
-                status: staff.status,
-                created: staff.created,
-                lastLogin: staff.lastLogin
-            }));
-            
-            const blob = new Blob([JSON.stringify(activityData, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `user_activity_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            
-            showNotification('✅ تم التصدير', 'تم تصدير نشاط المستخدمين بنجاح');
-        }
-
-        // تصدير السجلات الطبية
-        function exportMedicalRecords() {
-            const records = patients.map(patient => ({
-                id: patient.id,
-                name: patient.name,
-                age: patient.age,
-                gender: patient.gender,
-                phone: patient.phone,
-                address: patient.address,
-                medicalHistory: patient.medicalHistory,
-                visitType: patient.visitType,
-                ticket: patient.ticket,
-                createdAt: patient.createdAt,
-                updatedAt: patient.updatedAt,
-                status: patient.department
-            }));
-            
-            const blob = new Blob([JSON.stringify(records, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `medical_records_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            
-            showNotification('✅ تم التصدير', 'تم تصدير السجلات الطبية بنجاح');
-        }
-
-        // تصدير التقرير لإكسل
-        function exportReportToExcel() {
-            const today = new Date().toDateString();
-            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
-            const todayLab = labRequests.filter(l => new Date(l.requestedAt).toDateString() === today);
-            const todayRx = pharmOrders.filter(r => new Date(r.createdAt).toDateString() === today);
-            
-            const report = {
-                date: new Date().toISOString(),
-                summary: {
-                    totalPatients: patients.length,
-                    todayPatients: todayPatients.length,
-                    todayRevenue: (financials.clinic + financials.lab + financials.pharSales),
-                    activeStaff: staffMembers.filter(s => s.status === 'active').length
-                },
-                patients: todayPatients.map(p => ({
-                    name: p.name,
-                    age: p.age,
-                    gender: p.gender,
-                    ticket: p.ticket,
-                    time: new Date(p.createdAt).toLocaleTimeString('ar-EG')
-                })),
-                financial: {
-                    clinic: financials.clinic,
-                    lab: financials.lab,
-                    pharmacy: financials.pharSales,
-                    total: financials.clinic + financials.lab + financials.pharSales
-                }
-            };
-            
-            const blob = new Blob([JSON.stringify(report, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `daily_report_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            
-            showNotification('✅ تم التصدير', 'تم تصدير التقرير بنجاح');
-        }
-
-        // طباعة التقرير اليومي
-        function printDailyReport() {
-            const today = new Date().toDateString();
-            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
-            const todayLab = labRequests.filter(l => new Date(l.requestedAt).toDateString() === today);
-            const todayRx = pharmOrders.filter(r => new Date(r.createdAt).toDateString() === today);
-            
-            const report = `
-                <div class="text-center">
-                    <h3>📊 تقرير أداء يومي</h3>
-                    <p>${new Date().toLocaleDateString('ar-EG')}</p>
-                </div>
-                <hr>
-                
-                <h5>📈 الإحصائيات العامة:</h5>
-                <table class="table table-bordered">
-                    <tr><td>عدد المرضى اليوم</td><td><strong>${todayPatients.length}</strong></td></tr>
-                    <tr><td>عدد الفحوصات</td><td><strong>${todayLab.length}</strong></td></tr>
-                    <tr><td>عدد الروشتات</td><td><strong>${todayRx.length}</strong></td></tr>
-                    <tr><td>عدد الموظفين النشطين</td><td><strong>${staffMembers.filter(s => s.status === 'active').length}</strong></td></tr>
-                </table>
-                
-                <h5>💰 الإيرادات:</h5>
-                <table class="table table-bordered">
-                    <tr><td>رسوم العيادة</td><td><strong>${financials.clinic.toLocaleString()} ج</strong></td></tr>
-                    <tr><td>فحوصات المعمل</td><td><strong>${financials.lab.toLocaleString()} ج</strong></td></tr>
-                    <tr><td>مبيعات الصيدلية</td><td><strong>${financials.pharSales.toLocaleString()} ج</strong></td></tr>
-                    <tr class="table-success"><td>الإجمالي</td><td><strong>${(financials.clinic + financials.lab + financials.pharSales).toLocaleString()} ج</strong></td></tr>
-                </table>
-                
-                <div class="text-center mt-4">
-                    <p>🏥 مجمع الشفاء الطبي - السودان - جلقني</p>
-                    <small>تم إنشاء التقرير تلقائياً بواسطة النظام الذكي</small>
-                </div>
-            `;
-            
-            document.getElementById('printContent').innerHTML = report;
-            document.getElementById('printTitle').textContent = 'تقرير أداء يومي';
-            document.getElementById('printDate').textContent = new Date().toLocaleDateString('ar-EG');
-            
-            window.print();
-        }
-
-        // توليد تقرير مالي مفصل
-        function generateFinancialReport() {
-            const report = `
-                <h4>📄 تقرير مالي مفصل</h4>
-                <p><strong>التاريخ:</strong> ${new Date().toLocaleDateString('ar-EG')}</p>
-                
-                <h5>📊 ملخص الإيرادات:</h5>
-                <p>• إجمالي إيرادات العيادة: <strong>${financials.clinic.toLocaleString()} ج</strong></p>
-                <p>• إجمالي إيرادات المعمل: <strong>${financials.lab.toLocaleString()} ج</strong></p>
-                <p>• إجمالي مبيعات الصيدلية: <strong>${financials.pharSales.toLocaleString()} ج</strong></p>
-                <p>• إجمالي الأرباح: <strong>${financials.pharProfit.toLocaleString()} ج</strong></p>
-                <p>• الإجمالي الكلي: <strong>${(financials.clinic + financials.lab + financials.pharSales).toLocaleString()} ج</strong></p>
-                
-                <h5>👥 الإحصائيات:</h5>
-                <p>• عدد المرضى: <strong>${patients.length}</strong></p>
-                <p>• عدد الموظفين: <strong>${staffMembers.length}</strong></p>
-                <p>• عدد أصناف المخزون: <strong>${inventory.length}</strong></p>
-                
-                <div class="alert alert-info mt-3">
-                    <small>💡 هذا التقرير تم إنشاؤه تلقائياً. يمكنك تصدير البيانات للتحليل المفصل.</small>
-                </div>
-            `;
-            
-            document.getElementById('printContent').innerHTML = report;
-            document.getElementById('printTitle').textContent = 'تقرير مالي مفصل';
-            window.print();
-        }
-
-        // توليد تقرير يومي
-        function generateDailyReport() {
-            generateFinancialReport();
-        }
-
-        // مسح جميع البيانات
-        function clearAllPatientData() {
-            if (!confirm('⚠️ تحذير: هذه العملية ستؤدي إلى مسح جميع بيانات المرضى!\nهل أنت متأكد؟')) return;
-            
-            if (!confirm('❌ تأكيد نهائي: جميع بيانات المرضى ستحذف ولا يمكن استعادتها!')) return;
-            
-            patients = [];
-            labRequests = [];
-            pharmOrders = [];
-            nursingOrders = [];
-            
-            localStorage.setItem('shifa_pats', JSON.stringify([]));
-            localStorage.setItem('shifa_lab', JSON.stringify([]));
-            localStorage.setItem('shifa_rx', JSON.stringify([]));
-            localStorage.setItem('shifa_nursing', JSON.stringify([]));
-            
-            updateFinancialStats();
-            updateBadges();
-            loadAdminPatientsTable();
-            
-            showNotification('✅ تم المسح', 'تم مسح جميع بيانات المرضى بنجاح');
-        }
-
-        // تصفير القسم
-        function resetSection(section) {
-            let message = '';
-            let confirmMessage = '';
-            
-            switch(section) {
-                case 'pats':
-                    message = 'قسم الاستقبال';
-                    confirmMessage = 'هل تريد تصفير جميع بيانات الاستقبال والمرضى؟';
-                    break;
-                case 'lab':
-                    message = 'قسم المعمل';
-                    confirmMessage = 'هل تريد تصفير جميع طلبات ونتائج المعمل؟';
-                    break;
-                case 'rx':
-                    message = 'قسم الصيدلية';
-                    confirmMessage = 'هل تريد تصفير جميع الروشتات والمخزون؟';
-                    break;
-                case 'nursing':
-                    message = 'قسم التمريض';
-                    confirmMessage = 'هل تريد تصفير جميع مهام التمريض؟';
-                    break;
-                default:
-                    return;
-            }
-            
-            if (!confirm(`⚠️ ${confirmMessage}`)) return;
-            
-            switch(section) {
-                case 'pats':
-                    patients = patients.filter(p => p.department === 'completed');
-                    localStorage.setItem('shifa_pats', JSON.stringify(patients));
-                    break;
-                case 'lab':
-                    labRequests = labRequests.filter(l => l.status === 'completed');
-                    localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
-                    break;
-                case 'rx':
-                    pharmOrders = pharmOrders.filter(r => r.status === 'dispensed');
-                    localStorage.setItem('shifa_rx', JSON.stringify(pharmOrders));
-                    break;
-                case 'nursing':
-                    nursingOrders = [];
-                    nursingTasks = [];
-                    localStorage.setItem('shifa_nursing', JSON.stringify([]));
-                    localStorage.setItem('shifa_nursing_tasks', JSON.stringify([]));
-                    break;
-            }
-            
-            updateBadges();
-            updateFinancialStats();
-            showNotification('🔄 تم التصفير', `تم تصفير ${message} بنجاح`);
-        }
-
-        // إغلاق اليوم
-        function resetAllDay() {
-            if (!confirm('📊 هل تريد إغلاق اليوم وحفظ جميع البيانات؟')) return;
-            
-            // حفظ نسخة احتياطية
-            const backup = {
-                date: new Date().toISOString(),
-                patients: patients.length,
-                labRequests: labRequests.length,
-                pharmOrders: pharmOrders.length,
-                financials: {
-                    clinic: financials.clinic,
-                    lab: financials.lab,
-                    pharSales: financials.pharSales,
-                    pharProfit: financials.pharProfit
-                },
-                timestamp: new Date().getTime()
-            };
-            
-            backups.push(backup);
-            if (backups.length > 30) backups.shift();
-            localStorage.setItem('shifa_backups', JSON.stringify(backups));
-            
-            // تحديث إجمالي الإيرادات
-            financials.total = (financials.total || 0) + financials.clinic + financials.lab + financials.pharSales;
-            localStorage.setItem('shifa_fin', JSON.stringify(financials));
-            
-            // إعادة تعيين إيرادات اليوم
-            financials.clinic = 0;
-            financials.lab = 0;
-            financials.pharSales = 0;
-            financials.pharProfit = 0;
-            localStorage.setItem('shifa_fin', JSON.stringify(financials));
-            
-            // تحديث الواجهة
-            updateFinancialStats();
-            document.getElementById('backupCount').textContent = backups.length;
-            
-            showNotification('📊 تم إغلاق اليوم', 'تم حفظ البيانات وإعادة تعيين إيرادات اليوم');
-        }
-
-        // نسخ احتياطي للبيانات
-        function backupAllData() {
-            const backupData = {
-                date: new Date().toISOString(),
-                patients: patients,
-                labRequests: labRequests,
-                pharmOrders: pharmOrders,
-                nursingOrders: nursingOrders,
-                inventory: inventory,
-                financials: financials,
-                staffMembers: staffMembers,
-                labTests: labTests,
-                medicalLibrary: medicalLibrary,
-                nurses: nurses,
-                systemLogs: systemLogs
-            };
-            
-            const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `shifa_backup_${new Date().toISOString().split('T')[0]}_${Date.now()}.json`;
-            a.click();
-            
-            // إضافة إلى قائمة النسخ الاحتياطية
-            backups.push({
-                filename: a.download,
-                date: new Date().toISOString(),
-                size: blob.size
-            });
-            localStorage.setItem('shifa_backups', JSON.stringify(backups));
-            document.getElementById('backupCount').textContent = backups.length;
-            
-            showNotification('💾 تم النسخ الاحتياطي', 'تم حفظ نسخة احتياطية من جميع البيانات');
-        }
-
-        // تحميل إعدادات النظام
-        function loadSystemSettings() {
-            const settings = JSON.parse(localStorage.getItem('shifa_settings') || '{}');
-            
-            if (settings.notifications !== undefined) {
-                document.getElementById('notificationsEnabled').checked = settings.notifications;
-            }
-            if (settings.sound !== undefined) {
-                document.getElementById('soundEnabled').checked = settings.sound;
-            }
-            if (settings.autoBackup !== undefined) {
-                document.getElementById('autoBackupEnabled').checked = settings.autoBackup;
-            }
-            if (settings.autoSync !== undefined) {
-                document.getElementById('autoSyncEnabled').checked = settings.autoSync;
-            }
-            if (settings.syncInterval !== undefined) {
-                document.getElementById('syncInterval').value = settings.syncInterval;
-            }
-            if (settings.backupLimit !== undefined) {
-                document.getElementById('backupLimit').value = settings.backupLimit;
-            }
-            
-            // حساب مساحة التخزين
-            let totalStorage = 0;
-            const keys = Object.keys(localStorage);
-            keys.forEach(key => {
-                const data = localStorage.getItem(key);
-                if (data) totalStorage += data.length * 2; // تقدير بالبايت
-            });
-            
-            const storageKB = (totalStorage / 1024).toFixed(2);
-            const storageMB = (totalStorage / (1024 * 1024)).toFixed(2);
-            
-            if (totalStorage > 1024 * 1024) {
-                document.getElementById('storageUsage').textContent = `${storageMB} MB`;
-            } else {
-                document.getElementById('storageUsage').textContent = `${storageKB} KB`;
-            }
-            
-            document.getElementById('backupCount').textContent = backups.length;
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('ar-EG');
-            
-            // فحص صحة النظام
-            const systemHealth = document.getElementById('systemHealth');
-            const lastSystemCheck = document.getElementById('lastSystemCheck');
-            
-            const errors = [];
-            if (patients.length === 0) errors.push('لا توجد بيانات مرضى');
-            if (staffMembers.length === 0) errors.push('لا توجد بيانات موظفين');
-            if (inventory.length === 0) errors.push('المخزون فارغ');
-            
-            if (errors.length === 0) {
-                systemHealth.textContent = 'جيدة';
-                systemHealth.className = 'health-good';
-            } else if (errors.length <= 2) {
-                systemHealth.textContent = 'تحتاج تحسين';
-                systemHealth.className = 'health-warning';
-            } else {
-                systemHealth.textContent = 'حرجة';
-                systemHealth.className = 'health-critical';
-            }
-            
-            lastSystemCheck.textContent = new Date().toLocaleTimeString('ar-EG');
-        }
-
-        // حفظ إعدادات النظام
-        function saveSystemSettings() {
-            const settings = {
-                notifications: document.getElementById('notificationsEnabled').checked,
-                sound: document.getElementById('soundEnabled').checked,
-                autoBackup: document.getElementById('autoBackupEnabled').checked,
-                autoSync: document.getElementById('autoSyncEnabled').checked,
-                syncInterval: document.getElementById('syncInterval').value,
-                backupLimit: document.getElementById('backupLimit').value
-            };
-            
-            localStorage.setItem('shifa_settings', JSON.stringify(settings));
-            
-            // تحديث فترة المزامنة إذا كانت مفعلة
-            if (SYNC_INTERVAL && settings.autoSync) {
-                clearInterval(SYNC_INTERVAL);
-                SYNC_INTERVAL = setInterval(manualSync, parseInt(settings.syncInterval) * 60000);
-            }
-            
-            showNotification('⚙️ تم الحفظ', 'تم حفظ إعدادات النظام بنجاح');
-        }
-
-        // المكتبة الطبية
-        function searchMedicalLibrary() {
-            const query = document.getElementById('searchMedicalLibrary').value.toLowerCase();
-            const container = document.getElementById('medicalLibraryContent');
-            
-            let html = '';
-            if (!query) {
-                medicalLibrary.slice(0, 5).forEach(item => {
-                    const category = item.category === 'diseases' ? 'أمراض' :
-                                   item.category === 'drugs' ? 'أدوية' :
-                                   item.category === 'procedures' ? 'إجراءات' : 'فحوصات';
-                    
-                    html += `
-                        <div class="border-bottom pb-2 mb-2">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="flex-grow-1">
-                                    <strong>${item.title}</strong>
-                                    <p class="small mb-1 text-muted">${item.content.substring(0, 80)}...</p>
-                                </div>
-                                <span class="badge bg-warning ms-2">${category}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                const results = medicalLibrary.filter(item => 
-                    item.title.toLowerCase().includes(query) || 
-                    item.content.toLowerCase().includes(query)
-                );
-                
-                if (results.length === 0) {
-                    html = '<p class="text-muted text-center py-4">لا توجد نتائج</p>';
-                } else {
-                    results.forEach(item => {
-                        const category = item.category === 'diseases' ? 'أمراض' :
-                                       item.category === 'drugs' ? 'أدوية' :
-                                       item.category === 'procedures' ? 'إجراءات' : 'فحوصات';
-                        
-                        html += `
-                            <div class="border-bottom pb-2 mb-2">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <strong>${item.title}</strong>
-                                        <p class="small mb-1 text-muted">${item.content.substring(0, 80)}...</p>
-                                    </div>
-                                    <span class="badge bg-warning ms-2">${category}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            }
-            
-            container.innerHTML = html;
-        }
-
-        function filterLibrary(category) {
-            const container = document.getElementById('medicalLibraryContent');
-            
-            let html = '';
-            const filtered = category === 'all' ? medicalLibrary : medicalLibrary.filter(item => item.category === category);
-            
-            filtered.slice(0, 10).forEach(item => {
-                const categoryName = item.category === 'diseases' ? 'أمراض' :
-                                   item.category === 'drugs' ? 'أدوية' :
-                                   item.category === 'procedures' ? 'إجراءات' : 'فحوصات';
-                
-                html += `
-                    <div class="border-bottom pb-2 mb-2">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="flex-grow-1">
-                                <strong>${item.title}</strong>
-                                <p class="small mb-1 text-muted">${item.content.substring(0, 80)}...</p>
-                            </div>
-                            <span class="badge bg-warning ms-2">${categoryName}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (filtered.length === 0) {
-                html = '<p class="text-muted text-center py-4">لا توجد مواد في هذا القسم</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        function addToLibrary() {
-            const title = prompt('أدخل عنوان المادة العلمية:');
-            if (!title) return;
-            
-            const category = prompt('أدخل القسم (diseases, drugs, procedures, tests):');
-            if (!category) return;
-            
-            const content = prompt('أدخل محتوى المادة العلمية:');
-            if (!content) return;
-            
-            const newItem = {
-                id: Date.now(),
-                title: title,
-                category: category,
-                content: content,
-                addedBy: currentUser ? currentUser.u : 'admin',
-                addedAt: new Date().toISOString()
-            };
-            
-            medicalLibrary.push(newItem);
-            localStorage.setItem('shifa_library', JSON.stringify(medicalLibrary));
-            
-            showNotification('📚 تمت الإضافة', 'تم إضافة المادة العلمية بنجاح');
-            searchMedicalLibrary();
-        }
-
-        // تهيئة قسم المدير
-        function initAdminSection() {
-            updateFinancialStats();
-            updateFinancialTransactions();
-            updateActiveStaff();
-            updateAdminAlerts();
-            updateRecentActivities();
-            loadSystemSettings();
-            refreshStaffTable();
-            loadAdminPatientsTable();
-            searchMedicalLibrary();
-            
-            // تحديث كل 30 ثانية
-            setInterval(() => {
-                updateFinancialStats();
-                updateFinancialTransactions();
-                updateRecentActivities();
-            }, 30000);
-        }
-
-        // ============================================
-        // دوال النظام الأساسية (محفوظة)
-        // ============================================
-
-        // دالة تسجيل المريض (محفوظة)
-        function registerPatient() {
-            const name = document.getElementById('pName').value.trim();
-            const age = document.getElementById('pAge').value;
-            const phone = document.getElementById('pPhone').value.trim();
-            
-            if (!name || !age) {
-                alert("⚠️ الرجاء إدخال الاسم والعمر!");
-                return;
-            }
-            
-            const patientId = Date.now();
-            const newPatient = {
-                id: patientId,
-                name: name,
-                age: age,
-                gender: document.getElementById('pGender').value,
-                phone: phone,
-                address: document.getElementById('pAddress').value,
-                ticket: parseInt(document.getElementById('pTicket').value) || 5000,
-                visitType: document.getElementById('pVisitType').value,
-                medicalHistory: document.getElementById('pMedicalHistory').value,
-                status: 'waiting',
-                department: 'reception',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                vitalSigns: {},
-                complaint: '',
-                diagnosis: '',
-                labRequests: [],
-                labResults: [],
-                medications: [],
-                nursingOrders: [],
-                payments: []
-            };
-            
-            patients.push(newPatient);
-            localStorage.setItem('shifa_pats', JSON.stringify(patients));
-            
-            // تحديث الإحصائيات
-            financials.clinic += newPatient.ticket;
-            localStorage.setItem('shifa_fin', JSON.stringify(financials));
-            
-            // إعادة تعيين الحقول
-            document.getElementById('pName').value = '';
-            document.getElementById('pAge').value = '';
-            document.getElementById('pPhone').value = '';
-            document.getElementById('pAddress').value = '';
-            document.getElementById('pMedicalHistory').value = '';
-            
-            showNotification("✅ تم التسجيل", `تم تسجيل ${name} بنجاح`);
-            
-            updateFinancialStats();
-            updateBadges();
-        }
-
-        // دوال أخرى محفوظة من النظام...
-        // ... [جميع الدوال السابقة تبقى كما هي] ...
-
-        // ============================================
-        // تهيئة النظام
-        // ============================================
-
-        window.onload = function() {
-            // تهيئة الساعة
-            updateClock();
-            setInterval(updateClock, 1000);
-            
-            // طلب إذن الإشعارات
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-            
-            // إذا كان هناك مستخدم مسجل مسبقاً
-            if (currentUser) {
+        // الدخول مع إضافة صلاحية الممرض
+        function handleLogin() {
+            const user = document.getElementById('username').value.trim().toLowerCase();
+            const pass = document.getElementById('password').value;
+            
+            if (pass === '123') {
+                currentUser = { u: user, r: user }; 
                 document.getElementById('loginOverlay').classList.add('hidden-section');
                 document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.u}`;
+                document.getElementById('currentUserDisplay').innerHTML = `👤 <b>${user}</b>`;
                 
-                // تهيئة قسم المدير إذا كان المستخدم مديراً
-                if (currentUser.r === 'admin' || currentUser.r === 'super_admin') {
-                    initAdminSection();
-                }
-                
-                switchSection('reception');
-            }
-        };
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('ar-EG');
+                // توجيه تلقائي حسب التخصص
+                if(user === 'nurse') switchSection('nurse');
+                else if(user === 'doctor') switchSection('doctor');
+                else if(user === 'admin') switchSection('admin');
+                else switchSection('reception');
+            } else { alert("خطأ!"); }
         }
+
+        function logout() { location.reload(); }
 
         function switchSection(id) {
-            // التحقق من الصلاحية
-            if (id === 'admin' && !(currentUser.r === 'admin' || currentUser.r === 'super_admin')) {
-                alert('⛔ ليس لديك صلاحية للوصول لقسم المدير!');
-                return;
-            }
-            
             document.querySelectorAll('.section-pane').forEach(s => s.classList.add('hidden-section'));
             document.getElementById(`${id}-sec`).classList.remove('hidden-section');
-            
             document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            document.getElementById(`btn-${id}`)?.classList.add('active');
-            
-            if (id === 'admin') {
-                initAdminSection();
-                showAdminTab('dashboard');
+            if(document.getElementById(`btn-${id}`)) document.getElementById(`btn-${id}`).classList.add('active');
+            updateBadges();
+            if (window[`load${id.charAt(0).toUpperCase() + id.slice(1)}`]) window[`load${id.charAt(0).toUpperCase() + id.slice(1)}`]();
+        }
+
+        // --- ميزات الطبيب الجديدة ---
+        function selectPatient(id) {
+            activePatient = patients.find(p => p.id === id);
+            document.getElementById('doctorWorkArea').classList.remove('hidden-section');
+            document.getElementById('currentPatientName').textContent = activePatient.name;
+            document.getElementById('diagnosis').value = activePatient.diagnosis || '';
+            document.getElementById('nurseOrders').value = '';
+        }
+
+        function orderNurse() {
+            const orders = document.getElementById('nurseOrders').value;
+            if(!orders) return alert("اكتب الجرعة المطلوبة أولاً!");
+            activePatient.nurseOrders = orders;
+            activePatient.status = 'waiting_nurse';
+            saveData();
+            alert("تم إرسال المريض للتمريض");
+            switchSection('doctor');
+        }
+
+        // --- ميزات التمريض الجديدة ---
+        function loadNurse() {
+            const list = document.getElementById('nurseList');
+            const waiting = patients.filter(p => p.status === 'waiting_nurse');
+            if(waiting.length === 0) {
+                list.innerHTML = '<div class="text-center p-5 text-muted">لا توجد جرعات علاجية مطلوبة حالياً</div>';
+                return;
             }
-            
+            list.innerHTML = waiting.map(p => `
+                <div class="col-md-6 animate__animated animate__fadeInIn">
+                    <div class="card p-3 border-start border-primary border-5 shadow-sm" style="border-right: 5px solid var(--accent-purple)">
+                        <h6 class="fw-bold text-purple">${p.name}</h6>
+                        <div class="bg-light p-2 rounded mb-2">
+                            <small class="fw-bold">الجرعة المطلوبة:</small><br>
+                            <span class="text-danger">${p.nurseOrders}</span>
+                        </div>
+                        <button class="btn btn-purple btn-sm w-100 text-white" style="background: var(--accent-purple)" onclick="finishNurse(${p.id})">✅ تم إعطاء الجرعة</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function finishNurse(id) {
+            let p = patients.find(x => x.id === id);
+            p.status = 'waiting_doctor'; // يعود للطبيب بعد الجرعة للتأكد
+            saveData();
+            loadNurse();
+            playNotify();
+        }
+
+        // --- الدوال المساعدة المستمرة ---
+        function registerPatient() {
+            const name = document.getElementById('pName').value;
+            if(!name) return;
+            patients.push({ id: Date.now(), name: name, status: 'waiting_doctor', time: new Date().toLocaleTimeString('ar-EG') });
+            saveData();
+            loadReception();
+        }
+
+        function loadReception() {
+            document.getElementById('receptionList').innerHTML = patients.slice().reverse().map(p => `
+                <div class="card p-2 mb-2 patient-card">${p.name} - <small>${p.status}</small></div>
+            `).join('');
+        }
+
+        function loadDoctor() {
+            const waiting = patients.filter(p => p.status === 'waiting_doctor');
+            document.getElementById('doctorQueue').innerHTML = waiting.map(p => `
+                <button class="btn btn-light w-100 mb-2 border shadow-sm" onclick="selectPatient(${p.id})">${p.name}</button>
+            `).join('');
+        }
+
+        function orderLab() { activePatient.status = 'waiting_lab'; saveData(); switchSection('doctor'); }
+        function orderPharmacy() { activePatient.status = 'waiting_pharmacy'; saveData(); switchSection('doctor'); }
+        function completeVisit() { activePatient.status = 'completed'; saveData(); switchSection('doctor'); }
+
+        function saveData() {
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
             updateBadges();
         }
 
-        function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // مصادقة بسيطة
-            if (username === 'admin' && password === '123') {
-                currentUser = { u: 'admin', r: 'admin', name: 'المدير' };
-                localStorage.setItem('shifa_user', JSON.stringify(currentUser));
-                
-                document.getElementById('loginOverlay').classList.add('hidden-section');
-                document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.u}`;
-                
-                initAdminSection();
-                switchSection('admin');
-                showNotification("مرحباً بك", "تم تسجيل الدخول كمدير نظام!");
-            } else if (username === 'doctor' && password === 'doc123') {
-                currentUser = { u: 'doctor', r: 'doctor', name: 'الطبيب' };
-                localStorage.setItem('shifa_user', JSON.stringify(currentUser));
-                
-                document.getElementById('loginOverlay').classList.add('hidden-section');
-                document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.u}`;
-                
-                switchSection('doctor');
-                showNotification("مرحباً دكتور", "جاهز لاستقبال المرضى!");
-            } else if (username === 'reception' && password === 'rec123') {
-                currentUser = { u: 'reception', r: 'reception', name: 'الاستقبال' };
-                localStorage.setItem('shifa_user', JSON.stringify(currentUser));
-                
-                document.getElementById('loginOverlay').classList.add('hidden-section');
-                document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.u}`;
-                
-                switchSection('reception');
-                showNotification("مرحباً", "جاهز لتسجيل المرضى!");
-            } else {
-                alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة!");
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('shifa_user');
-            location.reload();
-        }
-
-        function showNotification(title, message) {
-            console.log(`🔔 ${title}: ${message}`);
-            
-            // صوت التنبيه
-            try {
-                document.getElementById('notificationSound').play();
-            } catch (e) {}
-            
-            // إشعار ويب
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification(title, {
-                    body: message,
-                    icon: 'https://cdn-icons-png.flaticon.com/512/822/822118.png'
-                });
-            }
-        }
-
-        // دوال مساعدة أخرى...
         function updateBadges() {
-            // تحديث العدادات في التبويبات
-            const waitingPatients = patients.filter(p => p.department === 'reception' || p.department === 'doctor').length;
-            const pendingTests = labRequests.filter(l => l.status === 'pending').length;
-            const pendingRx = pharmOrders.filter(r => r.status === 'pending').length;
-            
-            if (waitingPatients > 0) {
-                document.getElementById('doctorBadge').textContent = waitingPatients;
-                document.getElementById('doctorBadge').classList.remove('hidden-section');
-            } else {
-                document.getElementById('doctorBadge').classList.add('hidden-section');
-            }
-            
-            if (pendingTests > 0) {
-                document.getElementById('labBadge').textContent = pendingTests;
-                document.getElementById('labBadge').classList.remove('hidden-section');
-            } else {
-                document.getElementById('labBadge').classList.add('hidden-section');
-            }
-            
-            if (pendingRx > 0) {
-                document.getElementById('pharBadge').textContent = pendingRx;
-                document.getElementById('pharBadge').classList.remove('hidden-section');
-            } else {
-                document.getElementById('pharBadge').classList.add('hidden-section');
-            }
-        }
-
-        // باقي الدوال المحفوظة...
-    </script>
-    
-    <!-- Service Worker Script -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function(error) {
-                console.log('Service Worker registration failed:', error);
+            const counts = {
+                doctor: patients.filter(p => p.status === 'waiting_doctor').length,
+                nurse: patients.filter(p => p.status === 'waiting_nurse').length,
+                lab: patients.filter(p => p.status === 'waiting_lab').length,
+                pharmacy: patients.filter(p => p.status === 'waiting_pharmacy').length
+            };
+            Object.keys(counts).forEach(k => {
+                const el = document.getElementById(`${k}Badge`);
+                if(el) {
+                    el.textContent = counts[k];
+                    counts[k] > 0 ? el.classList.remove('hidden-section') : el.classList.add('hidden-section');
+                }
             });
         }
+
+        function playNotify() { document.getElementById('notificationSound').play().catch(()=>{}); }
+
+        window.onload = updateBadges;
     </script>
 </body>
 </html>
