@@ -3,1373 +3,2113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مجمع الشفاء الطبي - النسخة السوبر 2026</title>
+    <meta name="theme-color" content="#2c7a7b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/822/822118.png">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>مجمع الشفاء - النظام المتكامل 2026</title>
     
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22%D9%85%D8%AC%D9%85%D8%B9%20%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1%22,%22short_name%22:%22%D8%A7%D9%84%D8%B4%D9%81%D8%A1%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f8fafc%22,%22theme_color%22:%22%232c7a7b%22,%22description%22:%22%D9%86%D8%B8%D8%A7%D9%85%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%B4%D9%81%D9%8A%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%B9%D9%8A%D8%A7%D8%AF%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/822/822118.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%22},{%22src%22:%22https://cdn-icons-png.flaticon.com/512/822/822118.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22maskable%22}]}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        * {
-            font-family: 'Noto Sans Arabic', sans-serif;
+        :root { 
+            --primary-color: #2c7a7b; 
+            --secondary-color: #f0fdf4; 
+            --accent-blue: #0d6efd; 
+            --accent-red: #dc3545; 
+            --accent-green: #198754; 
+            --accent-gold: #d4af37;
+            --accent-warning: #ffc107;
+            --accent-info: #17a2b8;
+            --accent-purple: #6f42c1;
         }
+        body { background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        .navbar { background: linear-gradient(135deg, var(--primary-color), #1f5a5a) !important; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+        .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .hidden-section { display: none !important; }
+        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 10px 20px !important; position: relative; }
+        .nav-link.active { background-color: var(--accent-blue) !important; color: white !important; border-radius: 10px; }
+        .badge-notify { position: absolute; top: -5px; right: -5px; background: var(--accent-red); color: white; border-radius: 50%; padding: 3px 7px; font-size: 0.7rem; }
+        .stat-card { border-radius: 15px; padding: 20px; color: white; text-align: center; }
+        .patient-btn { text-align: right; margin-bottom: 8px; border-right: 5px solid var(--primary-color); width: 100%; transition: 0.3s; padding: 12px 15px; background: white; border: 1px solid #dee2e6; border-radius: 10px; }
+        .patient-btn.ready { border-right-color: #28a745; background-color: #f0fff4; }
+        .patient-btn:hover { background-color: #f8f9fa; }
+        .lab-result-item { background: #e9ecef; padding: 10px; border-radius: 8px; margin-bottom: 5px; border-left: 4px solid var(--accent-blue); }
+        .section-pane { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media print { .no-print { display: none !important; } body * { visibility: hidden; } #printArea, #printArea * { visibility: visible; } #printArea { position: absolute; left: 0; top: 0; width: 100%; direction: rtl; padding: 20px; } }
+        .search-box { position: relative; }
+        .search-box input { padding-right: 40px; }
+        .rx-item { background: #f8f9fa; padding: 8px 12px; margin: 5px 0; border-radius: 8px; border-left: 4px solid var(--accent-green); }
+        .status-online { color: #28a745; font-weight: bold; }
+        .status-offline { color: #dc3545; font-weight: bold; }
+        .sync-status { position: fixed; bottom: 10px; left: 10px; z-index: 1000; }
+        .sync-btn { position: fixed; bottom: 10px; right: 10px; z-index: 1000; }
+        .medical-record { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .nursing-schedule { border-left: 5px solid var(--accent-purple); }
+        .expiry-warning { background: #fff3cd; border-left: 5px solid #ffc107; }
+        .stock-critical { background: #f8d7da; border-left: 5px solid #dc3545; }
+        .library-card { height: 100%; transition: all 0.3s; }
+        .library-card:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .form-check { padding-right: 1.5em; margin-bottom: 0.5rem; }
+        .form-check-input { margin-right: -1.5em; }
+        #labTestsChecklist { scrollbar-width: thin; scrollbar-color: var(--primary-color) #f1f1f1; }
+        #labTestsChecklist::-webkit-scrollbar { width: 8px; }
+        #labTestsChecklist::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        #labTestsChecklist::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        /* Print Styles */
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-        }
+        /* PWA Styles */
+        .install-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 50px; padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; }
+        .install-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .pwa-status { position: fixed; top: 10px; left: 10px; z-index: 9999; }
+        .pwa-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 20px; z-index: 10000; max-width: 400px; direction: rtl; }
+        .offline-banner { position: fixed; top: 0; left: 0; right: 0; background: #dc3545; color: white; text-align: center; padding: 10px; z-index: 9998; }
+        .online-banner { position: fixed; top: 0; left: 0; right: 0; background: #28a745; color: white; text-align: center; padding: 10px; z-index: 9998; }
+        #appVersion { font-size: 0.8em; color: #6c757d; }
+        
+        /* Advanced Permissions Styles */
+        .permission-badge { font-size: 0.7em; padding: 2px 6px; margin-right: 3px; }
+        .permission-row { border-bottom: 1px solid #eee; padding: 8px 0; }
+        .permission-header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 10px; border-radius: 8px; }
+        .permission-toggle { transform: scale(0.9); }
+        .user-status-online { color: #28a745; animation: pulse 2s infinite; }
+        .user-status-offline { color: #dc3545; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .role-badge { font-size: 0.75em; padding: 3px 8px; }
+        .permission-modal { max-height: 80vh; overflow-y: auto; }
+        .password-strength { height: 5px; border-radius: 2px; margin-top: 5px; transition: all 0.3s; }
+        
+        /* New Styles for Workflow */
+        .workflow-step { border-left: 4px solid; padding: 10px; margin: 5px 0; border-radius: 8px; }
+        .step-reception { border-color: #0d6efd; background: #e7f1ff; }
+        .step-doctor { border-color: #198754; background: #e8f5e8; }
+        .step-lab { border-color: #dc3545; background: #fde8e8; }
+        .step-pharmacy { border-color: #ffc107; background: #fff8e1; }
+        .step-nursing { border-color: #6f42c1; background: #f0e8ff; }
+        .step-completed { background: #d4edda !important; }
+        .patient-flow { display: flex; justify-content: space-between; margin: 10px 0; }
+        .flow-arrow { color: #6c757d; margin: 0 10px; }
+        
+        /* Admin Dashboard Styles */
+        .admin-stat-card { border-radius: 12px; padding: 15px; color: white; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
+        .admin-chart-container { height: 300px; position: relative; }
+        .quick-action-btn { width: 100%; margin: 5px 0; }
+        .system-health { font-size: 0.9em; }
+        .health-good { color: #28a745; }
+        .health-warning { color: #ffc107; }
+        .health-critical { color: #dc3545; }
+        .transaction-item { border-left: 4px solid; padding: 8px; margin: 5px 0; border-radius: 6px; }
+        .transaction-income { border-color: #28a745; background: #d4edda; }
+        .transaction-expense { border-color: #dc3545; background: #f8d7da; }
+        .staff-avatar { width: 40px; height: 40px; border-radius: 50%; background: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* New Styles from Version 2 */
+        .bg-medical { background: #eef2f3; border-right: 5px solid var(--primary-color); }
+        .border-purple { border-color: var(--accent-purple) !important; }
+        .btn-outline-purple { color: var(--accent-purple); border-color: var(--accent-purple); }
+        .btn-outline-purple:hover { background-color: var(--accent-purple); color: white; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-    <div id="app" class="min-h-screen">
-        <!-- Loading Screen -->
-        <div id="loading-screen" class="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
-            <div class="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="text-lg font-semibold text-gray-700">جاري تحميل النظام...</p>
-            <p id="loading-message" class="text-sm text-gray-500 mt-2">جاري تهيئة قاعدة البيانات</p>
+<body>
+
+    <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <!-- منطقة الطباعة -->
+    <div id="printArea" class="hidden-section">
+        <div class="text-center border-bottom pb-3 mb-3">
+            <h2 style="color: var(--primary-color);">🏥 مجمع الشفاء الطبي</h2>
+            <p>السودان - جلقني</p>
+            <h5 id="printTitle">روشتة طبية / فاتورة</h5>
+            <small id="printDate"></small>
         </div>
-
-        <!-- Login Page -->
-        <div id="login-page" class="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-cyan-50 flex items-center justify-center p-4">
-            <div class="w-full max-w-md">
-                <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
-                    <div class="p-8">
-                        <div class="text-center mb-8">
-                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full mb-4">
-                                <i data-lucide="heart-pulse" class="w-8 h-8 text-white"></i>
-                            </div>
-                            <h1 class="text-3xl font-bold text-gray-900 mb-2">مجمع الشفاء الطبي</h1>
-                            <p class="text-gray-600">النسخة السوبر 2026 - نظام إدارة متكامل</p>
-                        </div>
-
-                        <!-- Error Alert -->
-                        <div id="login-error" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0"></i>
-                            <p id="error-message" class="text-sm text-red-700"></p>
-                        </div>
-
-                        <!-- Login Form -->
-                        <form id="login-form" class="space-y-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">اختر الدور الوظيفي</label>
-                                <div class="grid grid-cols-2 gap-2" id="roles-container">
-                                    <!-- Roles will be loaded dynamically -->
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور</label>
-                                <input type="password" id="password" placeholder="أدخل كلمة المرور" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
-                            </div>
-
-                            <button type="submit" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-2 rounded-lg transition-all">دخول النظام</button>
-                        </form>
-
-                        <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                            <p class="text-xs text-blue-700 font-semibold mb-2">📋 ملاحظات الأمان:</p>
-                            <ul class="text-xs text-blue-600 space-y-1">
-                                <li>• كلمات المرور مشفرة ومخزنة بأمان</li>
-                                <li>• يمكن للمدير فقط إضافة المستخدمين الجدد</li>
-                                <li>• البيانات تُحفظ محلياً في المتصفح</li>
-                                <li>• يمكنك تصدير واستيراد البيانات بأمان</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <p class="text-center text-gray-600 text-sm mt-6">نظام متكامل لإدارة المستشفيات والعيادات الطبية</p>
-            </div>
-        </div>
-
-        <!-- Dashboard -->
-        <div id="dashboard" class="hidden min-h-screen bg-gray-50">
-            <header id="dashboard-header" class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg sticky top-0 z-40">
-                <div class="flex items-center justify-between px-4 py-4">
-                    <div class="flex items-center gap-3">
-                        <button id="sidebar-toggle" class="p-2 hover:bg-white/20 rounded-lg transition-colors">
-                            <i data-lucide="menu" class="w-5 h-5"></i>
-                        </button>
-                        <div class="text-2xl">🏥</div>
-                        <div>
-                            <h1 class="text-xl font-bold">مجمع الشفاء الطبي</h1>
-                            <p id="user-role" class="text-sm opacity-90"></p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <p id="user-name" class="text-sm font-semibold"></p>
-                            <p id="current-date" class="text-xs opacity-75"></p>
-                        </div>
-                        <button id="logout-btn" class="p-2 hover:bg-white/20 rounded-lg transition-colors" title="تسجيل الخروج">
-                            <i data-lucide="log-out" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="px-4 py-3 bg-white/10 flex gap-4 overflow-x-auto">
-                    <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">👥 مرضى جدد:</span>
-                        <span id="stat-new-patients" class="font-bold">0</span>
-                    </div>
-                    <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">🧪 فحوصات:</span>
-                        <span id="stat-completed-tests" class="font-bold">0</span>
-                    </div>
-                    <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">💊 روشتات:</span>
-                        <span id="stat-dispensed-rx" class="font-bold">0</span>
-                    </div>
-                    <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">👨‍⚕️ موظفين:</span>
-                        <span id="stat-employees" class="font-bold">0</span>
-                    </div>
-                    <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">💰 إيرادات:</span>
-                        <span id="stat-total-income" class="font-bold">0 ج.س</span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="flex">
-                <aside id="sidebar" class="w-64 bg-white shadow-lg p-4 space-y-2 max-h-[calc(100vh-120px)] overflow-y-auto transition-all duration-300">
-                    <nav class="space-y-1">
-                        <button data-tab="main" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors bg-teal-100 text-teal-700 font-semibold">📊 لوحة التحكم الرئيسية</button>
-                        <div id="role-specific-tabs"></div>
-                        <div id="admin-tabs" class="hidden">
-                            <button data-tab="employees" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">👨‍⚕️ إدارة الموظفين</button>
-                            <button data-tab="tests" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">🧪 إدارة الفحوصات</button>
-                            <button data-tab="medicines" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">💊 إدارة الأدوية</button>
-                            <button data-tab="overview" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">📊 نظرة عامة</button>
-                            <button data-tab="reports" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">📈 التقارير</button>
-                            <button data-tab="data" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">💾 إدارة البيانات</button>
-                            <button data-tab="settings" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">⚙️ الإعدادات</button>
-                        </div>
-                    </nav>
-                    
-                    <div id="notifications-section" class="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold text-yellow-800">🔔 الإشعارات</h3>
-                            <span id="notification-count" class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">0</span>
-                        </div>
-                        <div id="notifications-list" class="space-y-2 max-h-40 overflow-y-auto">
-                            <!-- Notifications will be added here dynamically -->
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6">
-                        <h3 class="text-sm font-semibold text-gray-700 mb-2">⚡ إجراءات سريعة</h3>
-                        <div class="space-y-1">
-                            <button id="quick-add-employee" class="w-full text-right px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded transition-colors">👨‍⚕️ إضافة موظف</button>
-                            <button id="quick-add-test" class="w-full text-right px-3 py-2 text-sm bg-green-50 hover:bg-green-100 text-green-700 rounded transition-colors">🧪 إضافة فحص</button>
-                            <button id="quick-add-medicine" class="w-full text-right px-3 py-2 text-sm bg-red-50 hover:bg-red-100 text-red-700 rounded transition-colors">💊 إضافة دواء</button>
-                        </div>
-                    </div>
-                </aside>
-
-                <!-- Content Area -->
-                <main id="content-area" class="flex-1 p-6 overflow-auto">
-                    <div id="dashboard-content" class="space-y-6">
-                        <div class="text-center py-12">
-                            <i data-lucide="heart-pulse" class="w-16 h-16 text-teal-500 mx-auto mb-4"></i>
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">مرحباً بك في نظام إدارة المستشفى</h2>
-                            <p class="text-gray-600">اختر قسمًا من القائمة الجانبية للبدء</p>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
+        <div id="printContent" class="fs-5"></div>
+        <div class="mt-5 pt-3 border-top text-center"><p>نتمنى لكم عاجل الشفاء</p></div>
     </div>
 
-    <!-- Toast Notifications Container -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2 w-80"></div>
-
-    <!-- Modal Container -->
-    <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 id="modal-title" class="text-lg font-semibold"></h3>
-                <button id="modal-close" class="p-1 hover:bg-gray-100 rounded">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div id="modal-body" class="p-4 overflow-y-auto max-h-[60vh]">
-                <!-- Modal content will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4">
-            <div class="p-6">
-                <div class="flex items-center gap-3 mb-4">
-                    <i data-lucide="alert-triangle" class="w-8 h-8 text-red-500"></i>
-                    <h3 class="text-lg font-semibold" id="confirm-title">تأكيد العملية</h3>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginOverlay" class="no-print" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(44, 122, 123, 0.9), rgba(44, 122, 123, 0.8)); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 380px; border-top: 8px solid var(--accent-gold);">
+            <div class="text-center mb-4">
+                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60">
+                <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي 2026</h3>
+                <p class="text-muted small">النظام المتكامل المحدث - إدارة جميع الأقسام</p>
+                <div class="mt-2">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="loginMode" id="modeLocal" value="local" checked>
+                        <label class="form-check-label" for="modeLocal">💾 عمل محلي</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="loginMode" id="modeServer" value="server">
+                        <label class="form-check-label" for="modeServer">☁️ قاعدة بيانات</label>
+                    </div>
                 </div>
-                <p id="confirm-message" class="text-gray-600 mb-6"></p>
-                <div class="flex gap-2">
-                    <button id="confirm-cancel" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">إلغاء</button>
-                    <button id="confirm-ok" class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">تأكيد</button>
+            </div>
+            <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
+            <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
+            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">🚀 دخول للنظام</button>
+            <div class="mt-3 text-center small text-muted" id="loginStatus">اختر القسم ودخل بيانات الدخول الخاصة به</div>
+            
+            <!-- معلومات حسابات الأقسام -->
+            <div class="mt-3 p-2 bg-light rounded">
+                <h6 class="text-center mb-2">🔐 حسابات الأقسام:</h6>
+                <div class="row small text-muted">
+                    <div class="col-6">
+                        <div>👑 المدير: admin / 123</div>
+                        <div>👨‍⚕️ الطبيب: doctor / doc123</div>
+                        <div>📋 الاستقبال: reception / rec123</div>
+                    </div>
+                    <div class="col-6">
+                        <div>💊 الصيدلي: pharmacist / ph123</div>
+                        <div>🧪 المعمل: lab / lab123</div>
+                        <div>💉 التمريض: nurse / nur123</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Offline Indicator -->
-    <div id="offline-indicator" class="fixed bottom-4 left-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 hidden">
-        <div class="flex items-center gap-2">
-            <i data-lucide="wifi-off" class="w-4 h-4"></i>
-            <span>أنت غير متصل بالإنترنت</span>
+    <!-- المحتوى الرئيسي -->
+    <div id="mainContent" class="hidden-section">
+        <!-- PWA Status -->
+        <div class="pwa-status no-print">
+            <div id="pwaStatus" class="badge bg-info">PWA: نشط</div>
         </div>
-    </div>
-
-    <script>
-        // تطبيق جميع التحسينات المطلوبة مع إدارة متكاملة
         
-        class HospitalStateManager {
-            constructor() {
-                this.currentUser = null;
-                this.data = {
-                    employees: [],
-                    patients: [],
-                    appointments: [],
-                    prescriptions: [],
-                    labTests: [],
-                    medicines: [],
-                    nursingTasks: [],
-                    transactions: [],
-                    testTypes: [],
-                    medicineCategories: []
-                };
-                this.notifications = [];
-                this.backups = [];
-                this.isOnline = navigator.onLine;
-                this.init();
-            }
+        <!-- شريط التنقل -->
+        <nav class="navbar navbar-dark mb-4 no-print">
+            <div class="container d-flex justify-content-between text-white align-items-center">
+                <span class="navbar-brand fw-bold">🏥 مجمع الشفاء - إدارة الأقسام المتكاملة 2026</span>
+                <div>
+                    <span id="currentUserDisplay" class="badge bg-light text-dark mx-2"></span>
+                    <span id="clockDisplay" class="badge bg-info text-dark"></span>
+                    <span id="connectionStatus" class="badge bg-success mx-2">متصل محلياً</span>
+                    <button class="btn btn-sm btn-outline-light ms-2" onclick="openUserMenu()">👤</button>
+                </div>
+                <button class="btn btn-sm btn-outline-light" onclick="logout()">خروج</button>
+            </div>
+        </nav>
 
-            init() {
-                this.loadFromLocalStorage();
-                this.initializeDefaultData();
-                this.setupAutoBackup();
-                this.setupOfflineDetection();
-                this.checkForUrgentTasks();
-            }
+        <!-- تبويبات التنقل -->
+        <div class="container">
+            <ul class="nav nav-pills mb-4 shadow-sm p-2 bg-white rounded-4 justify-content-center no-print" id="mainTabs">
+                <li class="nav-item" id="tab-reception-li"><button class="nav-link" id="btn-reception" onclick="switchSection('reception')">📋 الاستقبال</button></li>
+                <li class="nav-item" id="tab-doctor-li"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">👨‍⚕️ العيادة <span id="doctorBadge" class="badge-notify hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">🧪 المعمل <span id="labBadge" class="badge-notify hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">💊 الصيدلية <span id="pharBadge" class="badge-notify hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-nursing-li"><button class="nav-link" id="btn-nursing" onclick="switchSection('nursing')">💉 التمريض <span id="nurseBadge" class="badge-notify hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">👑 المدير</button></li>
+            </ul>
 
-            initializeDefaultData() {
-                if (this.data.employees.length === 0) {
-                    const defaultAdmin = {
-                        id: '1',
-                        username: 'admin',
-                        password: this.hashPassword('Admin@2026'),
-                        name: 'مدير النظام',
-                        role: 'admin',
-                        email: 'admin@hospital.com',
-                        phone: '0123456789',
-                        department: 'الإدارة',
-                        salary: 0,
-                        hireDate: new Date(),
-                        status: 'active',
-                        permissions: ['all'],
-                        color: 'from-gray-700 to-gray-800',
-                        icon: '⚙️'
-                    };
-                    this.data.employees.push(defaultAdmin);
-                    this.saveToLocalStorage();
-                }
-
-                if (this.data.testTypes.length === 0) {
-                    const defaultTests = [
-                        { id: '1', name: 'صورة دم كاملة', price: 150, category: 'دم', duration: '30 دقيقة' },
-                        { id: '2', name: 'سكر تراكمي', price: 120, category: 'دم', duration: '1 يوم' },
-                        { id: '3', name: 'وظائف كبد', price: 200, category: 'دم', duration: '1 يوم' },
-                        { id: '4', name: 'تحليل بول', price: 80, category: 'بول', duration: '30 دقيقة' },
-                        { id: '5', name: 'أشعة عادية', price: 250, category: 'أشعة', duration: '1 ساعة' }
-                    ];
-                    this.data.testTypes = defaultTests;
-                }
-
-                if (this.data.medicines.length === 0) {
-                    const defaultMedicines = [
-                        { id: '1', name: 'بانادول', dosage: '500 مجم', stock: 100, price: 15, expiryDate: new Date('2026-12-31'), supplier: 'شركة الأدوية' },
-                        { id: '2', name: 'أموكسيسيلين', dosage: '500 مجم', stock: 50, price: 25, expiryDate: new Date('2025-06-30'), supplier: 'مصنع الدواء' },
-                        { id: '3', name: 'أدفيل', dosage: '400 مجم', stock: 75, price: 20, expiryDate: new Date('2026-03-31'), supplier: 'شركة الأدوية' }
-                    ];
-                    this.data.medicines = defaultMedicines;
-                }
-
-                if (this.data.medicineCategories.length === 0) {
-                    this.data.medicineCategories = [
-                        'مسكنات', 'مضادات حيوية', 'مضادات التهاب', 'فيتامينات', 'أدوية مزمنة'
-                    ];
-                }
-            }
-
-            loadFromLocalStorage() {
-                try {
-                    const savedData = localStorage.getItem('hospitalData');
-                    if (savedData) {
-                        const parsed = JSON.parse(savedData);
-                        this.data = { ...this.data, ...parsed };
-                        this.restoreDates();
-                    }
-                    
-                    const savedBackups = localStorage.getItem('hospitalBackups');
-                    if (savedBackups) {
-                        this.backups = JSON.parse(savedBackups);
-                    }
-                } catch (error) {
-                    console.error('Error loading data:', error);
-                    this.showToast('خطأ في تحميل البيانات', 'error');
-                }
-            }
-
-            saveToLocalStorage() {
-                try {
-                    localStorage.setItem('hospitalData', JSON.stringify(this.data));
-                    localStorage.setItem('hospitalBackups', JSON.stringify(this.backups));
-                } catch (error) {
-                    console.error('Error saving data:', error);
-                    this.showToast('خطأ في حفظ البيانات', 'error');
-                }
-            }
-
-            restoreDates() {
-                const restoreDateFields = (obj, fields) => {
-                    fields.forEach(field => {
-                        if (obj[field] && typeof obj[field] === 'string') {
-                            obj[field] = new Date(obj[field]);
-                        }
-                    });
-                };
-
-                this.data.employees.forEach(e => restoreDateFields(e, ['hireDate']));
-                this.data.patients.forEach(p => restoreDateFields(p, ['registrationDate']));
-                this.data.appointments.forEach(a => restoreDateFields(a, ['date']));
-                this.data.prescriptions.forEach(p => restoreDateFields(p, ['date']));
-                this.data.labTests.forEach(t => restoreDateFields(t, ['date']));
-                this.data.medicines.forEach(m => restoreDateFields(m, ['expiryDate']));
-                this.data.nursingTasks.forEach(t => restoreDateFields(t, ['date']));
-                this.data.transactions.forEach(t => restoreDateFields(t, ['date']));
-            }
-
-            hashPassword(password) {
-                return btoa(password).split('').reverse().join('');
-            }
-
-            verifyPassword(inputPassword, storedHash) {
-                return this.hashPassword(inputPassword) === storedHash;
-            }
-
-            setupAutoBackup() {
-                setInterval(() => {
-                    this.createBackup();
-                }, 3600000);
-            }
-
-            setupOfflineDetection() {
-                window.addEventListener('online', () => {
-                    this.isOnline = true;
-                    document.getElementById('offline-indicator').classList.add('hidden');
-                    this.showToast('تم استعادة الاتصال', 'success');
-                    this.syncOfflineChanges();
-                });
-
-                window.addEventListener('offline', () => {
-                    this.isOnline = false;
-                    document.getElementById('offline-indicator').classList.remove('hidden');
-                    this.showToast('فقدت الاتصال بالإنترنت', 'warning');
-                });
-            }
-
-            syncOfflineChanges() {
-                this.showToast('جاري مزامنة البيانات...', 'info');
-            }
-
-            checkForUrgentTasks() {
-                const now = new Date();
-                const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-                const urgentTasks = this.data.nursingTasks.filter(task => {
-                    if (task.status !== 'pending') return false;
-                    const taskTime = new Date(`${task.date.toDateString()} ${task.time}`);
-                    return taskTime < twoHoursFromNow && taskTime > now;
-                });
-
-                if (urgentTasks.length > 0) {
-                    this.addNotification(`لديك ${urgentTasks.length} مهام تمريض عاجلة`);
-                }
-
-                const expiredMedicines = this.data.medicines.filter(med => {
-                    return new Date(med.expiryDate) < new Date();
-                });
-
-                if (expiredMedicines.length > 0) {
-                    this.addNotification(`هناك ${expiredMedicines.length} دواء منتهي الصلاحية`);
-                }
-
-                const lowStock = this.data.medicines.filter(med => med.stock < 10);
-                if (lowStock.length > 0) {
-                    this.addNotification(`هناك ${lowStock.length} دواء بمخزون منخفض`);
-                }
-            }
-
-            addNotification(message, type = 'warning') {
-                const notification = {
-                    id: Date.now(),
-                    message,
-                    type,
-                    timestamp: new Date(),
-                    read: false
-                };
-
-                this.notifications.unshift(notification);
-                this.updateNotificationsUI();
-                this.showToast(message, type);
-            }
-
-            updateNotificationsUI() {
-                const container = document.getElementById('notifications-list');
-                const countElement = document.getElementById('notification-count');
-                
-                if (!container || !countElement) return;
-
-                const unreadCount = this.notifications.filter(n => !n.read).length;
-                countElement.textContent = unreadCount;
-
-                container.innerHTML = this.notifications
-                    .slice(0, 5)
-                    .map(n => `
-                        <div class="notification-item p-2 text-sm ${n.read ? 'text-gray-600' : 'text-gray-900 bg-yellow-100'} rounded border border-yellow-200" data-id="${n.id}">
-                            <div class="flex justify-between">
-                                <span>${n.message}</span>
-                                <span class="text-xs text-gray-500">${this.formatTimeAgo(n.timestamp)}</span>
+            <!-- محتوى الأقسام -->
+            <div class="tab-content">
+                <!-- قسم الاستقبال - مدمج -->
+                <div id="reception-sec" class="section-pane">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card p-4 border-top border-primary border-4">
+                                <h4 class="fw-bold mb-3">📝 تسجيل مريض جديد</h4>
+                                <div class="mb-3">
+                                    <label class="form-label">الاسم الكامل</label>
+                                    <input type="text" id="pName" class="form-control" placeholder="اسم المريض الرباعي">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <label class="form-label">العمر</label>
+                                        <input type="number" id="pAge" class="form-control" placeholder="العمر">
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="form-label">الجنس</label>
+                                        <select id="pGender" class="form-select">
+                                            <option value="ذكر">ذكر</option>
+                                            <option value="أنثى">أنثى</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="form-label">نوع الزيارة</label>
+                                        <select id="pVisitType" class="form-select">
+                                            <option value="زيارة عادية">عادية</option>
+                                            <option value="متابعة">متابعة</option>
+                                            <option value="طوارئ">طوارئ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">العنوان / السكن</label>
+                                    <input type="text" id="pAddress" class="form-control" placeholder="السكن / العنوان">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">رقم الهاتف</label>
+                                    <input type="tel" id="pPhone" class="form-control" placeholder="رقم الهاتف">
+                                </div>
+                                <div class="mb-3 bg-light p-2 rounded">
+                                    <label class="form-label fw-bold">رسوم تذكرة الطبيب</label>
+                                    <input type="number" id="pTicket" class="form-control" value="2000">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ملاحظات / تاريخ مرضي</label>
+                                    <textarea id="pMedicalHistory" class="form-control" rows="2" placeholder="ملاحظات إضافية"></textarea>
+                                </div>
+                                <button class="btn btn-primary w-100 fw-bold" onclick="registerPatient()">✅ حفظ وإرسال للطبيب</button>
                             </div>
                         </div>
-                    `)
-                    .join('');
-            }
-
-            formatTimeAgo(date) {
-                const now = new Date();
-                const diffMs = now - date;
-                const diffMins = Math.floor(diffMs / 60000);
-                const diffHours = Math.floor(diffMs / 3600000);
-                const diffDays = Math.floor(diffMs / 86400000);
-
-                if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
-                if (diffHours < 24) return `منذ ${diffHours} ساعة`;
-                return `منذ ${diffDays} يوم`;
-            }
-
-            createBackup() {
-                const backup = {
-                    id: Date.now(),
-                    timestamp: new Date(),
-                    data: JSON.parse(JSON.stringify(this.data))
-                };
-
-                this.backups.unshift(backup);
-                
-                if (this.backups.length > 10) {
-                    this.backups.pop();
-                }
-
-                this.saveToLocalStorage();
-                this.showToast('تم إنشاء نسخة احتياطية تلقائية', 'info');
-            }
-
-            restoreBackup(backupId) {
-                const backup = this.backups.find(b => b.id === backupId);
-                if (backup) {
-                    this.data = JSON.parse(JSON.stringify(backup.data));
-                    this.restoreDates();
-                    this.saveToLocalStorage();
-                    return true;
-                }
-                return false;
-            }
-
-            exportData(format = 'json') {
-                const data = {
-                    ...this.data,
-                    exportDate: new Date().toISOString(),
-                    version: '1.0.0'
-                };
-
-                if (format === 'json') {
-                    return JSON.stringify(data, null, 2);
-                } else if (format === 'csv') {
-                    // تحويل البيانات إلى CSV (تفاصيل التحويل يمكن إضافتها لاحقاً)
-                }
-            }
-
-            importData(dataString) {
-                try {
-                    const importedData = JSON.parse(dataString);
-                    
-                    if (!this.validateImportedData(importedData)) {
-                        throw new Error('هيكل البيانات غير صالح');
-                    }
-
-                    this.data = { ...this.data, ...importedData };
-                    this.restoreDates();
-                    this.saveToLocalStorage();
-                    return true;
-                } catch (error) {
-                    console.error('Import error:', error);
-                    return false;
-                }
-            }
-
-            validateImportedData(data) {
-                const requiredFields = ['employees', 'patients', 'medicines'];
-                return requiredFields.every(field => Array.isArray(data[field]));
-            }
-
-            showToast(message, type = 'info') {
-                const container = document.getElementById('toast-container');
-                const toastId = Date.now();
-                
-                const toast = document.createElement('div');
-                toast.className = `toast-message p-4 rounded-lg shadow-lg fade-in ${this.getToastClass(type)}`;
-                toast.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="${this.getToastIcon(type)}" class="w-5 h-5"></i>
-                        <span>${message}</span>
+                        
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="stat-card bg-primary shadow">
+                                        <h6 class="mb-1">👥 المرضى الجدد</h6>
+                                        <h2 id="receptionNewPatients">0</h2>
+                                        <small>مريض</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="stat-card bg-success shadow">
+                                        <h6 class="mb-1">💰 إيرادات اليوم</h6>
+                                        <h2 id="receptionRevenue">0</h2>
+                                        <small>جنية</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card p-4 mt-4">
+                                <h4 class="fw-bold mb-3">📋 سجل المرضى اليوم</h4>
+                                <div class="search-box mb-3">
+                                    <input type="text" class="form-control" placeholder="🔍 بحث عن مريض..." id="searchPatient" onkeyup="searchPatients(this.value)">
+                                </div>
+                                <div id="receptionList" style="max-height: 400px; overflow-y: auto;">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                `;
+                </div>
 
-                container.appendChild(toast);
-                lucide.createIcons();
+                <!-- قسم العيادة - مدمج -->
+                <div id="doctor-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-4">
+                                <h4 class="fw-bold mb-3">👥 قائمة الانتظار</h4>
+                                <div id="doctorQueue" style="max-height: 500px; overflow-y: auto;">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div id="doctorWorkArea" class="card p-4 hidden-section border-top border-success border-5">
+                                <h4 class="fw-bold mb-3">👨‍⚕️ تشخيص المريض</h4>
+                                <div id="doctorPatientInfo" class="mb-3">
+                                    <h5 id="currentPatientName" class="text-success fw-bold"></h5>
+                                    <p id="currentPatientDetails" class="text-muted"></p>
+                                    <input type="hidden" id="selectedPatientId">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">شكوى المريض</label>
+                                    <textarea id="complaint" class="form-control" rows="2" placeholder="وصف الشكوى"></textarea>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">طلب فحوصات:</label>
+                                        <select id="labSelect" class="form-select mb-2" multiple style="height: 150px;"></select>
+                                        <button class="btn btn-outline-danger w-100" onclick="orderLab()">🧪 إرسال للمعمل</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">وصف الدواء:</label>
+                                        <select id="medicineSelect" class="form-select mb-2" multiple style="height: 150px;"></select>
+                                        <button class="btn btn-outline-warning w-100" onclick="orderPharmacy()">💊 إرسال للصيدلية</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3 p-2 bg-light rounded">
+                                    <label class="form-label fw-bold">إجراءات تمريضية (حقن/دريبات):</label>
+                                    <textarea id="nursingInstructions" class="form-control mb-2" rows="2" placeholder="اكتب التعليمات..."></textarea>
+                                    <button class="btn btn-outline-purple w-100" onclick="orderNurse()">💉 إرسال للتمريض</button>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">التشخيص النهائي</label>
+                                    <textarea id="diagnosis" class="form-control" rows="3" placeholder="التشخيص الطبي"></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">العلامات الحيوية</label>
+                                    <div class="row">
+                                        <div class="col-3 mb-2">
+                                            <input type="text" id="vitalBP" class="form-control" placeholder="الضغط">
+                                        </div>
+                                        <div class="col-3 mb-2">
+                                            <input type="text" id="vitalTemp" class="form-control" placeholder="الحرارة">
+                                        </div>
+                                        <div class="col-3 mb-2">
+                                            <input type="text" id="vitalPulse" class="form-control" placeholder="النبض">
+                                        </div>
+                                        <div class="col-3 mb-2">
+                                            <input type="text" id="vitalWeight" class="form-control" placeholder="الوزن">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-success w-100 fw-bold" onclick="completeDoctorVisit()">🏁 إنهاء الكشف والزيارة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                setTimeout(() => {
-                    toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                    setTimeout(() => toast.remove(), 300);
-                }, 5000);
+                <!-- قسم المعمل - مدمج -->
+                <div id="lab-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-4 border-top border-danger border-5">
+                                <h4 class="fw-bold mb-3">🧪 إدارة الفحوصات</h4>
+                                <div id="labPatientInfo" class="mb-3">
+                                    <p class="text-muted">اختر فحصاً من القائمة</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">نتائج الفحص</label>
+                                    <textarea id="labResult" class="form-control" rows="4" placeholder="أدخل نتائج الفحص"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ملاحظات فنية</label>
+                                    <textarea id="labNotes" class="form-control" rows="2" placeholder="ملاحظات إضافية"></textarea>
+                                </div>
+                                <button class="btn btn-success w-100 fw-bold" onclick="saveLabResult()">💾 حفظ النتائج</button>
+                                <button class="btn btn-info w-100 fw-bold mt-2" onclick="printLabReport()">🖨️ طباعة التقرير</button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card p-4 border-top border-danger border-5">
+                                <h4 class="fw-bold mb-3">🧪 طلبات الفحص الواردة</h4>
+                                <div class="row g-3" id="labList">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم الصيدلية - مدمج -->
+                <div id="pharmacy-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-4 border-top border-warning border-5">
+                                <h4 class="fw-bold mb-3">💊 صرف الروشتات</h4>
+                                <div id="pharmacyPatientInfo" class="mb-3">
+                                    <p class="text-muted">اختر روشتة من القائمة</p>
+                                </div>
+                                <div id="pharmacyMedications">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                                <button class="btn btn-success w-100 fw-bold mt-3" onclick="dispenseMedications()">✅ صرف الأدوية</button>
+                                <button class="btn btn-info w-100 fw-bold mt-2" onclick="printPharmacyInvoice()">🧾 طباعة الفاتورة</button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card p-4 border-top border-warning border-5">
+                                <h4 class="fw-bold mb-3">💊 الصيدلية المركزية</h4>
+                                <div class="row g-3" id="pharmacyList">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم التمريض - مدمج -->
+                <div id="nursing-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-4 border-top border-purple border-5">
+                                <h4 class="fw-bold mb-3">💉 إدارة المهام التمريضية</h4>
+                                <div class="mb-3">
+                                    <label class="form-label">المريض</label>
+                                    <select id="nursingPatient" class="form-select" onchange="loadNursingTasks()">
+                                        <option value="">اختر المريض</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">نوع المهمة</label>
+                                    <select id="nursingTaskType" class="form-select">
+                                        <option value="حقنة">💉 حقنة</option>
+                                        <option value="تنقيط">💧 تنقيط</option>
+                                        <option value="قياس">📏 قياس العلامات الحيوية</option>
+                                        <option value="عناية">🩹 عناية بالجروح</option>
+                                        <option value="أخرى">📝 مهمة أخرى</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">التفاصيل</label>
+                                    <textarea id="nursingTaskDetails" class="form-control" rows="3" placeholder="تفاصيل المهمة"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">الوقت المطلوب</label>
+                                    <input type="time" id="nursingTaskTime" class="form-control">
+                                </div>
+                                <button class="btn btn-success w-100 fw-bold" onclick="addNursingTask()">➕ إضافة مهمة</button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card p-4 border-top border-purple border-5">
+                                <h4 class="fw-bold mb-3">💉 وحدة التمريض</h4>
+                                <div class="row g-3" id="nurseList">
+                                    <!-- سيتم ملؤها ديناميكياً -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم المدير الكامل - مدمج -->
+                <div id="admin-sec" class="section-pane hidden-section">
+                    <div class="row g-3 mb-4 text-white">
+                        <div class="col-md-3">
+                            <div class="stat-card bg-primary shadow">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">🏦 عيادة اليوم</h6>
+                                        <h2 id="admIncClinic">0</h2>
+                                        <small>جنيه</small>
+                                    </div>
+                                    <div class="fs-1">💰</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card bg-danger shadow">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">🧪 معمل اليوم</h6>
+                                        <h2 id="admIncLab">0</h2>
+                                        <small>جنيه</small>
+                                    </div>
+                                    <div class="fs-1">🔬</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card bg-success shadow">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">💊 صيدلية اليوم</h6>
+                                        <h2 id="admIncPhar">0</h2>
+                                        <small>جنيه</small>
+                                    </div>
+                                    <div class="fs-1">💊</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card bg-dark shadow">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">💰 إجمالي اليوم</h6>
+                                        <h2 id="admIncTotal">0</h2>
+                                        <small>جنيه</small>
+                                    </div>
+                                    <div class="fs-1">📊</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card p-4 border-top border-3 border-info shadow">
+                                <h5 class="fw-bold mb-3">📊 لوحة التحكم الشاملة 2026</h5>
+                                
+                                <ul class="nav nav-tabs mb-3">
+                                    <li class="nav-item"><button class="nav-link active" onclick="showAdminTab('dashboard')">اللوحة الرئيسية</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('reports')">التقارير</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('patients')">المرضى</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('staff')">👥 الموظفين</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('financial')">💰 المالية</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('labTests')">🧪 الفحوصات</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('inventory')">📦 المخزون</button></li>
+                                    <li class="nav-item"><button class="nav-link" onclick="showAdminTab('settings')">⚙️ الإعدادات</button></li>
+                                </ul>
+                                
+                                <!-- لوحة التحكم الرئيسية -->
+                                <div id="admin-dashboard">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="card p-3 bg-light">
+                                                <h6>📈 نشاط اليوم</h6>
+                                                <div class="mt-3">
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span>المرضى الجدد</span>
+                                                        <strong id="todayNewPatients">0</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span>الفحوصات المكتملة</span>
+                                                        <strong id="todayCompletedTests">0</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span>الروشتات المصرّفة</span>
+                                                        <strong id="todayDispensedRx">0</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span>مهام التمريض</span>
+                                                        <strong id="todayNursingTasks">0</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card p-3 bg-light">
+                                                <h6>👥 الموظفين النشطين</h6>
+                                                <div id="activeStaffList" class="mt-2" style="max-height: 150px; overflow-y: auto;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="card p-3 bg-light">
+                                                <h6>📋 التحذيرات والإشعارات</h6>
+                                                <div id="adminAlerts" style="max-height: 200px; overflow-y: auto;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- التقارير -->
+                                <div id="admin-reports" class="hidden-section">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="card p-3 bg-light">
+                                                <h6>📈 الإيرادات اليومية</h6>
+                                                <div class="text-center py-4">
+                                                    <canvas id="dailyRevenueChart" height="150"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card p-3 bg-light">
+                                                <h6>👥 توزيع المرضى</h6>
+                                                <div class="text-center py-4">
+                                                    <canvas id="patientsChart" height="150"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card p-3 bg-light">
+                                                <h6>📊 تقرير الأداء</h6>
+                                                <div class="btn-group w-100 mb-3">
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('day')">تقرير يومي</button>
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('week')">أسبوعي</button>
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('month')">شهري</button>
+                                                </div>
+                                                <div id="reportArea" class="bg-light p-3 rounded">اختر نوع التقرير للعرض...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- إدارة المرضى -->
+                                <div id="admin-patients" class="hidden-section">
+                                    <h6 class="fw-bold">👥 إدارة السجلات الطبية</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" placeholder="بحث في سجلات المرضى..." id="adminPatientSearch" onkeyup="searchAdminPatients(this.value)">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-info w-100" onclick="exportMedicalRecords()">📥 تصدير السجلات</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger w-100" onclick="clearAllPatientData()">🗑️ مسح جميع البيانات</button>
+                                        </div>
+                                    </div>
+                                    <div id="adminPatientsTable" style="max-height: 300px; overflow-y: auto;"></div>
+                                </div>
+                                
+                                <!-- إدارة الموظفين -->
+                                <div id="admin-staff" class="hidden-section">
+                                    <h6 class="fw-bold">👥 إدارة الموظفين والأداء</h6>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-4">
+                                            <input type="text" id="newStaffUser" class="form-control form-control-sm" placeholder="اسم المستخدم">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" id="newStaffPass" class="form-control form-control-sm" placeholder="كلمة المرور">
+                                        </div>
+                                        <div class="col-4">
+                                            <select id="newStaffRole" class="form-select form-select-sm">
+                                                <option value="admin">مدير نظام</option>
+                                                <option value="doctor">طبيب</option>
+                                                <option value="reception">استقبال</option>
+                                                <option value="pharmacist">صيدلي</option>
+                                                <option value="lab">معمل</option>
+                                                <option value="nurse">تمريض</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-dark btn-sm w-100" onclick="addNewStaff()">➕ إضافة موظف جديد</button>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-info btn-sm w-100" onclick="resetUserPassword()">🔄 إعادة تعيين كلمة المرور</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-warning btn-sm w-100" onclick="exportUserActivity()">📊 تصدير نشاط المستخدمين</button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered text-center table-sm table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>الاسم</th>
+                                                <th>الصلاحية</th>
+                                                <th>النشاط</th>
+                                                <th>الحالة</th>
+                                                <th>إجراء</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="staffTableBody"></tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- الإدارة المالية -->
+                                <div id="admin-financial" class="hidden-section">
+                                    <h6 class="fw-bold">💰 الإدارة المالية والإيرادات</h6>
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <div class="card bg-light p-3">
+                                                <h6>💵 الإيرادات اليومية</h6>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>العيادة:</span>
+                                                    <strong id="dailyClinicRevenue">0</strong>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>المعمل:</span>
+                                                    <strong id="dailyLabRevenue">0</strong>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>الصيدلية:</span>
+                                                    <strong id="dailyPharmacyRevenue">0</strong>
+                                                </div>
+                                                <hr>
+                                                <div class="d-flex justify-content-between text-success">
+                                                    <span>الإجمالي:</span>
+                                                    <strong id="dailyTotalRevenue">0</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card bg-light p-3">
+                                                <h6>📅 الإيرادات الشهرية</h6>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>الشهر الحالي:</span>
+                                                    <strong id="monthlyRevenue">0</strong>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>الشهر الماضي:</span>
+                                                    <strong id="lastMonthRevenue">0</strong>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>نسبة النمو:</span>
+                                                    <strong id="revenueGrowth">0%</strong>
+                                                </div>
+                                                <hr>
+                                                <button class="btn btn-sm btn-outline-primary w-100" onclick="generateFinancialReport()">📄 تقرير مالي مفصل</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card bg-light p-3">
+                                        <h6>📊 حركة المعاملات المالية اليوم</h6>
+                                        <div id="financialTransactions" style="max-height: 200px; overflow-y: auto;"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- إدارة الفحوصات -->
+                                <div id="admin-labTests" class="hidden-section">
+                                    <h6 class="fw-bold">🧪 إدارة الفحوصات المعملية</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="card p-3">
+                                                <h6>➕ إضافة فحص جديد</h6>
+                                                <input type="text" id="admLabName" class="form-control mb-2" placeholder="اسم الفحص">
+                                                <input type="number" id="admLabPrice" class="form-control mb-2" placeholder="السعر">
+                                                <button class="btn btn-danger btn-sm w-100" onclick="adminAddLab()">حفظ الفحص</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card p-3">
+                                                <h6>📋 قائمة الفحوصات</h6>
+                                                <div id="labTestsList" style="max-height: 300px; overflow-y: auto;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- إدارة المخزون -->
+                                <div id="admin-inventory" class="hidden-section">
+                                    <h6 class="fw-bold">📦 إدارة مخزون الأدوية</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="card p-3">
+                                                <h6>➕ إضافة دواء للمخزون</h6>
+                                                <input type="text" id="admMedName" class="form-control mb-2" placeholder="اسم الدواء">
+                                                <input type="number" id="admMedPrice" class="form-control mb-2" placeholder="السعر">
+                                                <input type="number" id="admMedQty" class="form-control mb-2" placeholder="الكمية">
+                                                <button class="btn btn-warning btn-sm w-100" onclick="adminAddMed()">حفظ الدواء</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card p-3">
+                                                <h6>📋 قائمة الأدوية</h6>
+                                                <div id="inventoryList" style="max-height: 300px; overflow-y: auto;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- إعدادات النظام -->
+                                <div id="admin-settings" class="hidden-section">
+                                    <h6 class="fw-bold">⚙️ إعدادات النظام المتقدمة</h6>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="card bg-light p-3">
+                                                <h6>🔔 إعدادات التنبيهات</h6>
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="notificationsEnabled" checked>
+                                                    <label class="form-check-label" for="notificationsEnabled">تمكين التنبيهات</label>
+                                                </div>
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="soundEnabled" checked>
+                                                    <label class="form-check-label" for="soundEnabled">تمكين الصوت</label>
+                                                </div>
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="autoBackupEnabled">
+                                                    <label class="form-check-label" for="autoBackupEnabled">نسخ احتياطي تلقائي</label>
+                                                </div>
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="autoSyncEnabled">
+                                                    <label class="form-check-label" for="autoSyncEnabled">مزامنة تلقائية</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card bg-light p-3">
+                                                <h6>🔄 إعدادات المزامنة</h6>
+                                                <div class="mb-2">
+                                                    <label class="form-label">فترة المزامنة</label>
+                                                    <select class="form-select" id="syncInterval">
+                                                        <option value="5">كل 5 دقائق</option>
+                                                        <option value="15" selected>كل 15 دقيقة</option>
+                                                        <option value="30">كل 30 دقيقة</option>
+                                                        <option value="60">كل ساعة</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label class="form-label">حد النسخ الاحتياطي</label>
+                                                    <select class="form-select" id="backupLimit">
+                                                        <option value="7">7 أيام</option>
+                                                        <option value="15" selected>15 يوم</option>
+                                                        <option value="30">30 يوم</option>
+                                                        <option value="90">90 يوم</option>
+                                                    </select>
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-primary w-100" onclick="saveSystemSettings()">💾 حفظ الإعدادات</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="card bg-light p-3">
+                                                <h6>📋 معلومات النظام</h6>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <p><strong>الإصدار:</strong> 4.0.0 (2026)</p>
+                                                        <p><strong>آخر تحديث:</strong> <span id="lastUpdate">2026-01-01</span></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p><strong>مساحة التخزين:</strong> <span id="storageUsage">0 KB</span></p>
+                                                        <p><strong>عدد النسخ الاحتياطية:</strong> <span id="backupCount">0</span></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p><strong>حالة النظام:</strong> <span id="systemHealth" class="health-good">جيدة</span></p>
+                                                        <p><strong>آخر فحص:</strong> <span id="lastSystemCheck">الآن</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- أدوات التحكم السريع -->
+                            <div class="card mt-3 p-3 bg-light border-danger">
+                                <h6 class="fw-bold text-danger">⚠️ أدوات تحكم سريعة</h6>
+                                <div class="row g-2">
+                                    <div class="col-md-3">
+                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('pats')">
+                                            <small>🔄 تصفير الاستقبال</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('lab')">
+                                            <small>🔄 تصفير المعمل</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('rx')">
+                                            <small>🔄 تصفير الصيدلية</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-outline-danger btn-sm w-100" onclick="resetSection('nursing')">
+                                            <small>🔄 تصفير التمريض</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-danger btn-sm w-100" onclick="resetAllDay()">
+                                            <small>📊 إغلاق اليوم</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-success btn-sm w-100" onclick="generateDailyReport()">
+                                            <small>📄 تقرير يومي</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-info btn-sm w-100" onclick="backupAllData()">
+                                            <small>💾 نسخ احتياطي</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- الشريط الجانبي -->
+                        <div class="col-md-4">
+                            <!-- المكتبة الطبية -->
+                            <div class="card p-4 border-top border-3 border-warning shadow library-card">
+                                <h5 class="fw-bold text-warning mb-3">📚 المكتبة الطبية</h5>
+                                <div class="input-group mb-3">
+                                    <input type="text" id="searchMedicalLibrary" class="form-control" placeholder="بحث عن مرض، دواء، إجراء...">
+                                    <button class="btn btn-warning" onclick="searchMedicalLibrary()">🔍</button>
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" onchange="filterLibrary(this.value)">
+                                        <option value="all">جميع الأقسام</option>
+                                        <option value="diseases">الأمراض</option>
+                                        <option value="drugs">الأدوية</option>
+                                        <option value="procedures">الإجراءات</option>
+                                        <option value="tests">الفحوصات</option>
+                                    </select>
+                                </div>
+                                <div id="medicalLibraryContent" style="max-height: 300px; overflow-y: auto;"></div>
+                                <button class="btn btn-outline-warning w-100 mt-3" onclick="addToLibrary()">➕ إضافة مادة علمية</button>
+                            </div>
+                            
+                            <!-- إحصائيات سريعة -->
+                            <div class="card p-3 mt-3 border-info">
+                                <h6 class="fw-bold text-info">📊 إحصائيات سريعة</h6>
+                                <div class="row text-center">
+                                    <div class="col-6 mb-2">
+                                        <div class="bg-light p-2 rounded">
+                                            <h5 id="totalPatientsCount">0</h5>
+                                            <small>إجمالي المرضى</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-2">
+                                        <div class="bg-light p-2 rounded">
+                                            <h5 id="totalStaffCount">0</h5>
+                                            <small>الموظفين</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="bg-light p-2 rounded">
+                                            <h5 id="totalInventoryItems">0</h5>
+                                            <small>أصناف المخزون</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="bg-light p-2 rounded">
+                                            <h5 id="totalRevenueAll">0</h5>
+                                            <small>إجمالي الإيرادات</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- آخر الأنشطة -->
+                            <div class="card p-3 mt-3 border-success">
+                                <h6 class="fw-bold text-success">📝 آخر الأنشطة</h6>
+                                <div id="recentActivities" style="max-height: 200px; overflow-y: auto;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="changePasswordModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">🔐 تغيير كلمة المرور</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور الحالية</label>
+                        <input type="password" id="currentPassword" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور الجديدة</label>
+                        <input type="password" id="newPassword" class="form-control" onkeyup="checkPasswordStrength()">
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <small class="text-muted">يجب أن تحتوي على 8 أحرف على الأقل، حروف كبيرة وصغيرة، وأرقام</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                                        <input type="password" id="confirmPassword" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmPasswordChange()">تغيير</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userMenuModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">👤 إدارة الحساب</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <span class="fs-3">👤</span>
+                        </div>
+                        <h5 class="mt-2" id="userNameDisplay"></h5>
+                        <span class="badge bg-primary" id="userRoleDisplay"></span>
+                    </div>
+                    <div class="list-group">
+                        <button class="list-group-item list-group-item-action" onclick="changePasswordModal()">
+                            🔐 تغيير كلمة المرور
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="viewMyActivity()">
+                            📋 سجل نشاطي
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="toggleDarkMode()">
+                            🌙 الوضع الليلي
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <small class="text-muted" id="lastLoginDisplay"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ============================================
+        // نظام تسجيل الدخول للأقسام
+        // ============================================
+
+        const USERS = {
+            'admin': { password: '123', role: 'admin', name: 'المدير' },
+            'doctor': { password: 'doc123', role: 'doctor', name: 'الطبيب' },
+            'reception': { password: 'rec123', role: 'reception', name: 'الاستقبال' },
+            'pharmacist': { password: 'ph123', role: 'pharmacy', name: 'الصيدلي' },
+            'lab': { password: 'lab123', role: 'lab', name: 'المعمل' },
+            'nurse': { password: 'nur123', role: 'nursing', name: 'التمريض' }
+        };
+
+        let currentUser = null;
+        let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
+        let labRequests = JSON.parse(localStorage.getItem('shifa_lab')) || [];
+        let pharmOrders = JSON.parse(localStorage.getItem('shifa_rx')) || [];
+        let nursingTasks = JSON.parse(localStorage.getItem('shifa_nursing_tasks')) || [];
+        let financials = JSON.parse(localStorage.getItem('shifa_fin')) || { clinic: 0, lab: 0, pharSales: 0, pharProfit: 0, total: 0 };
+        let staffMembers = JSON.parse(localStorage.getItem('shifa_staff')) || [];
+        let medicalLibrary = JSON.parse(localStorage.getItem('shifa_library')) || [];
+        let backups = JSON.parse(localStorage.getItem('shifa_backups')) || [];
+        
+        // بيانات جديدة من النسخة الثانية
+        let labTests = JSON.parse(localStorage.getItem('shifa_labTests')) || [
+            {name: 'CBC', price: 5000},
+            {name: 'Malaria', price: 2000},
+            {name: 'Glucose', price: 1000},
+            {name: 'Cholesterol', price: 3000}
+        ];
+        
+        let inventory = JSON.parse(localStorage.getItem('shifa_inventory')) || [
+            {name: 'Panadol', price: 1000, qty: 100},
+            {name: 'Antibiotic', price: 2500, qty: 50},
+            {name: 'Vitamin C', price: 1500, qty: 75}
+        ];
+
+        // ============================================
+        // نظام تسجيل الدخول
+        // ============================================
+
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('⚠️ الرجاء إدخال اسم المستخدم وكلمة المرور!');
+                return;
             }
-
-            getToastClass(type) {
-                const classes = {
-                    success: 'bg-green-50 border border-green-200 text-green-800',
-                    error: 'bg-red-50 border border-red-200 text-red-800',
-                    warning: 'bg-yellow-50 border border-yellow-200 text-yellow-800',
-                    info: 'bg-blue-50 border border-blue-200 text-blue-800'
+            
+            if (USERS[username] && USERS[username].password === password) {
+                currentUser = {
+                    u: username,
+                    r: USERS[username].role,
+                    name: USERS[username].name
                 };
-                return classes[type] || classes.info;
-            }
-
-            getToastIcon(type) {
-                const icons = {
-                    success: 'check-circle',
-                    error: 'alert-circle',
-                    warning: 'alert-triangle',
-                    info: 'info'
-                };
-                return icons[type] || 'info';
-            }
-
-            getSystemStats() {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                const newPatients = this.data.patients.filter(p => {
-                    const regDate = new Date(p.registrationDate);
-                    regDate.setHours(0, 0, 0, 0);
-                    return regDate.getTime() === today.getTime();
-                }).length;
-
-                const completedTests = this.data.labTests.filter(t => {
-                    const testDate = new Date(t.date);
-                    testDate.setHours(0, 0, 0, 0);
-                    return testDate.getTime() === today.getTime() && t.status === 'completed';
-                }).length;
-
-                const dispensedRx = this.data.prescriptions.filter(p => {
-                    const rxDate = new Date(p.date);
-                    rxDate.setHours(0, 0, 0, 0);
-                    return rxDate.getTime() === today.getTime() && p.status === 'dispensed';
-                }).length;
-
-                const totalIncome = this.data.transactions
-                    .filter(t => {
-                        const transDate = new Date(t.date);
-                        transDate.setHours(0, 0, 0, 0);
-                        return transDate.getTime() === today.getTime() && t.type === 'income';
-                    })
-                    .reduce((sum, t) => sum + t.amount, 0);
-
-                return {
-                    newPatients,
-                    completedTests,
-                    dispensedRx,
-                    totalEmployees: this.data.employees.length,
-                    totalTests: this.data.testTypes.length,
-                    totalMedicines: this.data.medicines.length,
-                    totalIncome
-                };
-            }
-
-            updateStatsUI() {
-                const stats = this.getSystemStats();
                 
-                document.getElementById('stat-new-patients').textContent = stats.newPatients;
-                document.getElementById('stat-completed-tests').textContent = stats.completedTests;
-                document.getElementById('stat-dispensed-rx').textContent = stats.dispensedRx;
-                document.getElementById('stat-employees').textContent = stats.totalEmployees;
-                document.getElementById('stat-total-income').textContent = `${stats.totalIncome.toLocaleString()} ج.س`;
-            }
-
-            addEmployee(employeeData) {
-                const employee = {
-                    id: `emp_${Date.now()}`,
-                    ...employeeData,
-                    password: this.hashPassword(employeeData.password),
-                    hireDate: new Date(),
-                    status: 'active'
-                };
-
-                this.data.employees.push(employee);
-                this.saveToLocalStorage();
-                this.updateStatsUI();
-                this.showToast(`تم إضافة الموظف: ${employeeData.name}`, 'success');
+                localStorage.setItem('shifa_user', JSON.stringify(currentUser));
                 
-                return employee;
-            }
-
-            updateEmployee(id, updates) {
-                const index = this.data.employees.findIndex(e => e.id === id);
-                if (index !== -1) {
-                    if (updates.password) {
-                        updates.password = this.hashPassword(updates.password);
-                    }
-                    this.data.employees[index] = {
-                        ...this.data.employees[index],
-                        ...updates
-                    };
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
-                }
-            }
-
-            deleteEmployee(id) {
-                const index = this.data.employees.findIndex(e => e.id === id);
-                if (index !== -1) {
-                    const employee = this.data.employees[index];
-                    this.data.employees.splice(index, 1);
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
-                    this.showToast(`تم حذف الموظف: ${employee.name}`, 'success');
-                    return true;
-                }
-                return false;
-            }
-
-            addTestType(testData) {
-                const test = {
-                    id: `test_${Date.now()}`,
-                    ...testData
-                };
-
-                this.data.testTypes.push(test);
-                this.saveToLocalStorage();
-                this.updateStatsUI();
-                this.showToast(`تم إضافة فحص: ${testData.name}`, 'success');
+                document.getElementById('loginOverlay').classList.add('hidden-section');
+                document.getElementById('mainContent').classList.remove('hidden-section');
+                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.name}`;
                 
-                return test;
-            }
-
-            updateTestType(id, updates) {
-                const index = this.data.testTypes.findIndex(t => t.id === id);
-                if (index !== -1) {
-                    this.data.testTypes[index] = {
-                        ...this.data.testTypes[index],
-                        ...updates
-                    };
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
+                // تهيئة قسم المدير إذا كان المستخدم مديراً
+                if (currentUser.r === 'admin') {
+                    initAdminSection();
+                    switchSection('admin');
+                } else {
+                    switchSection(currentUser.r);
                 }
-            }
-
-            deleteTestType(id) {
-                const index = this.data.testTypes.findIndex(t => t.id === id);
-                if (index !== -1) {
-                    const test = this.data.testTypes[index];
-                    this.data.testTypes.splice(index, 1);
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
-                    this.showToast(`تم حذف الفحص: ${test.name}`, 'success');
-                    return true;
-                }
-                return false;
-            }
-
-            addMedicine(medicineData) {
-                const medicine = {
-                    id: `med_${Date.now()}`,
-                    ...medicineData,
-                    expiryDate: new Date(medicineData.expiryDate)
-                };
-
-                this.data.medicines.push(medicine);
-                this.saveToLocalStorage();
-                this.updateStatsUI();
-                this.showToast(`تم إضافة دواء: ${medicineData.name}`, 'success');
                 
-                return medicine;
-            }
-
-            updateMedicine(id, updates) {
-                const index = this.data.medicines.findIndex(m => m.id === id);
-                if (index !== -1) {
-                    if (updates.expiryDate) {
-                        updates.expiryDate = new Date(updates.expiryDate);
-                    }
-                    this.data.medicines[index] = {
-                        ...this.data.medicines[index],
-                        ...updates
-                    };
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
-                }
-            }
-
-            deleteMedicine(id) {
-                const index = this.data.medicines.findIndex(m => m.id === id);
-                if (index !== -1) {
-                    const medicine = this.data.medicines[index];
-                    this.data.medicines.splice(index, 1);
-                    this.saveToLocalStorage();
-                    this.updateStatsUI();
-                    this.showToast(`تم حذف الدواء: ${medicine.name}`, 'success');
-                    return true;
-                }
-                return false;
-            }
-
-            addMedicineCategory(category) {
-                if (!this.data.medicineCategories.includes(category)) {
-                    this.data.medicineCategories.push(category);
-                    this.saveToLocalStorage();
-                    this.showToast(`تم إضافة تصنيف: ${category}`, 'success');
-                }
-            }
-
-            checkPasswordStrength(password) {
-                let strength = 0;
-                if (password.length >= 8) strength++;
-                if (/[A-Z]/.test(password)) strength++;
-                if (/[a-z]/.test(password)) strength++;
-                if (/[0-9]/.test(password)) strength++;
-                if (/[^A-Za-z0-9]/.test(password)) strength++;
-                
-                if (strength <= 2) return 'weak';
-                if (strength <= 4) return 'medium';
-                return 'strong';
+                showNotification(`مرحباً ${currentUser.name}`, `تم تسجيل الدخول إلى قسم ${currentUser.name} بنجاح!`);
+            } else {
+                alert('❌ اسم المستخدم أو كلمة المرور غير صحيحة!');
             }
         }
 
-        class AuthManager {
-            constructor(stateManager) {
-                this.stateManager = stateManager;
+        // ============================================
+        // دوال قسم الاستقبال المدمجة
+        // ============================================
+
+        function registerPatient() {
+            const name = document.getElementById('pName').value.trim();
+            const age = document.getElementById('pAge').value;
+            const ticket = parseFloat(document.getElementById('pTicket').value) || 2000;
+            
+            if (!name) {
+                alert("⚠️ الرجاء إدخال اسم المريض!");
+                return;
             }
+            
+            const patientId = Date.now();
+            const newPatient = {
+                id: patientId,
+                name: name,
+                age: age,
+                gender: document.getElementById('pGender').value,
+                phone: document.getElementById('pPhone').value.trim(),
+                address: document.getElementById('pAddress').value,
+                ticket: ticket,
+                visitType: document.getElementById('pVisitType').value,
+                medicalHistory: document.getElementById('pMedicalHistory').value,
+                status: 'waiting_doctor',
+                department: 'doctor',
+                createdAt: new Date().toISOString(),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                complaint: '',
+                diagnosis: '',
+                tests: [],
+                meds: [],
+                nursingInstructions: '',
+                vitalSigns: {}
+            };
+            
+            patients.push(newPatient);
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            
+            // تحديث الإحصائيات
+            financials.clinic += newPatient.ticket;
+            localStorage.setItem('shifa_fin', JSON.stringify(financials));
+            
+            // إعادة تعيين الحقول
+            document.getElementById('pName').value = '';
+            document.getElementById('pAge').value = '';
+            document.getElementById('pPhone').value = '';
+            document.getElementById('pAddress').value = '';
+            document.getElementById('pMedicalHistory').value = '';
+            
+            showNotification("✅ تم التسجيل", `تم تسجيل ${name} وإرساله للطبيب`);
+            
+            updateReceptionStats();
+            updateBadges();
+            loadReception();
+        }
 
-            login(username, password) {
-                const employee = this.stateManager.data.employees.find(
-                    emp => emp.username === username && emp.status === 'active'
-                );
-                
-                if (!employee) {
-                    this.showError('اسم المستخدم غير صحيح أو الحساب غير مفعل');
-                    return false;
-                }
+        function updateReceptionStats() {
+            const today = new Date().toDateString();
+            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
+            
+            document.getElementById('receptionNewPatients').textContent = todayPatients.length;
+            document.getElementById('receptionRevenue').textContent = (todayPatients.reduce((sum, p) => sum + (p.ticket || 0), 0)).toLocaleString();
+        }
 
-                if (!this.stateManager.verifyPassword(password, employee.password)) {
-                    this.showError('كلمة المرور غير صحيحة');
-                    return false;
-                }
-
-                this.stateManager.currentUser = {
-                    id: employee.id,
-                    username: employee.username,
-                    role: employee.role,
-                    name: employee.name,
-                    department: employee.department,
-                    status: 'online',
-                    permissions: employee.permissions || []
-                };
-
-                localStorage.setItem('lastUser', JSON.stringify({
-                    username: employee.username,
-                    role: employee.role
-                }));
-
-                this.stateManager.addNotification(`مرحباً ${employee.name}`, 'success');
-                return true;
+        function loadReception() {
+            const container = document.getElementById('receptionList');
+            const today = new Date().toDateString();
+            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today).reverse();
+            
+            let html = '';
+            if (todayPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد سجلات للمرضى اليوم</p>';
+            } else {
+                todayPatients.forEach(patient => {
+                    const statusBadge = patient.status === 'waiting_doctor' ? '<span class="badge bg-warning">بانتظار الطبيب</span>' :
+                                      patient.status === 'waiting_lab' ? '<span class="badge bg-danger">بانتظار المعمل</span>' :
+                                      patient.status === 'waiting_pharmacy' ? '<span class="badge bg-warning">بانتظار الصيدلية</span>' :
+                                      patient.status === 'waiting_nurse' ? '<span class="badge bg-purple">بانتظار التمريض</span>' :
+                                      '<span class="badge bg-success">مكتمل</span>';
+                    
+                    html += `
+                        <div class="card p-2 mb-2 bg-medical small">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <b>${patient.name}</b> (${patient.age || '--'}) 
+                                    <div class="text-muted">${patient.visitType || 'زيارة عادية'}</div>
+                                </div>
+                                <div class="text-end">
+                                    ${statusBadge}
+                                    <div class="text-muted">${patient.time || ''}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
             }
+            
+            container.innerHTML = html;
+        }
 
-            logout() {
-                this.stateManager.currentUser = null;
-                localStorage.removeItem('lastUser');
-                this.stateManager.addNotification('تم تسجيل الخروج بنجاح', 'info');
+        function searchPatients(query) {
+            const container = document.getElementById('receptionList');
+            const today = new Date().toDateString();
+            const todayPatients = patients.filter(p => 
+                new Date(p.createdAt).toDateString() === today &&
+                (p.name.toLowerCase().includes(query.toLowerCase()) ||
+                 p.phone?.includes(query) ||
+                 p.id.toString().includes(query))
+            ).reverse();
+            
+            let html = '';
+            if (todayPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد نتائج</p>';
+            } else {
+                todayPatients.forEach(patient => {
+                    const statusBadge = patient.status === 'waiting_doctor' ? '<span class="badge bg-warning">بانتظار الطبيب</span>' :
+                                      patient.status === 'waiting_lab' ? '<span class="badge bg-danger">بانتظار المعمل</span>' :
+                                      patient.status === 'waiting_pharmacy' ? '<span class="badge bg-warning">بانتظار الصيدلية</span>' :
+                                      patient.status === 'waiting_nurse' ? '<span class="badge bg-purple">بانتظار التمريض</span>' :
+                                      '<span class="badge bg-success">مكتمل</span>';
+                    
+                    html += `
+                        <div class="card p-2 mb-2 bg-medical small">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <b>${patient.name}</b> (${patient.age || '--'})
+                                </div>
+                                <div class="text-end">
+                                    ${statusBadge}
+                                    <div class="text-muted">${patient.time || ''}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
             }
+            
+            container.innerHTML = html;
+        }
 
-            showError(message) {
-                const errorDiv = document.getElementById('login-error');
-                const errorMessage = document.getElementById('error-message');
-                
-                errorDiv.classList.remove('hidden');
-                errorMessage.textContent = message;
-                
-                setTimeout(() => {
-                    errorDiv.classList.add('hidden');
-                }, 5000);
+        // ============================================
+        // دوال قسم العيادة المدمجة
+        // ============================================
+
+        function loadDoctorLists() {
+            const labSelect = document.getElementById('labSelect');
+            const medSelect = document.getElementById('medicineSelect');
+            
+            labSelect.innerHTML = labTests.map(test => 
+                `<option value="${test.name}">${test.name} (${test.price} ج)</option>`
+            ).join('');
+            
+            medSelect.innerHTML = inventory.map(item => 
+                `<option value="${item.name}">${item.name} (${item.price} ج - متوفر: ${item.qty})</option>`
+            ).join('');
+        }
+
+        function loadDoctor() {
+            const container = document.getElementById('doctorQueue');
+            const waitingPatients = patients.filter(p => p.status === 'waiting_doctor');
+            
+            let html = '';
+            if (waitingPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد مرضى في الانتظار</p>';
+            } else {
+                waitingPatients.forEach(patient => {
+                    html += `
+                        <button class="btn btn-light w-100 mb-2 border text-start" onclick="selectDoctorPatient(${patient.id})">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>${patient.name}</strong>
+                                    <div class="small text-muted">${patient.age} سنة | ${patient.visitType}</div>
+                                </div>
+                                <span class="badge bg-warning">${patient.time || ''}</span>
+                            </div>
+                        </button>
+                    `;
+                });
             }
+            
+            container.innerHTML = html;
+        }
 
-            hideError() {
-                document.getElementById('login-error').classList.add('hidden');
+        function selectDoctorPatient(id) {
+            const patient = patients.find(p => p.id === id);
+            if (!patient) return;
+            
+            document.getElementById('doctorWorkArea').classList.remove('hidden-section');
+            document.getElementById('currentPatientName').textContent = patient.name;
+            document.getElementById('currentPatientDetails').innerHTML = `
+                العمر: ${patient.age} سنة | الجنس: ${patient.gender} | الزيارة: ${patient.visitType}
+            `;
+            document.getElementById('selectedPatientId').value = patient.id;
+            document.getElementById('complaint').value = patient.complaint || '';
+            document.getElementById('diagnosis').value = patient.diagnosis || '';
+            document.getElementById('nursingInstructions').value = patient.nursingInstructions || '';
+            document.getElementById('vitalBP').value = patient.vitalSigns?.bp || '';
+            document.getElementById('vitalTemp').value = patient.vitalSigns?.temp || '';
+            document.getElementById('vitalPulse').value = patient.vitalSigns?.pulse || '';
+            document.getElementById('vitalWeight').value = patient.vitalSigns?.weight || '';
+            
+            // تحميل قوائم الفحوصات والأدوية
+            loadDoctorLists();
+        }
+
+        function orderLab() {
+            const patientId = document.getElementById('selectedPatientId').value;
+            if (!patientId) {
+                alert('⚠️ الرجاء اختيار مريض أولاً!');
+                return;
+            }
+            
+            const patient = patients.find(p => p.id == patientId);
+            const selectedTests = Array.from(document.getElementById('labSelect').selectedOptions)
+                .map(option => option.value);
+            
+            if (selectedTests.length === 0) {
+                alert('⚠️ الرجاء اختيار فحوصات على الأقل!');
+                return;
+            }
+            
+            patient.tests = selectedTests.map(name => ({
+                name,
+                price: labTests.find(t => t.name === name)?.price || 0,
+                result: ''
+            }));
+            patient.complaint = document.getElementById('complaint').value;
+            patient.diagnosis = document.getElementById('diagnosis').value;
+            patient.nursingInstructions = document.getElementById('nursingInstructions').value;
+            patient.vitalSigns = {
+                bp: document.getElementById('vitalBP').value,
+                temp: document.getElementById('vitalTemp').value,
+                pulse: document.getElementById('vitalPulse').value,
+                weight: document.getElementById('vitalWeight').value
+            };
+            patient.status = 'waiting_lab';
+            patient.department = 'lab';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadDoctor();
+            updateBadges();
+            showNotification('🧪 تم الإرسال', `تم إرسال ${patient.name} للمعمل`);
+        }
+
+        function orderPharmacy() {
+            const patientId = document.getElementById('selectedPatientId').value;
+            if (!patientId) {
+                alert('⚠️ الرجاء اختيار مريض أولاً!');
+                return;
+            }
+            
+            const patient = patients.find(p => p.id == patientId);
+            const selectedMeds = Array.from(document.getElementById('medicineSelect').selectedOptions)
+                .map(option => option.value);
+            
+            if (selectedMeds.length === 0) {
+                alert('⚠️ الرجاء اختيار أدوية على الأقل!');
+                return;
+            }
+            
+            patient.meds = selectedMeds.map(name => ({
+                name,
+                price: inventory.find(i => i.name === name)?.price || 0
+            }));
+            patient.complaint = document.getElementById('complaint').value;
+            patient.diagnosis = document.getElementById('diagnosis').value;
+            patient.nursingInstructions = document.getElementById('nursingInstructions').value;
+            patient.vitalSigns = {
+                bp: document.getElementById('vitalBP').value,
+                temp: document.getElementById('vitalTemp').value,
+                pulse: document.getElementById('vitalPulse').value,
+                weight: document.getElementById('vitalWeight').value
+            };
+            patient.status = 'waiting_pharmacy';
+            patient.department = 'pharmacy';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadDoctor();
+            updateBadges();
+            showNotification('💊 تم الإرسال', `تم إرسال ${patient.name} للصيدلية`);
+        }
+
+        function orderNurse() {
+            const patientId = document.getElementById('selectedPatientId').value;
+            if (!patientId) {
+                alert('⚠️ الرجاء اختيار مريض أولاً!');
+                return;
+            }
+            
+            const patient = patients.find(p => p.id == patientId);
+            const instructions = document.getElementById('nursingInstructions').value;
+            
+            if (!instructions.trim()) {
+                alert('⚠️ الرجاء كتابة تعليمات التمريض!');
+                return;
+            }
+            
+            patient.nursingInstructions = instructions;
+            patient.complaint = document.getElementById('complaint').value;
+            patient.diagnosis = document.getElementById('diagnosis').value;
+            patient.vitalSigns = {
+                bp: document.getElementById('vitalBP').value,
+                temp: document.getElementById('vitalTemp').value,
+                pulse: document.getElementById('vitalPulse').value,
+                weight: document.getElementById('vitalWeight').value
+            };
+            patient.status = 'waiting_nurse';
+            patient.department = 'nursing';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadDoctor();
+            updateBadges();
+            showNotification('💉 تم الإرسال', `تم إرسال ${patient.name} للتمريض`);
+        }
+
+        function completeDoctorVisit() {
+            const patientId = document.getElementById('selectedPatientId').value;
+            if (!patientId) {
+                alert('⚠️ الرجاء اختيار مريض أولاً!');
+                return;
+            }
+            
+            const patient = patients.find(p => p.id == patientId);
+            
+            patient.complaint = document.getElementById('complaint').value;
+            patient.diagnosis = document.getElementById('diagnosis').value;
+            patient.nursingInstructions = document.getElementById('nursingInstructions').value;
+            patient.vitalSigns = {
+                bp: document.getElementById('vitalBP').value,
+                temp: document.getElementById('vitalTemp').value,
+                pulse: document.getElementById('vitalPulse').value,
+                weight: document.getElementById('vitalWeight').value
+            };
+            patient.status = 'completed';
+            patient.department = 'completed';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadDoctor();
+            updateBadges();
+            
+            document.getElementById('doctorWorkArea').classList.add('hidden-section');
+            showNotification('✅ تم الإكمال', `تم إكمال كشف ${patient.name} بنجاح`);
+        }
+
+        // ============================================
+        // دوال قسم المعمل المدمجة
+        // ============================================
+
+        function loadLab() {
+            const container = document.getElementById('labList');
+            const waitingPatients = patients.filter(p => p.status === 'waiting_lab');
+            
+            let html = '';
+            if (waitingPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد طلبات فحوصات</p>';
+            } else {
+                waitingPatients.forEach(patient => {
+                    const total = patient.tests.reduce((sum, t) => sum + (t.price || 0), 0);
+                    
+                    html += `
+                        <div class="col-md-6">
+                            <div class="card p-3 border-start border-danger border-5">
+                                <h6>${patient.name} <span class="badge bg-dark float-end">${total.toLocaleString()} ج</span></h6>
+                                <div class="small text-muted">${patient.age} سنة | ${patient.complaint || 'لا توجد شكوى'}</div>
+                                
+                                <div class="mt-3">
+                                    ${patient.tests.map((t, index) => `
+                                        <div class="mb-2">
+                                            <label class="form-label small">${t.name}</label>
+                                            <input type="text" class="form-control form-control-sm" 
+                                                placeholder="نتيجة ${t.name}" 
+                                                onchange="updateTestResult(${patient.id}, ${index}, this.value)">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <textarea class="form-control form-control-sm mb-2" 
+                                        placeholder="ملاحظات فنية"
+                                        onchange="updateLabNotes(${patient.id}, this.value)"></textarea>
+                                    <button class="btn btn-danger btn-sm w-100" onclick="finishLab(${patient.id})">
+                                        ✅ إرسال النتائج للطبيب
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function updateTestResult(patientId, testIndex, result) {
+            const patient = patients.find(p => p.id === patientId);
+            if (patient && patient.tests[testIndex]) {
+                patient.tests[testIndex].result = result;
+                localStorage.setItem('shifa_pats', JSON.stringify(patients));
             }
         }
 
-        class DataManager {
-            constructor(stateManager) {
-                this.stateManager = stateManager;
-            }
-
-            addPatient(patientData) {
-                const patient = {
-                    id: `patient_${Date.now()}`,
-                    ...patientData,
-                    registrationDate: new Date(),
-                    status: 'waiting'
-                };
-
-                this.stateManager.data.patients.push(patient);
-                this.stateManager.saveToLocalStorage();
-                this.stateManager.updateStatsUI();
-                this.stateManager.addNotification(`تم إضافة مريض جديد: ${patientData.name}`, 'success');
-                
-                return patient;
-            }
-
-            updatePatient(id, updates) {
-                const index = this.stateManager.data.patients.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    this.stateManager.data.patients[index] = {
-                        ...this.stateManager.data.patients[index],
-                        ...updates
-                    };
-                    this.stateManager.saveToLocalStorage();
-                    this.stateManager.updateStatsUI();
-                }
-            }
-
-            addTransaction(transactionData) {
-                const transaction = {
-                    id: `trans_${Date.now()}`,
-                    ...transactionData,
-                    date: new Date()
-                };
-
-                this.stateManager.data.transactions.push(transaction);
-                this.stateManager.saveToLocalStorage();
-                this.stateManager.updateStatsUI();
-                
-                return transaction;
+        function updateLabNotes(patientId, notes) {
+            const patient = patients.find(p => p.id === patientId);
+            if (patient) {
+                patient.labNotes = notes;
+                localStorage.setItem('shifa_pats', JSON.stringify(patients));
             }
         }
 
-        class UIManager {
-            constructor(stateManager, authManager, dataManager) {
-                this.stateManager = stateManager;
-                this.authManager = authManager;
-                this.dataManager = dataManager;
-                this.currentView = 'login';
-                this.currentTab = 'main';
-                this.init();
-            }
+        function finishLab(id) {
+            const patient = patients.find(p => p.id === id);
+            if (!patient) return;
+            
+            // حساب إيرادات المعمل
+            const labTotal = patient.tests.reduce((sum, t) => sum + (t.price || 0), 0);
+            financials.lab += labTotal;
+            localStorage.setItem('shifa_fin', JSON.stringify(financials));
+            
+            patient.status = 'waiting_doctor';
+            patient.department = 'doctor';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadLab();
+            updateBadges();
+            updateFinancialStats();
+            playNotify();
+            
+            showNotification('✅ تم الإرسال', `تم إرسال نتائج ${patient.name} للطبيب`);
+        }
 
-            init() {
-                this.initEventListeners();
-                this.updateCurrentDate();
-                this.loadRolesForLogin();
-                setInterval(() => this.updateCurrentDate(), 60000);
-            }
+        // ============================================
+        // دوال قسم الصيدلية المدمجة
+        // ============================================
 
-            initEventListeners() {
-                document.getElementById('login-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleLogin();
-                });
-
-                document.getElementById('sidebar-toggle').addEventListener('click', () => {
-                    this.toggleSidebar();
-                });
-
-                document.getElementById('logout-btn').addEventListener('click', () => {
-                    this.handleLogout();
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('tab-btn')) {
-                        this.handleTabSelect(e.target.dataset.tab);
-                    }
-                });
-
-                document.getElementById('quick-add-employee').addEventListener('click', () => {
-                    this.showAddEmployeeForm();
-                });
-
-                document.getElementById('quick-add-test').addEventListener('click', () => {
-                    this.showAddTestForm();
-                });
-
-                document.getElementById('quick-add-medicine').addEventListener('click', () => {
-                    this.showAddMedicineForm();
-                });
-
-                document.getElementById('modal-close').addEventListener('click', () => {
-                    this.hideModal();
-                });
-
-                document.getElementById('confirm-cancel').addEventListener('click', () => {
-                    this.hideConfirmModal();
-                });
-
-                window.addEventListener('online', () => {
-                    this.stateManager.isOnline = true;
-                    this.showToast('تم استعادة الاتصال', 'success');
-                });
-
-                window.addEventListener('offline', () => {
-                    this.stateManager.isOnline = false;
-                    this.showToast('فقدت الاتصال بالإنترنت', 'warning');
+        function loadPharmacy() {
+            const container = document.getElementById('pharmacyList');
+            const waitingPatients = patients.filter(p => p.status === 'waiting_pharmacy');
+            
+            let html = '';
+            if (waitingPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد روشتات منتظرة</p>';
+            } else {
+                waitingPatients.forEach(patient => {
+                    const total = patient.meds.reduce((sum, m) => sum + (m.price || 0), 0);
+                    
+                    html += `
+                        <div class="col-md-6">
+                            <div class="card p-3 border-start border-warning border-5">
+                                <h6>${patient.name} <span class="badge bg-warning text-dark float-end">${total.toLocaleString()} ج</span></h6>
+                                <div class="small text-muted">${patient.age} سنة | ${patient.diagnosis || 'لا يوجد تشخيص'}</div>
+                                
+                                <div class="mt-3">
+                                    <h6 class="small fw-bold">الأدوية المطلوبة:</h6>
+                                    <ul class="small">
+                                        ${patient.meds.map(med => `
+                                            <li>
+                                                ${med.name} - ${med.price.toLocaleString()} ج
+                                                <span class="badge bg-light text-dark float-end">
+                                                    ${getMedQuantity(med.name)} متوفر
+                                                </span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                
+                                <button class="btn btn-warning btn-sm w-100 mt-2" onclick="dispensePharmacy(${patient.id})">
+                                    💊 صرف وخصم من المخزون
+                                </button>
+                            </div>
+                        </div>
+                    `;
                 });
             }
+            
+            container.innerHTML = html;
+        }
 
-            loadRolesForLogin() {
-                const rolesContainer = document.getElementById('roles-container');
-                const activeEmployees = this.stateManager.data.employees.filter(emp => emp.status === 'active');
-                
-                rolesContainer.innerHTML = activeEmployees.map(emp => `
-                    <button type="button" data-username="${emp.username}" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">${this.getRoleName(emp.role)} - ${emp.name}</button>
-                `).join('');
-                
-                this.updateRoleNames();
-            }
+        function getMedQuantity(medName) {
+            const item = inventory.find(i => i.name === medName);
+            return item ? item.qty : 0;
+        }
 
-            getRoleName(role) {
-                const roleNames = {
-                    'admin': 'مدير النظام',
-                    'doctor': 'الطبيب',
-                    'reception': 'الاستقبال',
-                    'pharmacist': 'الصيدلي',
-                    'lab': 'المعمل',
-                    'nurse': 'التمريض'
-                };
-                return roleNames[role] || role;
-            }
-
-            updateRoleNames() {
-                document.querySelectorAll('.role-btn').forEach(btn => {
-                    const role = btn.dataset.username;
-                    const emp = this.stateManager.data.employees.find(e => e.username === role);
-                    if (emp) {
-                        btn.textContent = `${this.getRoleName(emp.role)} - ${emp.name}`;
-                    }
-                });
-            }
-
-            handleLogin() {
-                const username = document.querySelector('.role-btn.bg-teal-500')?.dataset.username;
-                const password = document.getElementById('password').value;
-
-                if (!username) {
-                    this.authManager.showError('الرجاء اختيار دور المستخدم');
-                    return;
+        function dispensePharmacy(id) {
+            const patient = patients.find(p => p.id === id);
+            if (!patient) return;
+            
+            // خصم من المخزون
+            patient.meds.forEach(med => {
+                const item = inventory.find(i => i.name === med.name);
+                if (item && item.qty > 0) {
+                    item.qty--;
                 }
+            });
+            
+            // تحديث الإحصائيات المالية
+            const pharmacyTotal = patient.meds.reduce((sum, m) => sum + (m.price || 0), 0);
+            financials.pharSales += pharmacyTotal;
+            financials.pharProfit += pharmacyTotal * 0.3; // ربح 30%
+            localStorage.setItem('shifa_fin', JSON.stringify(financials));
+            
+            // حفظ المخزون المحدث
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            
+            patient.status = 'completed';
+            patient.department = 'completed';
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadPharmacy();
+            updateBadges();
+            updateFinancialStats();
+            
+            showNotification('✅ تم الصرف', `تم صرف أدوية ${patient.name} بنجاح`);
+        }
 
-                this.authManager.hideError();
+        // ============================================
+        // دوال قسم التمريض المدمجة
+        // ============================================
 
-                if (this.authManager.login(username, password)) {
-                    this.showDashboard();
-                }
-            }
-
-            handleLogout() {
-                if (confirm('هل تريد تسجيل الخروج؟')) {
-                    this.authManager.logout();
-                    this.showLogin();
-                }
-            }
-
-            handleTabSelect(tab) {
-                this.currentTab = tab;
-                
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('bg-teal-100', 'text-teal-700', 'font-semibold');
-                    btn.classList.add('text-gray-700', 'hover:bg-gray-100');
+        function loadNurse() {
+            const container = document.getElementById('nurseList');
+            const waitingPatients = patients.filter(p => p.status === 'waiting_nurse');
+            
+            let html = '';
+            if (waitingPatients.length === 0) {
+                html = '<p class="text-center text-muted p-4">لا توجد مهام تمريضية</p>';
+            } else {
+                waitingPatients.forEach(patient => {
+                    html += `
+                        <div class="col-md-6">
+                            <div class="card p-3 border-start border-purple border-5">
+                                <h6>${patient.name} <span class="badge bg-purple float-end">مهمة</span></h6>
+                                <div class="small text-muted">${patient.age} سنة</div>
+                                
+                                <div class="mt-3">
+                                    <h6 class="small fw-bold">تعليمات الطبيب:</h6>
+                                    <p class="bg-light p-2 rounded">${patient.nursingInstructions || 'لا توجد تعليمات'}</p>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <textarea class="form-control form-control-sm mb-2" 
+                                        placeholder="سجل تنفيذ المهمة..."></textarea>
+                                    <button class="btn btn-purple btn-sm w-100" onclick="completeNurseTask(${patient.id}, this)">
+                                        ✅ إكمال المهمة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 });
-
-                const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
-                activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
-                activeBtn.classList.add('bg-teal-100', 'text-teal-700', 'font-semibold');
-
-                this.loadTabContent(tab);
             }
+            
+            container.innerHTML = html;
+        }
 
-            toggleSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                const icon = document.querySelector('#sidebar-toggle i');
-                
-                if (sidebar.classList.contains('hidden')) {
-                    sidebar.classList.remove('hidden');
-                    sidebar.classList.add('block');
-                    icon.setAttribute('data-lucide', 'x');
-                } else {
-                    sidebar.classList.add('hidden');
-                    icon.setAttribute('data-lucide', 'menu');
-                }
-            }
+        function completeNurseTask(id, button) {
+            const patient = patients.find(p => p.id === id);
+            if (!patient) return;
+            
+            const notes = button.previousElementSibling.value;
+            
+            patient.status = 'completed';
+            patient.department = 'completed';
+            patient.nursingTaskCompleted = new Date().toISOString();
+            patient.nursingNotes = notes;
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            loadNurse();
+            updateBadges();
+            
+            showNotification('✅ تم الإكمال', `تم إكمال مهمة التمريض لـ ${patient.name}`);
+        }
 
-            updateCurrentDate() {
-                const now = new Date();
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    calendar: 'islamic-umalqura'
-                };
-                document.getElementById('current-date').textContent = now.toLocaleDateString('ar-SA', options);
-            }
+        // ============================================
+        // دوال قسم المدير المدمجة
+        // ============================================
 
-            showDashboard() {
-                document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                
-                const user = this.stateManager.currentUser;
-                document.getElementById('user-name').textContent = user.name;
-                document.getElementById('user-role').textContent = this.getRoleName(user.role);
-                
-                const header = document.getElementById('dashboard-header');
-                const emp = this.stateManager.data.employees.find(e => e.id === user.id);
-                if (emp && emp.color) {
-                    header.className = `bg-gradient-to-r ${emp.color} text-white shadow-lg sticky top-0 z-40`;
-                }
-                
-                this.updateRoleTabs(user.role);
-                this.stateManager.updateStatsUI();
-                this.stateManager.updateNotificationsUI();
-                this.loadTabContent('main');
-                this.stateManager.showToast(`مرحباً بك ${user.name}`, 'success');
-                
-                document.getElementById('loading-screen').classList.add('hidden');
-            }
+        function initAdminSection() {
+            updateFinancialStats();
+            updateFinancialTransactions();
+            updateActiveStaff();
+            updateAdminAlerts();
+            updateRecentActivities();
+            loadSystemSettings();
+            refreshStaffTable();
+            loadAdminPatientsTable();
+            loadLabTestsList();
+            loadInventoryList();
+            searchMedicalLibrary();
+        }
 
-            showLogin() {
-                document.getElementById('dashboard').classList.add('hidden');
-                document.getElementById('login-page').classList.remove('hidden');
-                document.getElementById('password').value = '';
-                this.authManager.hideError();
-                this.loadRolesForLogin();
-            }
+        function updateFinancialStats() {
+            const today = new Date().toDateString();
+            
+            const todayPatients = patients.filter(p => new Date(p.createdAt).toDateString() === today);
+            const todayLab = patients.filter(p => 
+                p.tests && p.tests.length > 0 && 
+                p.status === 'completed' &&
+                new Date(p.createdAt).toDateString() === today
+            );
+            const todayRx = patients.filter(p => 
+                p.meds && p.meds.length > 0 && 
+                p.status === 'completed' &&
+                new Date(p.createdAt).toDateString() === today
+            );
+            
+            const clinicRevenue = todayPatients.reduce((sum, p) => sum + (p.ticket || 0), 0);
+            const labRevenue = todayLab.reduce((sum, p) => 
+                sum + p.tests.reduce((s, t) => s + (t.price || 0), 0), 0);
+            const pharRevenue = todayRx.reduce((sum, p) => 
+                sum + p.meds.reduce((s, m) => s + (m.price || 0), 0), 0);
+            
+            // تحديث الإحصائيات
+            document.getElementById('admIncClinic').textContent = clinicRevenue.toLocaleString();
+            document.getElementById('admIncLab').textContent = labRevenue.toLocaleString();
+            document.getElementById('admIncPhar').textContent = pharRevenue.toLocaleString();
+            document.getElementById('admIncTotal').textContent = (clinicRevenue + labRevenue + pharRevenue).toLocaleString();
+            
+            // تحديث الإحصائيات الأخرى
+            document.getElementById('dailyClinicRevenue').textContent = clinicRevenue.toLocaleString();
+            document.getElementById('dailyLabRevenue').textContent = labRevenue.toLocaleString();
+            document.getElementById('dailyPharmacyRevenue').textContent = pharRevenue.toLocaleString();
+            document.getElementById('dailyTotalRevenue').textContent = (clinicRevenue + labRevenue + pharRevenue).toLocaleString();
+            
+            document.getElementById('totalPatientsCount').textContent = patients.length;
+            document.getElementById('totalStaffCount').textContent = staffMembers.length;
+            document.getElementById('totalInventoryItems').textContent = inventory.length;
+            document.getElementById('totalRevenueAll').textContent = (financials.total || 0).toLocaleString();
+            
+            document.getElementById('todayNewPatients').textContent = todayPatients.length;
+            document.getElementById('todayCompletedTests').textContent = todayLab.length;
+            document.getElementById('todayDispensedRx').textContent = todayRx.length;
+            document.getElementById('todayNursingTasks').textContent = patients.filter(p => 
+                p.nursingInstructions && 
+                p.status === 'completed' &&
+                new Date(p.createdAt).toDateString() === today
+            ).length;
+        }
 
-            updateRoleTabs(role) {
-                const tabsContainer = document.getElementById('role-specific-tabs');
-                tabsContainer.innerHTML = '';
-
-                if (role === 'admin') {
-                    document.getElementById('admin-tabs').classList.remove('hidden');
-                } else {
-                    document.getElementById('admin-tabs').classList.add('hidden');
-                    const roleTabs = {
-                        reception: [
-                            { id: 'patients', label: '👥 المرضى', icon: 'users' },
-                            { id: 'appointments', label: '📅 المواعيد', icon: 'calendar' }
-                        ],
-                        doctor: [
-                            { id: 'consultation', label: '🩺 الكشف', icon: 'stethoscope' },
-                            { id: 'prescriptions', label: '💊 الروشتات', icon: 'pill' }
-                        ],
-                        pharmacist: [
-                            { id: 'inventory', label: '📦 المخزون', icon: 'package' },
-                            { id: 'dispense', label: '💊 الصرف', icon: 'syringe' }
-                        ],
-                        lab: [
-                            { id: 'tests', label: '🧪 الفحوصات', icon: 'flask-conical' },
-                            { id: 'results', label: '📊 النتائج', icon: 'clipboard-check' }
-                        ],
-                        nurse: [
-                            { id: 'tasks', label: '📋 المهام', icon: 'clipboard-list' },
-                            { id: 'vitals', label: '❤️ العلامات الحيوية', icon: 'activity' }
-                        ]
-                    };
-
-                    const tabs = roleTabs[role] || [];
-                    tabs.forEach(tab => {
-                        const button = document.createElement('button');
-                        button.className = 'tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100';
-                        button.dataset.tab = tab.id;
-                        button.innerHTML = tab.label;
-                        tabsContainer.appendChild(button);
-                    });
-                }
-            }
-
-            loadTabContent(tab) {
-                const contentArea = document.getElementById('dashboard-content');
-                
-                switch(tab) {
-                    case 'main':
-                        this.loadMainDashboard();
-                        break;
-                    case 'employees':
-                        this.loadEmployeesManagement();
-                        break;
-                    case 'tests':
-                        this.loadTestsManagement();
-                        break;
-                    case 'medicines':
-                        this.loadMedicinesManagement();
-                        break;
-                    case 'overview':
-                        this.loadAdminOverview();
-                        break;
-                    case 'reports':
-                        this.loadAdminReports();
-                        break;
-                    case 'data':
-                        this.loadAdminData();
-                        break;
-                    case 'settings':
-                        this.loadAdminSettings();
-                        break;
-                    default:
-                        this.loadMainDashboard();
-                }
-            }
-
-            loadMainDashboard() {
-                const role = this.stateManager.currentUser?.role;
-                let content = '';
-
-                if (role === 'admin') {
-                    content = this.getAdminDashboardContent();
-                } else {
-                    content = this.getRoleDashboardContent(role);
-                }
-
-                document.getElementById('dashboard-content').innerHTML = content;
-                this.initDashboardComponents();
-                lucide.createIcons();
-            }
-
-            getAdminDashboardContent() {
-                const stats = this.stateManager.getSystemStats();
-                const totalPatients = this.stateManager.data.patients.length;
-                const totalIncome = this.stateManager.data.transactions
-                    .filter(t => t.type === 'income')
-                    .reduce((sum, t) => sum + t.amount, 0);
-                const totalExpense = this.stateManager.data.transactions
-                    .filter(t => t.type === 'expense')
-                    .reduce((sum, t) => sum + t.amount, 0);
-
-                return `
-                    <div class="space-y-6">
+        function loadLabTestsList() {
+            const container = document.getElementById('labTestsList');
+            container.innerHTML = labTests.map(test => `
+                <div class="border-bottom pb-2 mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900">لوحة تحكم المدير</h2>
-                            <p class="text-gray-600 mt-1">إدارة شاملة لجميع أقسام المستشفى</p>
+                            <strong>${test.name}</strong>
+                            <div class="small text-muted">${test.price.toLocaleString()} ج</div>
                         </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${totalPatients}</div>
-                                <p class="text-blue-100 mt-1">إجمالي المرضى</p>
-                            </div>
-                            <div class="p-6 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${stats.totalEmployees}</div>
-                                <p class="text-green-100 mt-1">الموظفين</p>
-                            </div>
-                            <div class="p-6 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${stats.totalTests}</div>
-                                <p class="text-red-100 mt-1">أنواع الفحوصات</p>
-                            </div>
-                            <div class="p-6 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${stats.totalMedicines}</div>
-                                <p class="text-yellow-100 mt-1">الأدوية في المخزون</p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4">إحصائيات اليوم</h3>
-                                <div class="space-y-3">
-                                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                                        <span>مرضى جدد</span>
-                                        <span class="font-bold">${stats.newPatients}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-                                        <span>فحوصات مكتملة</span>
-                                        <span class="font-bold">${stats.completedTests}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                                        <span>روشتات مصرفة</span>
-                                        <span class="font-bold">${stats.dispensedRx}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                                        <span>إيرادات اليوم</span>
-                                        <span class="font-bold">${stats.totalIncome.toLocaleString()} ج.س</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4">الملخص المالي</h3>
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-green-50 rounded-lg border-l-4 border-l-green-500">
-                                        <p class="text-sm text-gray-600">الإيرادات الإجمالية</p>
-                                        <p class="text-2xl font-bold text-green-600">${totalIncome.toLocaleString()} ج.س</p>
-                                    </div>
-                                    <div class="p-4 bg-red-50 rounded-lg border-l-4 border-l-red-500">
-                                        <p class="text-sm text-gray-600">المصروفات الإجمالية</p>
-                                        <p class="text-2xl font-bold text-red-600">${totalExpense.toLocaleString()} ج.س</p>
-                                    </div>
-                                    <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-l-blue-500">
-                                        <p class="text-sm text-gray-600">صافي الربح</p>
-                                        <p class="text-2xl font-bold text-blue-600">${(totalIncome - totalExpense).toLocaleString()} ج.س</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-xl font-bold text-gray-900 mb-4">الإجراءات السريعة</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button onclick="uiManager.showAddEmployeeForm()" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="user-plus" class="w-6 h-6 text-blue-600"></i>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-gray-900">إضافة موظف</p>
-                                        <p class="text-sm text-gray-600">إضافة موظف جديد للنظام</p>
-                                    </div>
-                                </button>
-                                <button onclick="uiManager.showAddTestForm()" class="p-4 bg-red-50 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="flask-conical" class="w-6 h-6 text-red-600"></i>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-gray-900">إضافة فحص</p>
-                                        <p class="text-sm text-gray-600">إضافة نوع فحص جديد</p>
-                                    </div>
-                                </button>
-                                <button onclick="uiManager.showAddMedicineForm()" class="p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="pill" class="w-6 h-6 text-green-600"></i>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-gray-900">إضافة دواء</p>
-                                        <p class="text-sm text-gray-600">إضافة دواء جديد للمخزون</p>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteLabTest('${test.name}')">حذف</button>
                     </div>
-                `;
-            }
+                </div>
+            `).join('');
+        }
 
-            getRoleDashboardContent(role) {
-                const roleNames = {
-                    'doctor': 'الأطباء',
-                    'reception': 'الاستقبال',
-                    'pharmacist': 'الصيدلية',
-                    'lab': 'المعمل',
-                    'nurse': 'التمريض'
-                };
-
-                return `
-                    <div class="text-center py-12">
-                        <i data-lucide="${this.getRoleIcon(role)}" class="w-16 h-16 ${this.getRoleColor(role)} mx-auto mb-4"></i>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم ${roleNames[role] || role}</h2>
-                        <p class="text-gray-600">إدارة عمليات القسم اليومية</p>
+        function loadInventoryList() {
+            const container = document.getElementById('inventoryList');
+            container.innerHTML = inventory.map(item => `
+                <div class="border-bottom pb-2 mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <div class="small text-muted">
+                                ${item.price.toLocaleString()} ج | الكمية: ${item.qty}
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-warning" onclick="deleteInventoryItem('${item.name}')">حذف</button>
                     </div>
-                `;
-            }
+                </div>
+            `).join('');
+        }
 
-            getRoleIcon(role) {
-                const icons = {
-                    'doctor': 'stethoscope',
-                    'reception': 'users',
-                    'pharmacist': 'pill',
-                    'lab': 'flask-conical',
-                    'nurse': 'heart'
-                };
-                return icons[role] || 'activity';
+        function adminAddLab() {
+            const name = document.getElementById('admLabName').value.trim();
+            const price = parseFloat(document.getElementById('admLabPrice').value);
+            
+            if (!name || !price || price <= 0) {
+                alert('⚠️ الرجاء إدخال اسم وسعر صالحين للفحص!');
+                return;
             }
-
-            getRoleColor(role) {
-                const colors = {
-                    'doctor': 'text-green-500',
-                    'reception': 'text-blue-500',
-                    'pharmacist': 'text-yellow-500',
-                    'lab': 'text-red-500',
-                    'nurse': 'text-purple-500'
-                };
-                return colors[role] || 'text-gray-500';
+            
+            if (labTests.some(test => test.name === name)) {
+                alert('⚠️ هذا الفحص موجود بالفعل!');
+                return;
             }
+            
+            labTests.push({ name, price });
+            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+            
+            document.getElementById('admLabName').value = '';
+            document.getElementById('admLabPrice').value = '';
+            
+            loadLabTestsList();
+            showNotification('✅ تمت الإضافة', `تمت إضافة فحص ${name} بنجاح`);
+        }
 
-            initDashboardComponents() {
-                // تهيئة المكونات الإضافية
+        function adminAddMed() {
+            const name = document.getElementById('admMedName').value.trim();
+            const price = parseFloat(document.getElementById('admMedPrice').value);
+            const qty = parseInt(document.getElementById('admMedQty').value);
+            
+            if (!name || !price || price <= 0 || !qty || qty <= 0) {
+                alert('⚠️ الرجاء إدخال بيانات صالحة للدواء!');
+                return;
+            }
+            
+            const existingItem = inventory.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.price = price;
+                existingItem.qty += qty;
+            } else {
+                inventory.push({ name, price, qty });
+            }
+            
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            
+            document.getElementById('admMedName').value = '';
+            document.getElementById('admMedPrice').value = '';
+            document.getElementById('admMedQty').value = '';
+            
+            loadInventoryList();
+            showNotification('✅ تمت الإضافة', `تمت إضافة/تحديث ${name} في المخزون`);
+        }
+
+        function deleteLabTest(name) {
+            if (confirm(`هل أنت متأكد من حذف فحص ${name}؟`)) {
+                labTests = labTests.filter(test => test.name !== name);
+                localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+                loadLabTestsList();
+                showNotification('🗑️ تم الحذف', `تم حذف فحص ${name}`);
             }
         }
 
-        // تهيئة التطبيق
-        const stateManager = new HospitalStateManager();
-        const authManager = new AuthManager(stateManager);
-        const dataManager = new DataManager(stateManager);
-        const uiManager = new UIManager(stateManager, authManager, dataManager);
+        function deleteInventoryItem(name) {
+            if (confirm(`هل أنت متأكد من حذف ${name} من المخزون؟`)) {
+                inventory = inventory.filter(item => item.name !== name);
+                localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+                loadInventoryList();
+                showNotification('🗑️ تم الحذف', `تم حذف ${name} من المخزون`);
+            }
+        }
 
-        window.stateManager = stateManager;
-        window.authManager = authManager;
-        window.dataManager = dataManager;
-        window.uiManager = uiManager;
+        function renderReport(type) {
+            const reportArea = document.getElementById('reportArea');
+            let reportHTML = '';
+            const today = new Date();
+            
+            switch(type) {
+                case 'day':
+                    const dayPatients = patients.filter(p => 
+                        new Date(p.createdAt).toDateString() === today.toDateString()
+                    );
+                    reportHTML = `
+                        <h6>📊 تقرير يومي - ${today.toLocaleDateString('ar-EG')}</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${dayPatients.length}</p>
+                                <p><strong>المكتملون:</strong> ${dayPatients.filter(p => p.status === 'completed').length}</p>
+                                <p><strong>في الانتظار:</strong> ${dayPatients.filter(p => p.status !== 'completed').length}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>إيرادات العيادة:</strong> ${dayPatients.reduce((s,p) => s + (p.ticket||0), 0).toLocaleString()} ج</p>
+                                <p><strong>فحوصات معمل:</strong> ${dayPatients.filter(p => p.tests?.length > 0).length}</p>
+                                <p><strong>روشتات صيدلية:</strong> ${dayPatients.filter(p => p.meds?.length > 0).length}</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'week':
+                    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    const weekPatients = patients.filter(p => new Date(p.createdAt) >= weekAgo);
+                    reportHTML = `
+                        <h6>📊 تقرير أسبوعي</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${weekPatients.length}</p>
+                                <p><strong>متوسط يومي:</strong> ${Math.round(weekPatients.length / 7)}</p>
+                                <p><strong>أعلى يوم:</strong> ${getBusiestDay(weekPatients)}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>إجمالي الإيرادات:</strong> ${weekPatients.reduce((s,p) => s + (p.ticket||0), 0).toLocaleString()} ج</p>
+                                <p><strong>متوسط الإيرادات:</strong> ${Math.round(weekPatients.reduce((s,p) => s + (p.ticket||0), 0) / 7).toLocaleString()} ج/يوم</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'month':
+                    const monthPatients = patients.filter(p => 
+                        new Date(p.createdAt).getMonth() === today.getMonth() &&
+                        new Date(p.createdAt).getFullYear() === today.getFullYear()
+                    );
+                    reportHTML = `
+                        <h6>📊 تقرير شهري - ${today.toLocaleDateString('ar-EG', {month: 'long', year: 'numeric'})}</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${monthPatients.length}</p>
+                                <p><strong>مرضى جدد:</strong> ${monthPatients.filter(p => p.visitType === 'زيارة عادية').length}</p>
+                                <p><strong>متابعات:</strong> ${monthPatients.filter(p => p.visitType === 'متابعة').length}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>طوارئ:</strong> ${monthPatients.filter(p => p.visitType === 'طوارئ').length}</p>
+                                <p><strong>إجمالي الإيرادات:</strong> ${monthPatients.reduce((s,p) => s + (p.ticket||0), 0).toLocaleString()} ج</p>
+                                <p><strong>متوسط سعر التذكرة:</strong> ${Math.round(monthPatients.reduce((s,p) => s + (p.ticket||0), 0) / monthPatients.length || 0).toLocaleString()} ج</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            reportArea.innerHTML = reportHTML;
+        }
 
-        // إخفاء شاشة التحميل بعد التهيئة
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden');
-                lucide.createIcons();
-            }, 1000);
-        });
+        function getBusiestDay(patients) {
+            const days = {};
+            patients.forEach(p => {
+                const day = new Date(p.createdAt).toLocaleDateString('ar-EG');
+                days[day] = (days[day] || 0) + 1;
+            });
+            
+            const busiest = Object.entries(days).sort((a, b) => b[1] - a[1])[0];
+            return busiest ? `${busiest[0]} (${busiest[1]} مريض)` : 'لا توجد بيانات';
+        }
+
+        // ============================================
+        // دوال النظام العامة
+        // ============================================
+
+        function switchSection(id) {
+            if (currentUser.r === 'admin') {
+                // المدير يمكنه الوصول لجميع الأقسام
+            } else if (currentUser.r !== id) {
+                alert(`⛔ ليس لديك صلاحية للوصول لقسم ${id}!`);
+                return;
+            }
+            
+            document.querySelectorAll('.section-pane').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(`${id}-sec`).classList.remove('hidden-section');
+            
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.getElementById(`btn-${id}`)?.classList.add('active');
+            
+            switch(id) {
+                case 'reception':
+                    updateReceptionStats();
+                    loadReception();
+                    break;
+                case 'doctor':
+                    loadDoctor();
+                    loadDoctorLists();
+                    break;
+                case 'lab':
+                    loadLab();
+                    break;
+                case 'pharmacy':
+                    loadPharmacy();
+                    break;
+                case 'nursing':
+                    loadNurse();
+                    break;
+                case 'admin':
+                    initAdminSection();
+                    showAdminTab('dashboard');
+                    break;
+            }
+            
+            updateBadges();
+        }
+
+        function updateBadges() {
+            const waitingDoctor = patients.filter(p => p.status === 'waiting_doctor').length;
+            const waitingLab = patients.filter(p => p.status === 'waiting_lab').length;
+            const waitingPharmacy = patients.filter(p => p.status === 'waiting_pharmacy').length;
+            const waitingNurse = patients.filter(p => p.status === 'waiting_nurse').length;
+            
+            updateBadge('doctorBadge', waitingDoctor);
+            updateBadge('labBadge', waitingLab);
+            updateBadge('pharBadge', waitingPharmacy);
+            updateBadge('nurseBadge', waitingNurse);
+        }
+
+        function updateBadge(elementId, count) {
+            const element = document.getElementById(elementId);
+            if (count > 0) {
+                element.textContent = count;
+                element.classList.remove('hidden-section');
+            } else {
+                element.classList.add('hidden-section');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('shifa_user');
+            location.reload();
+        }
+
+        function showNotification(title, message) {
+            console.log(`🔔 ${title}: ${message}`);
+            
+            try {
+                document.getElementById('notificationSound').play();
+            } catch (e) {}
+            
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: message,
+                    icon: 'https://cdn-icons-png.flaticon.com/512/822/822118.png'
+                });
+            }
+        }
+
+        function playNotify() {
+            try {
+                document.getElementById('notificationSound').play();
+            } catch (e) {}
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('ar-EG');
+        }
+
+        // ============================================
+        // دوال إضافية من النسخة الأولى
+        // ============================================
+
+        function showAdminTab(tab) {
+            const tabs = ['dashboard', 'reports', 'patients', 'staff', 'financial', 'labTests', 'inventory', 'settings'];
+            tabs.forEach(t => document.getElementById(`admin-${t}`).classList.add('hidden-section'));
+            document.getElementById(`admin-${tab}`).classList.remove('hidden-section');
+        }
+
+        function openUserMenu() {
+            const modal = new bootstrap.Modal(document.getElementById('userMenuModal'));
+            document.getElementById('userNameDisplay').textContent = currentUser.name;
+            document.getElementById('userRoleDisplay').textContent = currentUser.r === 'admin' ? 'مدير' : 
+                                                                    currentUser.r === 'doctor' ? 'طبيب' :
+                                                                    currentUser.r === 'reception' ? 'استقبال' :
+                                                                    currentUser.r === 'pharmacy' ? 'صيدلي' :
+                                                                    currentUser.r === 'lab' ? 'معمل' : 'تمريض';
+            modal.show();
+        }
+
+        function changePasswordModal() {
+            const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+            modal.show();
+        }
+
+        // ============================================
+        // تهيئة النظام
+        // ============================================
+
+        window.onload = function() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            
+            const savedUser = localStorage.getItem('shifa_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('loginOverlay').classList.add('hidden-section');
+                document.getElementById('mainContent').classList.remove('hidden-section');
+                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.name}`;
+                
+                if (currentUser.r === 'admin') {
+                    initAdminSection();
+                    switchSection('admin');
+                } else {
+                    switchSection(currentUser.r);
+                }
+            }
+            
+            // تهيئة البيانات الافتراضية
+            if (staffMembers.length === 0) {
+                staffMembers = Object.keys(USERS).map(username => ({
+                    u: username,
+                    p: USERS[username].password,
+                    r: USERS[username].role,
+                    name: USERS[username].name,
+                    status: 'active',
+                    created: new Date().toISOString()
+                }));
+                localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            }
+            
+            if (medicalLibrary.length === 0) {
+                medicalLibrary = [
+                    {
+                        id: 1,
+                        title: 'مرض السكري',
+                        category: 'diseases',
+                        content: 'مرض مزمن يحدث عندما يعجز البنكرياس عن إنتاج الإنسولين بكمية كافية...',
+                        addedBy: 'system',
+                        addedAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        title: 'باراسيتامول',
+                        category: 'drugs',
+                        content: 'مسكن للألم وخافض للحرارة، الجرعة المعتادة 500-1000 مجم كل 6-8 ساعات...',
+                        addedBy: 'system',
+                        addedAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('shifa_library', JSON.stringify(medicalLibrary));
+            }
+            
+            // تحديث الـ badges
+            updateBadges();
+        };
     </script>
 </body>
 </html>
