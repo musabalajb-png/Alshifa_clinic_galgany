@@ -16,8 +16,105 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        /* ... جميع الأنماط السابقة تبقى كما هي ... */
-        /* تم إضافة نمط جديد للشاشة الإدارية للبيانات */
+        :root { 
+            --primary-color: #2c7a7b; 
+            --secondary-color: #f0fdf4; 
+            --accent-blue: #0d6efd; 
+            --accent-red: #dc3545; 
+            --accent-green: #198754; 
+            --accent-gold: #d4af37;
+            --accent-warning: #ffc107;
+            --accent-info: #17a2b8;
+            --accent-purple: #6f42c1;
+        }
+        body { background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        .navbar { background: linear-gradient(135deg, var(--primary-color), #1f5a5a) !important; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+        .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .hidden-section { display: none !important; }
+        .nav-link { cursor: pointer; font-weight: bold; color: var(--primary-color); padding: 10px 20px !important; position: relative; }
+        .nav-link.active { background-color: var(--accent-blue) !important; color: white !important; border-radius: 10px; }
+        .badge-notify { position: absolute; top: -5px; right: -5px; background: var(--accent-red); color: white; border-radius: 50%; padding: 3px 7px; font-size: 0.7rem; }
+        .stat-card { border-radius: 15px; padding: 20px; color: white; text-align: center; }
+        .patient-btn { text-align: right; margin-bottom: 8px; border-right: 5px solid var(--primary-color); width: 100%; transition: 0.3s; padding: 12px 15px; background: white; border: 1px solid #dee2e6; border-radius: 10px; }
+        .patient-btn.ready { border-right-color: #28a745; background-color: #f0fff4; }
+        .patient-btn:hover { background-color: #f8f9fa; }
+        .lab-result-item { background: #e9ecef; padding: 10px; border-radius: 8px; margin-bottom: 5px; border-left: 4px solid var(--accent-blue); }
+        .section-pane { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media print { .no-print { display: none !important; } body * { visibility: hidden; } #printArea, #printArea * { visibility: visible; } #printArea { position: absolute; left: 0; top: 0; width: 100%; direction: rtl; padding: 20px; } }
+        .search-box { position: relative; }
+        .search-box input { padding-right: 40px; }
+        .rx-item { background: #f8f9fa; padding: 8px 12px; margin: 5px 0; border-radius: 8px; border-left: 4px solid var(--accent-green); }
+        .status-online { color: #28a745; font-weight: bold; }
+        .status-offline { color: #dc3545; font-weight: bold; }
+        .sync-status { position: fixed; bottom: 10px; left: 10px; z-index: 1000; }
+        .sync-btn { position: fixed; bottom: 10px; right: 10px; z-index: 1000; }
+        .medical-record { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .nursing-schedule { border-left: 5px solid var(--accent-purple); }
+        .expiry-warning { background: #fff3cd; border-left: 5px solid #ffc107; }
+        .stock-critical { background: #f8d7da; border-left: 5px solid #dc3545; }
+        .library-card { height: 100%; transition: all 0.3s; }
+        .library-card:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .form-check { padding-right: 1.5em; margin-bottom: 0.5rem; }
+        .form-check-input { margin-right: -1.5em; }
+        #labTestsChecklist { scrollbar-width: thin; scrollbar-color: var(--primary-color) #f1f1f1; }
+        #labTestsChecklist::-webkit-scrollbar { width: 8px; }
+        #labTestsChecklist::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        #labTestsChecklist::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+        
+        /* PWA Styles */
+        .install-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 50px; padding: 10px 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; }
+        .install-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .pwa-status { position: fixed; top: 10px; left: 10px; z-index: 9999; }
+        .pwa-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 20px; z-index: 10000; max-width: 400px; direction: rtl; }
+        .offline-banner { position: fixed; top: 0; left: 0; right: 0; background: #dc3545; color: white; text-align: center; padding: 10px; z-index: 9998; }
+        .online-banner { position: fixed; top: 0; left: 0; right: 0; background: #28a745; color: white; text-align: center; padding: 10px; z-index: 9998; }
+        #appVersion { font-size: 0.8em; color: #6c757d; }
+        
+        /* Advanced Permissions Styles */
+        .permission-badge { font-size: 0.7em; padding: 2px 6px; margin-right: 3px; }
+        .permission-row { border-bottom: 1px solid #eee; padding: 8px 0; }
+        .permission-header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 10px; border-radius: 8px; }
+        .permission-toggle { transform: scale(0.9); }
+        .user-status-online { color: #28a745; animation: pulse 2s infinite; }
+        .user-status-offline { color: #dc3545; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .role-badge { font-size: 0.75em; padding: 3px 8px; }
+        .permission-modal { max-height: 80vh; overflow-y: auto; }
+        .password-strength { height: 5px; border-radius: 2px; margin-top: 5px; transition: all 0.3s; }
+        
+        /* New Styles for Workflow */
+        .workflow-step { border-left: 4px solid; padding: 10px; margin: 5px 0; border-radius: 8px; }
+        .step-reception { border-color: #0d6efd; background: #e7f1ff; }
+        .step-doctor { border-color: #198754; background: #e8f5e8; }
+        .step-lab { border-color: #dc3545; background: #fde8e8; }
+        .step-pharmacy { border-color: #ffc107; background: #fff8e1; }
+        .step-nursing { border-color: #6f42c1; background: #f0e8ff; }
+        .step-completed { background: #d4edda !important; }
+        .patient-flow { display: flex; justify-content: space-between; margin: 10px 0; }
+        .flow-arrow { color: #6c757d; margin: 0 10px; }
+        
+        /* Admin Dashboard Styles */
+        .admin-stat-card { border-radius: 12px; padding: 15px; color: white; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
+        .admin-chart-container { height: 300px; position: relative; }
+        .quick-action-btn { width: 100%; margin: 5px 0; }
+        .system-health { font-size: 0.9em; }
+        .health-good { color: #28a745; }
+        .health-warning { color: #ffc107; }
+        .health-critical { color: #dc3545; }
+        .transaction-item { border-left: 4px solid; padding: 8px; margin: 5px 0; border-radius: 6px; }
+        .transaction-income { border-color: #28a745; background: #d4edda; }
+        .transaction-expense { border-color: #dc3545; background: #f8d7da; }
+        .staff-avatar { width: 40px; height: 40px; border-radius: 50%; background: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* New Styles from Version 2 */
+        .bg-medical { background: #eef2f3; border-right: 5px solid var(--primary-color); }
+        .border-purple { border-color: var(--accent-purple) !important; }
+        .btn-outline-purple { color: var(--accent-purple); border-color: var(--accent-purple); }
+        .btn-outline-purple:hover { background-color: var(--accent-purple); color: white; }
+        
+        /* إضافة أنماط جديدة للتحكم في عرض المعلومات */
         .admin-login-overlay {
             position: fixed;
             top: 0;
@@ -31,6 +128,23 @@
             justify-content: center;
             display: none;
         }
+        
+        .security-warning {
+            border-left: 5px solid #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        .access-log {
+            font-size: 0.8em;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+            padding-top: 5px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -39,86 +153,416 @@
 
     <!-- منطقة الطباعة -->
     <div id="printArea" class="hidden-section">
-        <!-- ... المحتوى السابق يبقى كما هو ... -->
+        <div class="text-center border-bottom pb-3 mb-3">
+            <h2 style="color: var(--primary-color);">🏥 مجمع الشفاء الطبي</h2>
+            <p>السودان - جلقني</p>
+            <h5 id="printTitle">روشتة طبية / فاتورة</h5>
+            <small id="printDate"></small>
+        </div>
+        <div id="printContent" class="fs-5"></div>
+        <div class="mt-5 pt-3 border-top text-center"><p>نتمنى لكم عاجل الشفاء</p></div>
     </div>
 
-    <!-- شاشة تسجيل الدخول - بدون عرض البيانات الحساسة -->
+    <!-- شاشة تسجيل الدخول -->
     <div id="loginOverlay" class="no-print" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(44, 122, 123, 0.9), rgba(44, 122, 123, 0.8)); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 380px; border-top: 8px solid var(--accent-gold);">
+        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 420px; border-top: 8px solid var(--accent-gold);">
             <div class="text-center mb-4">
-                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="60">
-                <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي 2026</h3>
-                <p class="text-muted small">النظام المتكامل المحدث - إدارة جميع الأقسام</p>
-                <div class="mt-2">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="loginMode" id="modeLocal" value="local" checked>
-                        <label class="form-check-label" for="modeLocal">💾 عمل محلي</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="loginMode" id="modeServer" value="server">
-                        <label class="form-check-label" for="modeServer">☁️ قاعدة بيانات</label>
-                    </div>
+                <img src="https://cdn-icons-png.flaticon.com/512/822/822118.png" width="70">
+                <h3 class="mt-2 fw-bold" style="color: var(--primary-color);">مجمع الشفاء الطبي</h3>
+                <p class="text-muted small">النظام المتكامل لإدارة الأقسام الطبية</p>
+                <div class="alert alert-info mt-2">
+                    <small>🔒 يرجى استخدام بيانات الدخول المخصصة لك فقط</small>
                 </div>
             </div>
-            <input type="text" id="username" class="form-control mb-3" placeholder="اسم المستخدم">
-            <input type="password" id="password" class="form-control mb-3" placeholder="كلمة المرور">
-            <button class="btn btn-primary w-100 fw-bold" onclick="handleLogin()">🚀 دخول للنظام</button>
-            <div class="mt-3 text-center small text-muted" id="loginStatus">أدخل بيانات الدخول الخاصة بك</div>
             
-            <!-- معلومات حسابات الأقسام - مخفية -->
-            <div class="mt-3 p-2 bg-light rounded" id="loginHelp" style="display: none;">
-                <h6 class="text-center mb-2">🔐 مساعدة الدخول:</h6>
-                <div class="row small text-muted">
-                    <div class="col-12">
-                        <div>👑 المدير: admin</div>
-                        <div>👨‍⚕️ الطبيب: doctor</div>
-                        <div>📋 الاستقبال: reception</div>
-                        <div>💊 الصيدلي: pharmacist</div>
-                        <div>🧪 المعمل: lab</div>
-                        <div>💉 التمريض: nurse</div>
-                    </div>
-                </div>
-                <p class="text-center mt-2 small">تواصل مع المدير لاستعادة كلمة المرور</p>
+            <div class="mb-3">
+                <label class="form-label fw-bold">👤 اسم المستخدم</label>
+                <input type="text" id="username" class="form-control" placeholder="أدخل اسم المستخدم" autocomplete="username">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">🔐 كلمة المرور</label>
+                <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" autocomplete="current-password">
+            </div>
+            
+            <div class="mb-3">
+                <select id="loginDept" class="form-select" onchange="updateLoginPlaceholder()">
+                    <option value="">اختر قسم الدخول</option>
+                    <option value="admin">👑 المدير العام</option>
+                    <option value="reception">📋 الاستقبال</option>
+                    <option value="doctor">👨‍⚕️ الطبيب</option>
+                    <option value="lab">🧪 المعمل</option>
+                    <option value="pharmacy">💊 الصيدلية</option>
+                    <option value="nursing">💉 التمريض</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary w-100 fw-bold py-2 mb-3" onclick="handleLogin()">
+                🚀 دخول للنظام
+            </button>
+            
+            <div class="security-warning">
+                <strong>⚠️ تنبيه أمان:</strong>
+                <small class="d-block mt-1">هذا النظام حصري للعاملين بالمؤسسة. عدم مشاركة بيانات الدخول.</small>
             </div>
             
             <div class="text-center mt-3">
-                <button class="btn btn-sm btn-outline-secondary" onclick="toggleLoginHelp()">
-                    <small>👁️ عرض أسماء المستخدمين</small>
+                <button class="btn btn-sm btn-outline-secondary" onclick="showRecoveryOptions()">
+                    <small>❓ نسيت بيانات الدخول؟</small>
                 </button>
-                <button class="btn btn-sm btn-outline-info ms-2" onclick="showAdminAccess()">
-                    <small>🔧 وصول إداري</small>
+                <button class="btn btn-sm btn-outline-info ms-2" onclick="showEmergencyAccess()" id="emergencyBtn" style="display: none;">
+                    <small>🚨 وصول طارئ</small>
                 </button>
+            </div>
+            
+            <div class="access-log text-center mt-2">
+                <small>آخر دخول: <span id="lastLoginTime">--</span></small>
             </div>
         </div>
     </div>
 
-    <!-- شاشة الوصول الإداري (محمية بكلمة سر خاصة) -->
-    <div id="adminAccessOverlay" class="admin-login-overlay">
-        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 380px; border-top: 8px solid var(--accent-red);">
+    <!-- شاشة الوصول الطارئ -->
+    <div id="emergencyAccessOverlay" class="admin-login-overlay">
+        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 400px; border-top: 8px solid var(--accent-red);">
             <div class="text-center mb-4">
-                <h4 class="fw-bold text-danger">🔧 الوصول الإداري</h4>
-                <p class="text-muted small">للعاملين في قسم الدعم الفني فقط</p>
+                <h4 class="fw-bold text-danger">🚨 الوصول الطارئ</h4>
+                <p class="text-muted small">للاستخدام في الحالات الطارئة فقط</p>
             </div>
-            <input type="password" id="adminAccessPassword" class="form-control mb-3" placeholder="كلمة مرور الوصول الإداري">
-            <button class="btn btn-danger w-100 fw-bold" onclick="verifyAdminAccess()">🔓 دخول</button>
-            <button class="btn btn-outline-secondary w-100 mt-2" onclick="hideAdminAccess()">رجوع</button>
+            
+            <div class="alert alert-warning mb-3">
+                <small>⚠️ هذا الوصول مسجل ومراقب. يرجى استخدامه في الحالات الضرورية فقط.</small>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">الرقم السري الطارئ</label>
+                <input type="password" id="emergencyCode" class="form-control" placeholder="أدخل الرمز السري">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">سبب الوصول الطارئ</label>
+                <select id="emergencyReason" class="form-select">
+                    <option value="">اختر السبب</option>
+                    <option value="system_recovery">استعادة النظام</option>
+                    <option value="password_reset">إعادة تعيين كلمة المرور</option>
+                    <option value="technical_support">دعم فني</option>
+                    <option value="emergency_access">وصول طارئ للمريض</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">ملاحظات إضافية</label>
+                <textarea id="emergencyNotes" class="form-control" rows="2" placeholder="اذكر سبب الوصول الطارئ..."></textarea>
+            </div>
+            
+            <button class="btn btn-danger w-100 fw-bold mb-2" onclick="verifyEmergencyAccess()">
+                🔓 تنفيذ الوصول الطارئ
+            </button>
+            <button class="btn btn-outline-secondary w-100" onclick="hideEmergencyAccess()">
+                إلغاء
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة استعادة البيانات -->
+    <div id="recoveryOverlay" class="admin-login-overlay">
+        <div class="card p-4 shadow-lg animate__animated animate__zoomIn" style="width: 400px; border-top: 8px solid var(--accent-info);">
+            <div class="text-center mb-4">
+                <h4 class="fw-bold text-info">🔧 استعادة بيانات الدخول</h4>
+                <p class="text-muted small">تواصل مع المدير للحصول على المساعدة</p>
+            </div>
+            
+            <div class="alert alert-info mb-3">
+                <small>📞 يرجى الاتصال بالمدير أو قسم الدعم الفني لاستعادة بيانات الدخول.</small>
+            </div>
+            
+            <div class="mb-3">
+                <h6>📋 معلومات الاتصال:</h6>
+                <ul class="list-unstyled">
+                    <li>📞 هاتف الدعم: <strong>+249 123 456 789</strong></li>
+                    <li>📧 البريد الإلكتروني: <strong>support@shifaclinic.sd</strong></li>
+                    <li>👤 المدير المسؤول: <strong>أحمد محمد</strong></li>
+                </ul>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">رقم الهوية/الموظف</label>
+                <input type="text" class="form-control" placeholder="أدخل رقم هويتك">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">رقم الهاتف المسجل</label>
+                <input type="tel" class="form-control" placeholder="أدخل رقم هاتفك">
+            </div>
+            
+            <button class="btn btn-info w-100 fw-bold mb-2" onclick="submitRecoveryRequest()">
+                📩 إرسال طلب الاستعادة
+            </button>
+            <button class="btn btn-outline-secondary w-100" onclick="hideRecoveryOverlay()">
+                رجوع
+            </button>
         </div>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div id="mainContent" class="hidden-section">
-        <!-- باقي المحتوى يبقى كما هو بدون تغيير -->
-        <!-- ... -->
+        <!-- PWA Status -->
+        <div class="pwa-status no-print">
+            <div id="pwaStatus" class="badge bg-info">PWA: نشط</div>
+        </div>
+        
+        <!-- شريط التنقل -->
+        <nav class="navbar navbar-dark mb-4 no-print py-2">
+            <div class="container d-flex justify-content-between text-white align-items-center">
+                <span class="navbar-brand fw-bold">🏥 مجمع الشفاء - النظام المتكامل 2026</span>
+                <div class="d-flex align-items-center">
+                    <span id="currentUserDisplay" class="badge bg-white text-dark p-2 mx-2"></span>
+                    <span id="clockDisplay" class="badge bg-info text-dark mx-2"></span>
+                    <span id="connectionStatus" class="badge bg-success mx-2">متصل محلياً</span>
+                    <button class="btn btn-sm btn-outline-light ms-2" onclick="openUserMenu()">👤</button>
+                    <button class="btn btn-sm btn-outline-light" onclick="logout()">خروج</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- تبويبات التنقل -->
+        <div class="container">
+            <ul class="nav nav-pills mb-4 shadow-sm p-2 bg-white rounded-4 justify-content-center no-print" id="mainTabs">
+                <li class="nav-item" id="tab-reception-li"><button class="nav-link" id="btn-reception" onclick="switchSection('reception')">📋 الاستقبال</button></li>
+                <li class="nav-item" id="tab-doctor-li"><button class="nav-link" id="btn-doctor" onclick="switchSection('doctor')">👨‍⚕️ العيادة <span id="doctorBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-lab-li"><button class="nav-link" id="btn-lab" onclick="switchSection('lab')">🧪 المعمل <span id="labBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-pharmacy-li"><button class="nav-link" id="btn-pharmacy" onclick="switchSection('pharmacy')">💊 الصيدلية <span id="pharBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-nursing-li"><button class="nav-link" id="btn-nursing" onclick="switchSection('nursing')">💉 التمريض <span id="nurseBadge" class="badge bg-danger ms-1 hidden-section">0</span></button></li>
+                <li class="nav-item" id="tab-admin-li"><button class="nav-link" id="btn-admin" onclick="switchSection('admin')">👑 المدير</button></li>
+            </ul>
+
+            <!-- محتوى الأقسام -->
+            <div class="tab-content">
+                <!-- قسم الاستقبال -->
+                <div id="reception-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card p-4 border-top border-primary border-4">
+                                <h5 class="fw-bold mb-3">تسجيل مريض جديد</h5>
+                                <input type="text" id="pName" class="form-control mb-2" placeholder="اسم المريض الرباعي">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4"><input type="number" id="pAge" class="form-control" placeholder="العمر"></div>
+                                    <div class="col-8"><input type="text" id="pAddress" class="form-control" placeholder="السكن / العنوان"></div>
+                                </div>
+                                <div class="bg-light p-2 rounded mb-3">
+                                    <label class="small fw-bold">رسوم تذكرة الطبيب:</label>
+                                    <input type="number" id="pTicket" class="form-control" value="2000">
+                                </div>
+                                <button class="btn btn-primary w-100 fw-bold" onclick="registerPatient()">✅ حفظ وإرسال للطبيب</button>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card p-4">
+                                <h5 class="fw-bold mb-3">سجل المرضى اليوم</h5>
+                                <div id="receptionList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم العيادة -->
+                <div id="doctor-sec" class="section-pane hidden-section">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-3">
+                                <h6>بانتظار الكشف</h6>
+                                <div id="doctorQueue"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div id="doctorWorkArea" class="card p-4 hidden-section border-top border-success border-5">
+                                <h4 id="currentPatientName" class="text-success fw-bold"></h4>
+                                <hr>
+                                <label class="fw-bold">شكوى المريض:</label>
+                                <textarea id="complaint" class="form-control mb-3" rows="2"></textarea>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="fw-bold small">طلب فحوصات:</label>
+                                        <select id="labSelect" class="form-select mb-2" multiple style="height: 100px;"></select>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="orderLab()">🧪 إرسال للمعمل</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="fw-bold small">وصف الدواء:</label>
+                                        <select id="medicineSelect" class="form-select mb-2" multiple style="height: 100px;"></select>
+                                        <button class="btn btn-sm btn-outline-warning w-100" onclick="orderPharmacy()">💊 إرسال للصيدلية</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3 p-2 bg-light rounded">
+                                    <label class="fw-bold small">إجراءات تمريضية (حقن/دريبات):</label>
+                                    <input type="text" id="nurseNotes" class="form-control mb-2" placeholder="اكتب التعليمات...">
+                                    <button class="btn btn-sm btn-outline-purple w-100" onclick="orderNurse()">💉 إرسال للتمريض</button>
+                                </div>
+                                <button class="btn btn-success w-100 fw-bold" onclick="completeVisit()">🏁 إنهاء الزيارة بالكامل</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم المعمل -->
+                <div id="lab-sec" class="section-pane hidden-section">
+                    <div class="card p-4 border-top border-danger border-5">
+                        <h5 class="fw-bold">🧪 طلبات الفحص الواردة</h5>
+                        <div id="labList" class="row g-3"></div>
+                    </div>
+                </div>
+
+                <!-- قسم الصيدلية -->
+                <div id="pharmacy-sec" class="section-pane hidden-section">
+                    <div class="card p-4 border-top border-warning border-5">
+                        <h5 class="fw-bold">💊 الصيدلية المركزية</h5>
+                        <div id="pharmacyList" class="row g-3"></div>
+                    </div>
+                </div>
+
+                <!-- قسم التمريض -->
+                <div id="nursing-sec" class="section-pane hidden-section">
+                    <div class="card p-4 border-top border-purple border-5">
+                        <h5 class="fw-bold">💉 وحدة التمريض</h5>
+                        <div id="nurseList" class="row g-3"></div>
+                    </div>
+                </div>
+
+                <!-- قسم المدير -->
+                <div id="admin-sec" class="section-pane hidden-section">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3"><div class="stat-card bg-primary"><h6>إيراد العيادة</h6><h3 id="admIncClinic">0</h3></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-danger"><h6>إيراد المعمل</h6><h3 id="admIncLab">0</h3></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-warning"><h6>إيراد الصيدلية</h6><h3 id="admIncPhar">0</h3></div></div>
+                        <div class="col-md-3"><div class="stat-card bg-success"><h6>الإجمالي الكلي</h6><h3 id="admIncTotal">0</h3></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card p-3">
+                                <h6>➕ إضافة / تعديل فحص</h6>
+                                <input type="text" id="admLabName" class="form-control mb-2" placeholder="اسم الفحص">
+                                <input type="number" id="admLabPrice" class="form-control mb-2" placeholder="السعر">
+                                <button class="btn btn-danger btn-sm w-100" onclick="adminAddLab()">حفظ الفحص</button>
+                            </div>
+                            <div class="card p-3 mt-3">
+                                <h6>➕ إضافة دواء للمخزون</h6>
+                                <input type="text" id="admMedName" class="form-control mb-2" placeholder="اسم الدواء">
+                                <input type="number" id="admMedPrice" class="form-control mb-2" placeholder="السعر">
+                                <input type="number" id="admMedQty" class="form-control mb-2" placeholder="الكمية">
+                                <button class="btn btn-warning btn-sm w-100" onclick="adminAddMed()">حفظ الدواء</button>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card p-3">
+                                <h6>📊 تقارير الأداء</h6>
+                                <div class="btn-group w-100 mb-3">
+                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('day')">تقرير يومي</button>
+                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('week')">أسبوعي</button>
+                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('month')">شهري</button>
+                                </div>
+                                <div id="reportArea" class="bg-light p-3 rounded">اختر نوع التقرير للعرض...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modals -->
-    <!-- ... جميع الـ Modals السابقة تبقى كما هي ... -->
+    <div id="changePasswordModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">🔐 تغيير كلمة المرور</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور الحالية</label>
+                        <input type="password" id="currentPassword" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور الجديدة</label>
+                        <input type="password" id="newPassword" class="form-control" onkeyup="checkPasswordStrength()">
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <small class="text-muted">يجب أن تحتوي على 8 أحرف على الأقل، حروف كبيرة وصغيرة، وأرقام</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                        <input type="password" id="confirmPassword" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmPasswordChange()">تغيير</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userMenuModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">👤 إدارة الحساب</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <span class="fs-3">👤</span>
+                        </div>
+                        <h5 class="mt-2" id="userNameDisplay"></h5>
+                        <span class="badge bg-primary" id="userRoleDisplay"></span>
+                    </div>
+                    <div class="list-group">
+                        <button class="list-group-item list-group-item-action" onclick="changePasswordModal()">
+                            🔐 تغيير كلمة المرور
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="viewMyActivity()">
+                            📋 سجل نشاطي
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="toggleDarkMode()">
+                            🌙 الوضع الليلي
+                        </button>
+                        <button class="list-group-item list-group-item-action text-danger" onclick="showSecurityLog()">
+                            🔒 سجل الأمان
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <small class="text-muted" id="lastLoginDisplay"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal سجل الأمان -->
+    <div id="securityLogModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">🔒 سجل أحداث الأمان</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="securityLogContent" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-danger" onclick="clearSecurityLog()">🗑️ مسح السجل</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // ============================================
-        // نظام تسجيل الدخول للأقسام (مخفى عن الواجهة)
+        // نظام تسجيل الدخول للأقسام
         // ============================================
 
         const USERS = {
@@ -130,8 +574,14 @@
             'nurse': { password: 'nur123', role: 'nursing', name: 'التمريض' }
         };
 
-        // كلمة مرور خاصة للوصول الإداري (للعاملين الفنيين فقط)
-        const ADMIN_ACCESS_PASSWORD = 'shifa2026';
+        // إعدادات أمان النظام
+        const SECURITY_SETTINGS = {
+            emergencyCode: 'SHIFA2026EMERG',
+            maxLoginAttempts: 5,
+            lockoutTime: 15, // دقائق
+            sessionTimeout: 30, // دقائق
+            enableAuditLog: true
+        };
 
         let currentUser = null;
         let patients = JSON.parse(localStorage.getItem('shifa_pats')) || [];
@@ -142,8 +592,9 @@
         let staffMembers = JSON.parse(localStorage.getItem('shifa_staff')) || [];
         let medicalLibrary = JSON.parse(localStorage.getItem('shifa_library')) || [];
         let backups = JSON.parse(localStorage.getItem('shifa_backups')) || [];
+        let securityLog = JSON.parse(localStorage.getItem('shifa_security_log')) || [];
         
-        // بيانات جديدة
+        // بيانات جديدة من النسخة الثانية
         let labTests = JSON.parse(localStorage.getItem('shifa_labTests')) || [
             {name: 'CBC', price: 5000},
             {name: 'Malaria', price: 2000},
@@ -157,88 +608,232 @@
             {name: 'Vitamin C', price: 1500, qty: 75}
         ];
 
+        // متغيرات الأمان
+        let loginAttempts = JSON.parse(localStorage.getItem('shifa_login_attempts')) || {};
+        let lastActivityTime = Date.now();
+
         // ============================================
-        // دوال جديدة للتحكم في عرض المعلومات
+        // دوال الأمان والتحكم
         // ============================================
 
-        function toggleLoginHelp() {
-            const helpDiv = document.getElementById('loginHelp');
-            const button = event.target.closest('button');
+        function logSecurityEvent(eventType, details) {
+            if (!SECURITY_SETTINGS.enableAuditLog) return;
             
-            if (helpDiv.style.display === 'none') {
-                helpDiv.style.display = 'block';
-                button.innerHTML = '<small>👁️ إخفاء أسماء المستخدمين</small>';
+            const event = {
+                timestamp: new Date().toISOString(),
+                user: currentUser ? currentUser.u : 'system',
+                eventType: eventType,
+                details: details,
+                ip: 'localhost'
+            };
+            
+            securityLog.unshift(event);
+            if (securityLog.length > 1000) securityLog = securityLog.slice(0, 1000);
+            
+            localStorage.setItem('shifa_security_log', JSON.stringify(securityLog));
+        }
+
+        function updateLoginPlaceholder() {
+            const dept = document.getElementById('loginDept').value;
+            const usernameInput = document.getElementById('username');
+            
+            if (dept) {
+                switch(dept) {
+                    case 'admin': usernameInput.placeholder = 'اسم المستخدم: admin'; break;
+                    case 'doctor': usernameInput.placeholder = 'اسم المستخدم: doctor'; break;
+                    case 'reception': usernameInput.placeholder = 'اسم المستخدم: reception'; break;
+                    case 'pharmacy': usernameInput.placeholder = 'اسم المستخدم: pharmacist'; break;
+                    case 'lab': usernameInput.placeholder = 'اسم المستخدم: lab'; break;
+                    case 'nursing': usernameInput.placeholder = 'اسم المستخدم: nurse'; break;
+                }
             } else {
-                helpDiv.style.display = 'none';
-                button.innerHTML = '<small>👁️ عرض أسماء المستخدمين</small>';
+                usernameInput.placeholder = 'أدخل اسم المستخدم';
             }
         }
 
-        function showAdminAccess() {
-            document.getElementById('adminAccessOverlay').style.display = 'flex';
+        function showRecoveryOptions() {
+            document.getElementById('recoveryOverlay').style.display = 'flex';
+            logSecurityEvent('RECOVERY_ACCESS', 'مستخدم طلب استعادة بيانات الدخول');
         }
 
-        function hideAdminAccess() {
-            document.getElementById('adminAccessOverlay').style.display = 'none';
-            document.getElementById('adminAccessPassword').value = '';
+        function hideRecoveryOverlay() {
+            document.getElementById('recoveryOverlay').style.display = 'none';
         }
 
-        function verifyAdminAccess() {
-            const password = document.getElementById('adminAccessPassword').value;
+        function showEmergencyAccess() {
+            document.getElementById('emergencyAccessOverlay').style.display = 'flex';
+            logSecurityEvent('EMERGENCY_ACCESS_ATTEMPT', 'بدء محاولة وصول طارئ');
+        }
+
+        function hideEmergencyAccess() {
+            document.getElementById('emergencyAccessOverlay').style.display = 'none';
+        }
+
+        function verifyEmergencyAccess() {
+            const code = document.getElementById('emergencyCode').value;
+            const reason = document.getElementById('emergencyReason').value;
+            const notes = document.getElementById('emergencyNotes').value;
             
-            if (password === ADMIN_ACCESS_PASSWORD) {
-                // عرض كلمات المرور الحقيقية للدعم الفني
-                alert('🔧 معلومات الدخول الإدارية:\n\n' +
-                      '👑 المدير: admin / 123\n' +
-                      '👨‍⚕️ الطبيب: doctor / doc123\n' +
-                      '📋 الاستقبال: reception / rec123\n' +
-                      '💊 الصيدلي: pharmacist / ph123\n' +
-                      '🧪 المعمل: lab / lab123\n' +
-                      '💉 التمريض: nurse / nur123\n\n' +
-                      '⚠️ هذه المعلومات حساسة ولا يجب مشاركتها.');
-                hideAdminAccess();
+            if (code === SECURITY_SETTINGS.emergencyCode && reason) {
+                // الوصول الطارئ مسموح
+                logSecurityEvent('EMERGENCY_ACCESS_GRANTED', `السبب: ${reason}, الملاحظات: ${notes}`);
+                
+                // عرض معلومات الدخول بشكل مؤقت
+                const emergencyInfo = `
+                    <div class="alert alert-success">
+                        <h6>🔓 الوصول الطارئ مفعل</h6>
+                        <p><strong>السبب:</strong> ${reason}</p>
+                        <p><strong>الوقت:</strong> ${new Date().toLocaleString('ar-EG')}</p>
+                    </div>
+                    <div class="alert alert-warning">
+                        <h6>👥 معلومات الدخول:</h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><small>👑 المدير: admin</small></p>
+                                <p><small>👨‍⚕️ الطبيب: doctor</small></p>
+                                <p><small>📋 الاستقبال: reception</small></p>
+                            </div>
+                            <div class="col-6">
+                                <p><small>💊 الصيدلي: pharmacist</small></p>
+                                <p><small>🧪 المعمل: lab</small></p>
+                                <p><small>💉 التمريض: nurse</small></p>
+                            </div>
+                        </div>
+                        <p class="text-danger mt-2"><small>⚠️ هذه المعلومات مؤقتة وسيتم تسجيل هذا الحدث</small></p>
+                    </div>
+                `;
+                
+                document.getElementById('emergencyAccessOverlay').innerHTML = `
+                    <div class="card p-4 shadow-lg" style="width: 500px;">
+                        ${emergencyInfo}
+                        <button class="btn btn-danger w-100" onclick="hideEmergencyAccess()">
+                            🔒 إغلاق الوصول الطارئ
+                        </button>
+                    </div>
+                `;
+                
             } else {
-                alert('❌ كلمة مرور الوصول الإداري غير صحيحة');
+                alert('❌ الرمز السري غير صحيح أو السبب غير محدد');
+                logSecurityEvent('EMERGENCY_ACCESS_DENIED', 'رمز طارئ خاطئ');
             }
         }
 
+        function submitRecoveryRequest() {
+            alert('📩 تم إرسال طلب الاستعادة. سيتصل بك المدير خلال 24 ساعة.');
+            hideRecoveryOverlay();
+            logSecurityEvent('RECOVERY_REQUEST', 'تم إرسال طلب استعادة بيانات الدخول');
+        }
+
+        function checkLoginAttempts(username) {
+            const now = Date.now();
+            const userAttempts = loginAttempts[username] || { count: 0, lockoutUntil: 0 };
+            
+            // التحقق إذا كان الحساب مقفولاً
+            if (userAttempts.lockoutUntil > now) {
+                const minutesLeft = Math.ceil((userAttempts.lockoutUntil - now) / 60000);
+                return { allowed: false, message: `⏳ الحساب مقفل مؤقتاً. يرجى الانتظار ${minutesLeft} دقيقة` };
+            }
+            
+            // إعادة تعيين المحاولات إذا مر وقت كافي
+            if (userAttempts.lastAttempt && (now - userAttempts.lastAttempt) > 3600000) { // ساعة
+                userAttempts.count = 0;
+            }
+            
+            return { allowed: true, attempts: userAttempts };
+        }
+
+        function updateLoginAttempts(username, success) {
+            if (!loginAttempts[username]) {
+                loginAttempts[username] = { count: 0, lastAttempt: 0, lockoutUntil: 0 };
+            }
+            
+            if (success) {
+                // إعادة تعيين المحاولات عند نجاح الدخول
+                loginAttempts[username] = { count: 0, lastAttempt: Date.now(), lockoutUntil: 0 };
+            } else {
+                // زيادة عدد المحاولات الفاشلة
+                loginAttempts[username].count++;
+                loginAttempts[username].lastAttempt = Date.now();
+                
+                // إذا تجاوز الحد المسموح، قفل الحساب
+                if (loginAttempts[username].count >= SECURITY_SETTINGS.maxLoginAttempts) {
+                    loginAttempts[username].lockoutUntil = Date.now() + (SECURITY_SETTINGS.lockoutTime * 60000);
+                    logSecurityEvent('ACCOUNT_LOCKOUT', `حساب ${username} مقفل مؤقتاً`);
+                }
+            }
+            
+            localStorage.setItem('shifa_login_attempts', JSON.stringify(loginAttempts));
+        }
+
         // ============================================
-        // نظام تسجيل الدخول (باقي كما هو)
+        // نظام تسجيل الدخول
         // ============================================
 
         function handleLogin() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const department = document.getElementById('loginDept').value;
             
             if (!username || !password) {
                 alert('⚠️ الرجاء إدخال اسم المستخدم وكلمة المرور!');
                 return;
             }
             
+            // التحقق من محاولات الدخول
+            const attemptCheck = checkLoginAttempts(username);
+            if (!attemptCheck.allowed) {
+                alert(attemptCheck.message);
+                return;
+            }
+            
             if (USERS[username] && USERS[username].password === password) {
+                // تسجيل الدخول الناجح
                 currentUser = {
                     u: username,
                     r: USERS[username].role,
-                    name: USERS[username].name
+                    name: USERS[username].name,
+                    loginTime: new Date().toISOString()
                 };
                 
+                // تحديث المحاولات
+                updateLoginAttempts(username, true);
+                
                 localStorage.setItem('shifa_user', JSON.stringify(currentUser));
+                localStorage.setItem('shifa_last_login', new Date().toISOString());
                 
                 document.getElementById('loginOverlay').classList.add('hidden-section');
                 document.getElementById('mainContent').classList.remove('hidden-section');
                 document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.name}`;
                 
+                // تحديث وقت آخر دخول
+                const lastLogin = new Date().toLocaleString('ar-EG');
+                document.getElementById('lastLoginTime').textContent = lastLogin;
+                
                 // تهيئة قسم المدير إذا كان المستخدم مديراً
                 if (currentUser.r === 'admin') {
                     initAdminSection();
                     switchSection('admin');
+                    document.getElementById('emergencyBtn').style.display = 'inline-block';
                 } else {
                     switchSection(currentUser.r);
                 }
                 
+                // تسجيل حدث الدخول
+                logSecurityEvent('LOGIN_SUCCESS', `الدخول إلى قسم ${currentUser.r}`);
                 showNotification(`مرحباً ${currentUser.name}`, `تم تسجيل الدخول إلى قسم ${currentUser.name} بنجاح!`);
+                
             } else {
+                // تسجيل الدخول الفاشل
+                updateLoginAttempts(username, false);
+                logSecurityEvent('LOGIN_FAILED', `محاولة دخول فاشلة لحساب ${username}`);
+                
                 alert('❌ اسم المستخدم أو كلمة المرور غير صحيحة!');
+                
+                // التحقق إذا تم قفل الحساب
+                const attemptCheck = checkLoginAttempts(username);
+                if (!attemptCheck.allowed) {
+                    alert(`🔒 ${attemptCheck.message}`);
+                }
             }
         }
 
@@ -247,141 +842,322 @@
         // ============================================
 
         function registerPatient() {
-            const name = document.getElementById('pName').value.trim();
-            const age = document.getElementById('pAge').value;
-            const ticket = parseFloat(document.getElementById('pTicket').value) || 2000;
+            const name = document.getElementById('pName').value;
+            const price = parseFloat(document.getElementById('pTicket').value);
+            if(!name) return alert("الاسم مطلوب!");
             
-            if (!name) {
-                alert("⚠️ الرجاء إدخال اسم المريض!");
-                return;
-            }
-            
-            const patientId = Date.now();
-            const newPatient = {
-                id: patientId,
-                name: name,
-                age: age,
-                gender: document.getElementById('pGender').value,
-                phone: document.getElementById('pPhone').value.trim(),
+            const p = {
+                id: Date.now(),
+                name,
+                age: document.getElementById('pAge').value,
                 address: document.getElementById('pAddress').value,
-                ticket: ticket,
-                visitType: document.getElementById('pVisitType').value,
-                medicalHistory: document.getElementById('pMedicalHistory').value,
                 status: 'waiting_doctor',
-                department: 'doctor',
-                createdAt: new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0],
                 time: new Date().toLocaleTimeString('ar-EG'),
-                complaint: '',
-                diagnosis: '',
-                tests: [],
-                meds: [],
-                nursingInstructions: '',
-                vitalSigns: {}
+                ticketPrice: price,
+                tests: [], meds: [], results: '', complaint: ''
             };
-            
-            patients.push(newPatient);
-            localStorage.setItem('shifa_pats', JSON.stringify(patients));
-            
-            // تحديث الإحصائيات
-            financials.clinic += newPatient.ticket;
-            localStorage.setItem('shifa_fin', JSON.stringify(financials));
-            
-            // إعادة تعيين الحقول
-            document.getElementById('pName').value = '';
-            document.getElementById('pAge').value = '';
-            document.getElementById('pPhone').value = '';
-            document.getElementById('pAddress').value = '';
-            document.getElementById('pMedicalHistory').value = '';
-            
-            showNotification("✅ تم التسجيل", `تم تسجيل ${name} وإرساله للطبيب`);
-            
-            updateReceptionStats();
-            updateBadges();
+            patients.push(p);
+            saveData();
+            alert("تم التسجيل والتحويل للطبيب");
             loadReception();
         }
 
+        function loadReception() {
+            const list = document.getElementById('receptionList');
+            list.innerHTML = patients.slice().reverse().map(p => `
+                <div class="card p-2 mb-2 bg-medical small">
+                    <b>${p.name}</b> (${p.age}) - ${p.status} <span class="float-end text-muted">${p.time}</span>
+                </div>
+            `).join('');
+        }
+
         // ============================================
-        // باقي الدوال تبقى كما هي بدون تغيير
+        // دوال قسم الطبيب
         // ============================================
 
-        // ... (جميع الدوال الأخرى تبقى كما هي بدون تغيير) ...
+        function loadDoctorLists() {
+            const lSel = document.getElementById('labSelect');
+            const mSel = document.getElementById('medicineSelect');
+            lSel.innerHTML = labTests.map(t => `<option value="${t.name}">${t.name} (${t.price} ج)</option>`).join('');
+            mSel.innerHTML = inventory.map(m => `<option value="${m.name}">${m.name} (${m.price} ج - متوفر: ${m.qty})</option>`).join('');
+        }
+
+        function loadDoctor() {
+            const q = document.getElementById('doctorQueue');
+            const waiting = patients.filter(p => p.status === 'waiting_doctor');
+            q.innerHTML = waiting.map(p => `<button class="btn btn-light w-100 mb-2 border" onclick="selectPatient(${p.id})">${p.name}</button>`).join('');
+        }
+
+        function selectPatient(id) {
+            activePatient = patients.find(p => p.id === id);
+            document.getElementById('doctorWorkArea').classList.remove('hidden-section');
+            document.getElementById('currentPatientName').textContent = activePatient.name;
+            document.getElementById('complaint').value = activePatient.complaint || '';
+        }
+
+        function orderLab() {
+            const selected = Array.from(document.getElementById('labSelect').selectedOptions).map(o => o.value);
+            activePatient.tests = selected.map(name => ({name, price: labTests.find(t => t.name === name).price, result: ''}));
+            activePatient.status = 'waiting_lab';
+            saveData(); switchSection('doctor');
+        }
+
+        function orderPharmacy() {
+            const selected = Array.from(document.getElementById('medicineSelect').selectedOptions).map(o => o.value);
+            activePatient.meds = selected.map(name => ({name, price: inventory.find(i => i.name === name).price}));
+            activePatient.status = 'waiting_pharmacy';
+            saveData(); switchSection('doctor');
+        }
+
+        function orderNurse() {
+            const notes = document.getElementById('nurseNotes').value;
+            activePatient.nursingInstructions = notes;
+            activePatient.status = 'waiting_nurse';
+            saveData(); switchSection('doctor');
+        }
+
+        function completeVisit() {
+            activePatient.status = 'completed';
+            saveData();
+            document.getElementById('doctorWorkArea').classList.add('hidden-section');
+            loadDoctor();
+        }
 
         // ============================================
-        // تهيئة النظام
+        // دوال قسم المعمل
         // ============================================
 
-        window.onload = function() {
-            updateClock();
-            setInterval(updateClock, 1000);
+        function loadLab() {
+            const list = document.getElementById('labList');
+            const waiting = patients.filter(p => p.status === 'waiting_lab');
+            list.innerHTML = waiting.map(p => {
+                const total = p.tests.reduce((s, t) => s + t.price, 0);
+                return `
+                <div class="col-md-6">
+                    <div class="card p-3 border-start border-danger border-5">
+                        <h6>${p.name} <span class="badge bg-dark float-end">${total} ج</span></h6>
+                        ${p.tests.map((t, i) => `<input type="text" class="form-control form-control-sm mb-1" placeholder="نتيجة ${t.name}" onchange="patients.find(x=>x.id===${p.id}).tests[${i}].result=this.value">`).join('')}
+                        <button class="btn btn-danger btn-sm w-100 mt-2" onclick="finishLab(${p.id})">إرسال النتائج للطبيب</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function finishLab(id) { 
+            patients.find(x => x.id === id).status = 'waiting_doctor'; 
+            saveData(); loadLab(); playNotify(); 
+        }
+
+        // ============================================
+        // دوال قسم الصيدلية
+        // ============================================
+
+        function loadPharmacy() {
+            const list = document.getElementById('pharmacyList');
+            const waiting = patients.filter(p => p.status === 'waiting_pharmacy');
+            list.innerHTML = waiting.map(p => {
+                const total = p.meds.reduce((s, m) => s + m.price, 0);
+                return `
+                <div class="col-md-6">
+                    <div class="card p-3 border-start border-warning border-5">
+                        <h6>${p.name} <span class="badge bg-warning text-dark float-end">${total} ج</span></h6>
+                        <ul class="small">${p.meds.map(m => `<li>${m.name}</li>`).join('')}</ul>
+                        <button class="btn btn-warning btn-sm w-100" onclick="finishPhar(${p.id})">صرف وخصم من المخزون</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function finishPhar(id) {
+            let p = patients.find(x => x.id === id);
+            p.meds.forEach(m => {
+                let item = inventory.find(i => i.name === m.name);
+                if(item && item.qty > 0) item.qty--;
+            });
+            p.status = 'completed';
+            saveData(); loadPharmacy();
+        }
+
+        // ============================================
+        // دوال قسم التمريض
+        // ============================================
+
+        function loadNurse() {
+            const list = document.getElementById('nurseList');
+            const waiting = patients.filter(p => p.status === 'waiting_nurse');
+            list.innerHTML = waiting.map(p => {
+                return `
+                <div class="col-md-6">
+                    <div class="card p-3 border-start border-purple border-5">
+                        <h6>${p.name} <span class="badge bg-purple float-end">تمريض</span></h6>
+                        <div class="bg-light p-2 rounded mb-2">
+                            <small><strong>التعليمات:</strong> ${p.nursingInstructions || 'لا توجد تعليمات'}</small>
+                        </div>
+                        <textarea class="form-control form-control-sm mb-2" placeholder="سجل التنفيذ..."></textarea>
+                        <button class="btn btn-purple btn-sm w-100" onclick="finishNurse(${p.id}, this)">إكمال المهمة</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function finishNurse(id, btn) {
+            const notes = btn.previousElementSibling.value;
+            patients.find(x => x.id === id).status = 'completed';
+            saveData(); loadNurse();
+        }
+
+        // ============================================
+        // دوال قسم المدير
+        // ============================================
+
+        function loadAdmin() {
+            const clinic = patients.reduce((s, p) => s + (p.ticketPrice || 0), 0);
+            const lab = patients.reduce((s, p) => s + p.tests.reduce((ss, t) => ss + t.price, 0), 0);
+            const phar = patients.reduce((s, p) => s + p.meds.reduce((ss, m) => ss + m.price, 0), 0);
             
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
+            document.getElementById('admIncClinic').textContent = clinic.toLocaleString();
+            document.getElementById('admIncLab').textContent = lab.toLocaleString();
+            document.getElementById('admIncPhar').textContent = phar.toLocaleString();
+            document.getElementById('admIncTotal').textContent = (clinic + lab + phar).toLocaleString();
+        }
+
+        function adminAddLab() {
+            const name = document.getElementById('admLabName').value;
+            const price = parseFloat(document.getElementById('admLabPrice').value);
+            if(name && price) {
+                labTests.push({name, price});
+                localStorage.setItem('shifa_tests', JSON.stringify(labTests));
+                alert("تمت إضافة الفحص");
+            }
+        }
+
+        function adminAddMed() {
+            const name = document.getElementById('admMedName').value;
+            const price = parseFloat(document.getElementById('admMedPrice').value);
+            const qty = parseInt(document.getElementById('admMedQty').value);
+            if(name && price && qty) {
+                inventory.push({name, price, qty});
+                localStorage.setItem('shifa_stock', JSON.stringify(inventory));
+                alert("تم تحديث المخزون");
+            }
+        }
+
+        function renderReport(type) {
+            const reportArea = document.getElementById('reportArea');
+            let html = '';
+            
+            switch(type) {
+                case 'day':
+                    const today = new Date().toDateString();
+                    const todayPatients = patients.filter(p => new Date(p.date).toDateString() === today);
+                    html = `
+                        <h6>📊 تقرير يومي - ${new Date().toLocaleDateString('ar-EG')}</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${todayPatients.length}</p>
+                                <p><strong>الإيرادات:</strong> ${todayPatients.reduce((s,p) => s + (p.ticketPrice||0), 0).toLocaleString()} ج</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>مكتمل:</strong> ${todayPatients.filter(p => p.status === 'completed').length}</p>
+                                <p><strong>في الانتظار:</strong> ${todayPatients.filter(p => p.status !== 'completed').length}</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'week':
+                    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+                    const weekPatients = patients.filter(p => new Date(p.date) >= weekAgo);
+                    html = `
+                        <h6>📊 تقرير أسبوعي</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${weekPatients.length}</p>
+                                <p><strong>متوسط يومي:</strong> ${Math.round(weekPatients.length / 7)}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>إجمالي الإيرادات:</strong> ${weekPatients.reduce((s,p) => s + (p.ticketPrice||0), 0).toLocaleString()} ج</p>
+                                <p><strong>متوسط يومي:</strong> ${Math.round(weekPatients.reduce((s,p) => s + (p.ticketPrice||0), 0) / 7).toLocaleString()} ج</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'month':
+                    const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+                    const monthPatients = patients.filter(p => new Date(p.date) >= monthAgo);
+                    html = `
+                        <h6>📊 تقرير شهري</h6>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p><strong>عدد المرضى:</strong> ${monthPatients.length}</p>
+                                <p><strong>متوسط أسبوعي:</strong> ${Math.round(monthPatients.length / 4)}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>إجمالي الإيرادات:</strong> ${monthPatients.reduce((s,p) => s + (p.ticketPrice||0), 0).toLocaleString()} ج</p>
+                                <p><strong>متوسط أسبوعي:</strong> ${Math.round(monthPatients.reduce((s,p) => s + (p.ticketPrice||0), 0) / 4).toLocaleString()} ج</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
             }
             
-            const savedUser = localStorage.getItem('shifa_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                document.getElementById('loginOverlay').classList.add('hidden-section');
-                document.getElementById('mainContent').classList.remove('hidden-section');
-                document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.name}`;
-                
-                if (currentUser.r === 'admin') {
-                    initAdminSection();
-                    switchSection('admin');
-                } else {
-                    switchSection(currentUser.r);
-                }
+            reportArea.innerHTML = html;
+        }
+
+        // ============================================
+        // دوال النظام العامة
+        // ============================================
+
+        function switchSection(id) {
+            if (currentUser.r === 'admin') {
+                // المدير يمكنه الوصول لجميع الأقسام
+            } else if (currentUser.r !== id) {
+                alert(`⛔ ليس لديك صلاحية للوصول لقسم ${id}!`);
+                return;
             }
             
-            // تهيئة البيانات الافتراضية
-            if (staffMembers.length === 0) {
-                staffMembers = Object.keys(USERS).map(username => ({
-                    u: username,
-                    p: USERS[username].password,
-                    r: USERS[username].role,
-                    name: USERS[username].name,
-                    status: 'active',
-                    created: new Date().toISOString()
-                }));
-                localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            }
+            document.querySelectorAll('.section-pane').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(`${id}-sec`).classList.remove('hidden-section');
             
-            if (medicalLibrary.length === 0) {
-                medicalLibrary = [
-                    {
-                        id: 1,
-                        title: 'مرض السكري',
-                        category: 'diseases',
-                        content: 'مرض مزمن يحدث عندما يعجز البنكرياس عن إنتاج الإنسولين بكمية كافية...',
-                        addedBy: 'system',
-                        addedAt: new Date().toISOString()
-                    },
-                    {
-                        id: 2,
-                        title: 'باراسيتامول',
-                        category: 'drugs',
-                        content: 'مسكن للألم وخافض للحرارة، الجرعة المعتادة 500-1000 مجم كل 6-8 ساعات...',
-                        addedBy: 'system',
-                        addedAt: new Date().toISOString()
-                    }
-                ];
-                localStorage.setItem('shifa_library', JSON.stringify(medicalLibrary));
-            }
-            
-            // تحديث الـ badges
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            if(document.getElementById(`btn-${id}`)) document.getElementById(`btn-${id}`).classList.add('active');
             updateBadges();
-        };
+            if(id === 'doctor') loadDoctorLists();
+            if(window[`load${id.charAt(0).toUpperCase() + id.slice(1)}`]) window[`load${id.charAt(0).toUpperCase() + id.slice(1)}`]();
+        }
 
-        // ============================================
-        // دوال إضافية
-        // ============================================
+        function saveData() {
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            updateBadges();
+        }
 
-        function updateClock() {
-            const now = new Date();
-            const clockElement = document.getElementById('clockDisplay');
-            if (clockElement) {
-                clockElement.textContent = now.toLocaleTimeString('ar-EG');
+        function updateBadges() {
+            const b = {
+                doctor: patients.filter(p => p.status === 'waiting_doctor').length,
+                lab: patients.filter(p => p.status === 'waiting_lab').length,
+                pharmacy: patients.filter(p => p.status === 'waiting_pharmacy').length,
+                nurse: patients.filter(p => p.status === 'waiting_nurse').length
+            };
+            for(let k in b) {
+                const el = document.getElementById(`${k}Badge`);
+                if(el) { el.textContent = b[k]; b[k]>0 ? el.classList.remove('hidden-section') : el.classList.add('hidden-section'); }
             }
+        }
+
+        function playNotify() { 
+            try { 
+                document.getElementById('notificationSound').play().catch(()=>{}); 
+            } catch(e) {} 
+        }
+
+        function logout() {
+            if (currentUser) {
+                logSecurityEvent('LOGOUT', `خروج المستخدم ${currentUser.u}`);
+            }
+            localStorage.removeItem('shifa_user');
+            location.reload();
         }
 
         function showNotification(title, message) {
@@ -399,19 +1175,54 @@
             }
         }
 
-        function playNotify() {
-            try {
-                document.getElementById('notificationSound').play();
-            } catch (e) {}
+        // ============================================
+        // دوال إضافية للمستخدم
+        // ============================================
+
+        function openUserMenu() {
+            const modal = new bootstrap.Modal(document.getElementById('userMenuModal'));
+            document.getElementById('userNameDisplay').textContent = currentUser.name;
+            document.getElementById('userRoleDisplay').textContent = currentUser.r === 'admin' ? 'مدير' : 
+                                                                    currentUser.r === 'doctor' ? 'طبيب' :
+                                                                    currentUser.r === 'reception' ? 'استقبال' :
+                                                                    currentUser.r === 'pharmacy' ? 'صيدلي' :
+                                                                    currentUser.r === 'lab' ? 'معمل' : 'تمريض';
+            
+            // عرض آخر وقت دخول
+            const lastLogin = localStorage.getItem('shifa_last_login');
+            if (lastLogin) {
+                document.getElementById('lastLoginDisplay').textContent = 
+                    `آخر دخول: ${new Date(lastLogin).toLocaleString('ar-EG')}`;
+            }
+            
+            modal.show();
         }
 
-        // ============================================
-        // دالة تغيير كلمة المرور للمستخدمين
-        // ============================================
-
-        function changePassword() {
+        function changePasswordModal() {
             const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
             modal.show();
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('newPassword').value;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            strengthBar.style.width = (strength * 20) + '%';
+            
+            if (strength < 2) {
+                strengthBar.style.backgroundColor = '#dc3545';
+            } else if (strength < 4) {
+                strengthBar.style.backgroundColor = '#ffc107';
+            } else {
+                strengthBar.style.backgroundColor = '#28a745';
+            }
         }
 
         function confirmPasswordChange() {
@@ -429,26 +1240,137 @@
                 return;
             }
             
-            if (newPass.length < 4) {
-                alert('⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل!');
+            if (newPass.length < 8) {
+                alert('⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل!');
                 return;
             }
             
-            // تحديث كلمة المرور للمستخدم الحالي
-            USERS[currentUser.u].password = newPass;
+            if (USERS[currentUser.u] && USERS[currentUser.u].password === currentPass) {
+                USERS[currentUser.u].password = newPass;
+                
+                // تحديث في staffMembers
+                const staff = staffMembers.find(s => s.u === currentUser.u);
+                if (staff) {
+                    staff.p = newPass;
+                    localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+                }
+                
+                logSecurityEvent('PASSWORD_CHANGE', `تم تغيير كلمة مرور المستخدم ${currentUser.u}`);
+                alert('✅ تم تغيير كلمة المرور بنجاح!');
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                modal.hide();
+            } else {
+                alert('❌ كلمة المرور الحالية غير صحيحة!');
+            }
+        }
+
+        function viewMyActivity() {
+            alert('📋 سجل النشاط الخاص بك:\n\n' +
+                  `👤 المستخدم: ${currentUser.name}\n` +
+                  `🏥 القسم: ${currentUser.r}\n` +
+                  `📅 وقت الدخول: ${currentUser.loginTime ? new Date(currentUser.loginTime).toLocaleString('ar-EG') : '--'}\n\n` +
+                  'سيتم إضافة المزيد من التفاصيل قريباً.');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('text-light');
+            alert('🌙 تم تغيير وضع العرض');
+        }
+
+        function showSecurityLog() {
+            const modal = new bootstrap.Modal(document.getElementById('securityLogModal'));
+            const content = document.getElementById('securityLogContent');
             
-            // تحديث في staffMembers
-            const staff = staffMembers.find(s => s.u === currentUser.u);
-            if (staff) {
-                staff.p = newPass;
+            let html = '<div class="list-group">';
+            securityLog.slice(0, 50).forEach(log => {
+                const time = new Date(log.timestamp).toLocaleString('ar-EG');
+                html += `
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${log.eventType}</h6>
+                            <small>${time}</small>
+                        </div>
+                        <p class="mb-1">${log.details}</p>
+                        <small>المستخدم: ${log.user}</small>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            content.innerHTML = html;
+            modal.show();
+        }
+
+        function clearSecurityLog() {
+            if (confirm('⚠️ هل أنت متأكد من مسح سجل الأمان؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                securityLog = [];
+                localStorage.setItem('shifa_security_log', JSON.stringify(securityLog));
+                document.getElementById('securityLogContent').innerHTML = '<p class="text-center text-muted">تم مسح سجل الأمان</p>';
+                logSecurityEvent('SECURITY_LOG_CLEARED', 'تم مسح سجل الأمان بواسطة المستخدم');
+            }
+        }
+
+        // ============================================
+        // تهيئة النظام
+        // ============================================
+
+        window.onload = function() {
+            // تحديث الساعة
+            function updateClock() {
+                const now = new Date();
+                document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('ar-EG');
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // طلب إذن الإشعارات
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            
+            // تحميل بيانات الدخول السابقة
+            const savedUser = localStorage.getItem('shifa_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('loginOverlay').classList.add('hidden-section');
+                document.getElementById('mainContent').classList.remove('hidden-section');
+                document.getElementById('currentUserDisplay').innerHTML = `👤 <b>${currentUser.name}</b>`;
+                
+                // عرض زر الوصول الطارئ للمدير فقط
+                if (currentUser.r === 'admin') {
+                    document.getElementById('emergencyBtn').style.display = 'inline-block';
+                }
+                
+                switchSection(currentUser.r === 'admin' ? 'admin' : currentUser.r);
+            }
+            
+            // تهيئة البيانات الافتراضية
+            if (staffMembers.length === 0) {
+                staffMembers = Object.keys(USERS).map(username => ({
+                    u: username,
+                    p: USERS[username].password,
+                    r: USERS[username].role,
+                    name: USERS[username].name,
+                    status: 'active',
+                    created: new Date().toISOString()
+                }));
                 localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
             }
             
-            alert('✅ تم تغيير كلمة المرور بنجاح!');
-            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-            modal.hide();
-        }
-
+            // تحديث وقت آخر دخول
+            const lastLogin = localStorage.getItem('shifa_last_login');
+            if (lastLogin) {
+                document.getElementById('lastLoginTime').textContent = 
+                    new Date(lastLogin).toLocaleString('ar-EG');
+            }
+            
+            updateBadges();
+            
+            // تسجيل حدث تحميل النظام
+            logSecurityEvent('SYSTEM_START', 'تم تشغيل النظام');
+        };
     </script>
 </body>
 </html>
