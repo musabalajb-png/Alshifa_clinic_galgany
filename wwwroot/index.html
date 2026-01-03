@@ -209,6 +209,78 @@
             border-radius: 15px;
             font-size: 0.8em;
         }
+        
+        /* أنماط جديدة لإدارة الموظفين */
+        .admin-tabs {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-tab-btn {
+            margin: 0 5px;
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .admin-tab-btn:hover {
+            background: #e7f1ff;
+        }
+        
+        .staff-card {
+            border-left: 5px solid var(--accent-blue);
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .staff-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .staff-role-badge {
+            font-size: 0.7em;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .staff-admin { background: #dc3545; color: white; }
+        .staff-doctor { background: #198754; color: white; }
+        .staff-reception { background: #0d6efd; color: white; }
+        .staff-pharmacy { background: #ffc107; color: #000; }
+        .staff-lab { background: #6f42c1; color: white; }
+        .staff-nursing { background: #17a2b8; color: white; }
+        
+        .reset-system-card {
+            border: 2px dashed var(--accent-red);
+            background: #fff5f5;
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        
+        .reset-system-card h5 {
+            color: var(--accent-red);
+        }
+        
+        .system-backup {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -453,38 +525,119 @@
 
                 <!-- قسم المدير -->
                 <div id="admin-sec" class="section-pane hidden-section">
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-3"><div class="stat-card bg-primary"><h6>إيراد العيادة</h6><h3 id="admIncClinic">0</h3></div></div>
-                        <div class="col-md-3"><div class="stat-card bg-danger"><h6>إيراد المعمل</h6><h3 id="admIncLab">0</h3></div></div>
-                        <div class="col-md-3"><div class="stat-card bg-warning"><h6>إيراد الصيدلية</h6><h3 id="admIncPhar">0</h3></div></div>
-                        <div class="col-md-3"><div class="stat-card bg-success"><h6>الإجمالي الكلي</h6><h3 id="admIncTotal">0</h3></div></div>
+                    <!-- تبويبات قسم المدير -->
+                    <div class="admin-tabs mb-4">
+                        <button class="admin-tab-btn active" onclick="switchAdminTab('dashboard')">📊 لوحة التحكم</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab('staff')">👥 إدارة الموظفين</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab('reset')">🔄 تصفير النظام</button>
                     </div>
+                    
+                    <!-- لوحة التحكم -->
+                    <div id="admin-dashboard" class="admin-tab-content">
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3"><div class="stat-card bg-primary"><h6>إيراد العيادة</h6><h3 id="admIncClinic">0</h3></div></div>
+                            <div class="col-md-3"><div class="stat-card bg-danger"><h6>إيراد المعمل</h6><h3 id="admIncLab">0</h3></div></div>
+                            <div class="col-md-3"><div class="stat-card bg-warning"><h6>إيراد الصيدلية</h6><h3 id="admIncPhar">0</h3></div></div>
+                            <div class="col-md-3"><div class="stat-card bg-success"><h6>الإجمالي الكلي</h6><h3 id="admIncTotal">0</h3></div></div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card p-3">
-                                <h6>➕ إضافة / تعديل فحص</h6>
-                                <input type="text" id="admLabName" class="form-control mb-2" placeholder="اسم الفحص">
-                                <input type="number" id="admLabPrice" class="form-control mb-2" placeholder="السعر">
-                                <button class="btn btn-danger btn-sm w-100" onclick="adminAddLab()">حفظ الفحص</button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card p-3">
+                                    <h6>➕ إضافة / تعديل فحص</h6>
+                                    <input type="text" id="admLabName" class="form-control mb-2" placeholder="اسم الفحص">
+                                    <input type="number" id="admLabPrice" class="form-control mb-2" placeholder="السعر">
+                                    <button class="btn btn-danger btn-sm w-100" onclick="adminAddLab()">حفظ الفحص</button>
+                                </div>
+                                <div class="card p-3 mt-3">
+                                    <h6>➕ إضافة دواء للمخزون</h6>
+                                    <input type="text" id="admMedName" class="form-control mb-2" placeholder="اسم الدواء">
+                                    <input type="number" id="admMedPrice" class="form-control mb-2" placeholder="السعر">
+                                    <input type="number" id="admMedQty" class="form-control mb-2" placeholder="الكمية">
+                                    <button class="btn btn-warning btn-sm w-100" onclick="adminAddMed()">حفظ الدواء</button>
+                                </div>
                             </div>
-                            <div class="card p-3 mt-3">
-                                <h6>➕ إضافة دواء للمخزون</h6>
-                                <input type="text" id="admMedName" class="form-control mb-2" placeholder="اسم الدواء">
-                                <input type="number" id="admMedPrice" class="form-control mb-2" placeholder="السعر">
-                                <input type="number" id="admMedQty" class="form-control mb-2" placeholder="الكمية">
-                                <button class="btn btn-warning btn-sm w-100" onclick="adminAddMed()">حفظ الدواء</button>
+                            <div class="col-md-8">
+                                <div class="card p-3">
+                                    <h6>📊 تقارير الأداء</h6>
+                                    <div class="btn-group w-100 mb-3">
+                                        <button class="btn btn-outline-dark btn-sm" onclick="renderReport('day')">تقرير يومي</button>
+                                        <button class="btn btn-outline-dark btn-sm" onclick="renderReport('week')">أسبوعي</button>
+                                        <button class="btn btn-outline-dark btn-sm" onclick="renderReport('month')">شهري</button>
+                                    </div>
+                                    <div id="reportArea" class="bg-light p-3 rounded">اختر نوع التقرير للعرض...</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card p-3">
-                                <h6>📊 تقارير الأداء</h6>
-                                <div class="btn-group w-100 mb-3">
-                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('day')">تقرير يومي</button>
-                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('week')">أسبوعي</button>
-                                    <button class="btn btn-outline-dark btn-sm" onclick="renderReport('month')">شهري</button>
+                    </div>
+                    
+                    <!-- إدارة الموظفين -->
+                    <div id="admin-staff" class="admin-tab-content hidden-section">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card p-4">
+                                    <h5 class="fw-bold mb-3">➕ إضافة موظف جديد</h5>
+                                    <input type="text" id="newStaffUsername" class="form-control mb-2" placeholder="اسم المستخدم">
+                                    <input type="password" id="newStaffPassword" class="form-control mb-2" placeholder="كلمة المرور">
+                                    <input type="text" id="newStaffName" class="form-control mb-2" placeholder="الاسم الكامل">
+                                    <select id="newStaffRole" class="form-select mb-3">
+                                        <option value="">اختر الدور</option>
+                                        <option value="admin">👑 المدير العام</option>
+                                        <option value="reception">📋 الاستقبال</option>
+                                        <option value="doctor">👨‍⚕️ الطبيب</option>
+                                        <option value="lab">🧪 المعمل</option>
+                                        <option value="pharmacy">💊 الصيدلية</option>
+                                        <option value="nursing">💉 التمريض</option>
+                                    </select>
+                                    <button class="btn btn-primary w-100" onclick="addNewStaff()">➕ إضافة موظف</button>
                                 </div>
-                                <div id="reportArea" class="bg-light p-3 rounded">اختر نوع التقرير للعرض...</div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card p-4">
+                                    <h5 class="fw-bold mb-3">👥 قائمة الموظفين</h5>
+                                    <div id="staffList" class="row g-3">
+                                        <!-- سيتم عرض الموظفين هنا -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تصفير النظام -->
+                    <div id="admin-reset" class="admin-tab-content hidden-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="reset-system-card">
+                                    <h5>🔄 تصفير النظام اليومي</h5>
+                                    <p class="text-muted">هذا الإجراء سيصفير جميع العدادات اليومية استعداداً ليوم جديد.</p>
+                                    <p><strong>⚠️ تحذير:</strong> سيتم حذف جميع البيانات اليومية غير المحفوظة.</p>
+                                    
+                                    <div class="mt-4">
+                                        <button class="btn btn-danger btn-lg w-100 mb-3" onclick="resetDailySystem()">
+                                            🔄 تصفير النظام اليومي
+                                        </button>
+                                        <small class="text-muted">آخر تصفير: <span id="lastResetTime">لم يتم تصفير النظام بعد</span></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="system-backup">
+                                    <h5>💾 نسخة احتياطية</h5>
+                                    <p>احفظ نسخة احتياطية من النظام قبل التصفير</p>
+                                    <button class="btn btn-light mt-2" onclick="createSystemBackup()">💾 إنشاء نسخة احتياطية</button>
+                                </div>
+                                
+                                <div class="card p-3 mt-3">
+                                    <h6>📋 ما سيتم تصفيته:</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">✅ قائمة المرضى اليومية</li>
+                                        <li class="list-group-item">✅ طلبات المعمل المعلقة</li>
+                                        <li class="list-group-item">✅ طلبات الصيدلية المعلقة</li>
+                                        <li class="list-group-item">✅ مهام التمريض المعلقة</li>
+                                        <li class="list-group-item">✅ مبيعات الصيدلية اليومية</li>
+                                        <li class="list-group-item">✅ العدادات والإحصائيات</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -509,6 +662,69 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
                     <button type="button" class="btn btn-primary" onclick="printPrescription()">🖨️ طباعة الروشتة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal تعديل الموظف -->
+    <div id="editStaffModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title">✏️ تعديل بيانات الموظف</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editStaffId">
+                    <div class="mb-3">
+                        <label class="form-label">اسم المستخدم</label>
+                        <input type="text" id="editStaffUsername" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الاسم الكامل</label>
+                        <input type="text" id="editStaffName" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الدور</label>
+                        <select id="editStaffRole" class="form-select">
+                            <option value="admin">👑 المدير العام</option>
+                            <option value="reception">📋 الاستقبال</option>
+                            <option value="doctor">👨‍⚕️ الطبيب</option>
+                            <option value="lab">🧪 المعمل</option>
+                            <option value="pharmacy">💊 الصيدلية</option>
+                            <option value="nursing">💉 التمريض</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور الجديدة (اتركها فارغة إذا لم ترد التغيير)</label>
+                        <input type="password" id="editStaffPassword" class="form-control" placeholder="كلمة المرور الجديدة">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-warning" onclick="saveStaffChanges()">💾 حفظ التغييرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal تأكيد الحذف -->
+    <div id="confirmDeleteModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">⚠️ تأكيد الحذف</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من حذف هذا الموظف؟</p>
+                    <p><strong>⚠️ تحذير:</strong> لا يمكن التراجع عن هذا الإجراء!</p>
+                    <input type="hidden" id="deleteStaffId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteStaffConfirmed()">🗑️ تأكيد الحذف</button>
                 </div>
             </div>
         </div>
@@ -575,6 +791,369 @@
         let lastActivityTime = Date.now();
         let activePatient = null;
         let prescriptionItems = [];
+        
+        // إعدادات النظام
+        let systemSettings = JSON.parse(localStorage.getItem('shifa_settings')) || {
+            lastReset: null,
+            dailyResetAuto: false,
+            backupCount: 0
+        };
+
+        // ============================================
+        // دوال إدارة الموظفين
+        // ============================================
+
+        function initStaffMembers() {
+            // إذا لم توجد بيانات الموظفين، قم بتهيئتها من USERS
+            if (staffMembers.length === 0) {
+                staffMembers = Object.keys(USERS).map(username => ({
+                    id: Date.now() + Math.random(),
+                    username: username,
+                    password: USERS[username].password,
+                    name: USERS[username].name,
+                    role: USERS[username].role,
+                    status: 'active',
+                    created: new Date().toISOString(),
+                    lastLogin: null
+                }));
+                localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            }
+        }
+
+        function loadStaffList() {
+            const container = document.getElementById('staffList');
+            if (!container) return;
+            
+            container.innerHTML = staffMembers.map(staff => `
+                <div class="col-md-6">
+                    <div class="card p-3 staff-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">${staff.name}</h6>
+                                <small class="text-muted">@${staff.username}</small>
+                                <div class="mt-2">
+                                    <span class="staff-role-badge staff-${staff.role}">
+                                        ${getRoleName(staff.role)}
+                                    </span>
+                                    <span class="badge ${staff.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+                                        ${staff.status === 'active' ? 'نشط' : 'غير نشط'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-warning" onclick="editStaff('${staff.id}')">✏️</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteStaff('${staff.id}')">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="mt-2 small text-muted">
+                            <div>تاريخ الإنشاء: ${new Date(staff.created).toLocaleDateString('ar-EG')}</div>
+                            ${staff.lastLogin ? `<div>آخر دخول: ${new Date(staff.lastLogin).toLocaleDateString('ar-EG')}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRoleName(role) {
+            const roles = {
+                'admin': '👑 مدير',
+                'doctor': '👨‍⚕️ طبيب',
+                'reception': '📋 استقبال',
+                'pharmacy': '💊 صيدلي',
+                'lab': '🧪 معمل',
+                'nursing': '💉 تمريض'
+            };
+            return roles[role] || role;
+        }
+
+        function addNewStaff() {
+            const username = document.getElementById('newStaffUsername').value.trim();
+            const password = document.getElementById('newStaffPassword').value;
+            const name = document.getElementById('newStaffName').value.trim();
+            const role = document.getElementById('newStaffRole').value;
+            
+            if (!username || !password || !name || !role) {
+                alert('⚠️ يرجى ملء جميع الحقول!');
+                return;
+            }
+            
+            // التحقق من عدم تكرار اسم المستخدم
+            if (staffMembers.some(staff => staff.username === username)) {
+                alert('⚠️ اسم المستخدم موجود بالفعل!');
+                return;
+            }
+            
+            const newStaff = {
+                id: Date.now() + Math.random(),
+                username: username,
+                password: password,
+                name: name,
+                role: role,
+                status: 'active',
+                created: new Date().toISOString(),
+                lastLogin: null
+            };
+            
+            staffMembers.push(newStaff);
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            // تحديث USERS للدخول الفوري
+            USERS[username] = {
+                password: password,
+                role: role,
+                name: name
+            };
+            
+            // مسح الحقول
+            document.getElementById('newStaffUsername').value = '';
+            document.getElementById('newStaffPassword').value = '';
+            document.getElementById('newStaffName').value = '';
+            document.getElementById('newStaffRole').value = '';
+            
+            loadStaffList();
+            alert('✅ تم إضافة الموظف بنجاح!');
+        }
+
+        function editStaff(staffId) {
+            const staff = staffMembers.find(s => s.id === staffId);
+            if (!staff) return;
+            
+            document.getElementById('editStaffId').value = staffId;
+            document.getElementById('editStaffUsername').value = staff.username;
+            document.getElementById('editStaffName').value = staff.name;
+            document.getElementById('editStaffRole').value = staff.role;
+            document.getElementById('editStaffPassword').value = '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('editStaffModal'));
+            modal.show();
+        }
+
+        function saveStaffChanges() {
+            const staffId = document.getElementById('editStaffId').value;
+            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
+            
+            if (staffIndex === -1) return;
+            
+            const username = document.getElementById('editStaffUsername').value.trim();
+            const name = document.getElementById('editStaffName').value.trim();
+            const role = document.getElementById('editStaffRole').value;
+            const password = document.getElementById('editStaffPassword').value;
+            
+            if (!username || !name || !role) {
+                alert('⚠️ يرجى ملء جميع الحقول المطلوبة!');
+                return;
+            }
+            
+            // التحقق من عدم تكرار اسم المستخدم (باستثناء المستخدم الحالي)
+            const duplicate = staffMembers.find((s, index) => 
+                s.username === username && index !== staffIndex
+            );
+            if (duplicate) {
+                alert('⚠️ اسم المستخدم موجود بالفعل!');
+                return;
+            }
+            
+            // حفظ التغييرات
+            staffMembers[staffIndex].username = username;
+            staffMembers[staffIndex].name = name;
+            staffMembers[staffIndex].role = role;
+            
+            if (password) {
+                staffMembers[staffIndex].password = password;
+            }
+            
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            // تحديث USERS
+            USERS[username] = {
+                password: password || staffMembers[staffIndex].password,
+                role: role,
+                name: name
+            };
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editStaffModal'));
+            modal.hide();
+            
+            loadStaffList();
+            alert('✅ تم تحديث بيانات الموظف بنجاح!');
+        }
+
+        function confirmDeleteStaff(staffId) {
+            const staff = staffMembers.find(s => s.id === staffId);
+            if (!staff) return;
+            
+            // منع حذف المدير الرئيسي
+            if (staff.username === 'admin') {
+                alert('⚠️ لا يمكن حذف حساب المدير الرئيسي!');
+                return;
+            }
+            
+            // منع حذف المستخدم الحالي
+            if (currentUser && staff.username === currentUser.u) {
+                alert('⚠️ لا يمكن حذف حسابك أثناء تسجيل الدخول!');
+                return;
+            }
+            
+            document.getElementById('deleteStaffId').value = staffId;
+            const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            modal.show();
+        }
+
+        function deleteStaffConfirmed() {
+            const staffId = document.getElementById('deleteStaffId').value;
+            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
+            
+            if (staffIndex === -1) return;
+            
+            const username = staffMembers[staffIndex].username;
+            
+            // حذف من staffMembers
+            staffMembers.splice(staffIndex, 1);
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            // حذف من USERS
+            delete USERS[username];
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+            modal.hide();
+            
+            loadStaffList();
+            alert('✅ تم حذف الموظف بنجاح!');
+        }
+
+        // ============================================
+        // دوال تصفير النظام
+        // ============================================
+
+        function resetDailySystem() {
+            if (!confirm('⚠️ هل أنت متأكد من تصفير النظام اليومي؟\n\nسيتم حذف جميع البيانات اليومية التالية:\n• قائمة المرضى اليومية\n• طلبات المعمل المعلقة\n• طلبات الصيدلية المعلقة\n• مهام التمريض المعلقة\n• مبيعات الصيدلية اليومية\n\nهذا الإجراء لا يمكن التراجع عنه!')) {
+                return;
+            }
+            
+            // حفظ نسخة احتياطية تلقائية
+            createAutoBackup();
+            
+            // 1. تصفير المرضى - إبقاء فقط المرضى المكتملين في السجل التاريخي
+            const completedPatients = patients.filter(p => p.status === 'completed');
+            const today = new Date().toISOString().split('T')[0];
+            
+            // نبدأ يوم جديد بمرضى جدد فقط
+            patients = completedPatients; // نحتفظ بالمرضى المكتملين كسجل تاريخي
+            
+            // 2. تصفير طلبات المعمل
+            labRequests = [];
+            localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
+            
+            // 3. تصفير طلبات الصيدلية
+            pharmOrders = [];
+            localStorage.setItem('shifa_rx', JSON.stringify(pharmOrders));
+            
+            // 4. تصفير مهام التمريض
+            nursingTasks = [];
+            localStorage.setItem('shifa_nursing_tasks', JSON.stringify(nursingTasks));
+            
+            // 5. تصفير المبيعات اليومية
+            dailySales = {
+                total: 0,
+                prescriptions: []
+            };
+            localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
+            
+            // 6. تحديث بيانات المرضى
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            
+            // 7. تحديث إعدادات النظام
+            systemSettings.lastReset = new Date().toISOString();
+            localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
+            
+            // 8. تحديث العدادات
+            updateBadges();
+            
+            // 9. تحديث العرض في الأقسام
+            if (currentUser) {
+                switchSection(currentUser.r);
+            }
+            
+            // 10. تحديث وقت آخر تصفير
+            document.getElementById('lastResetTime').textContent = new Date().toLocaleString('ar-EG');
+            
+            alert('✅ تم تصفير النظام اليومي بنجاح!\nتم الاحتفاظ بالسجلات التاريخية للمرضى المكتملين.');
+        }
+
+        function createSystemBackup() {
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                patients: patients,
+                labRequests: labRequests,
+                pharmOrders: pharmOrders,
+                nursingTasks: nursingTasks,
+                dailySales: dailySales,
+                staffMembers: staffMembers,
+                labTests: labTests,
+                inventory: inventory
+            };
+            
+            backups.unshift(backupData);
+            if (backups.length > 10) backups = backups.slice(0, 10); // الاحتفاظ بـ 10 نسخ فقط
+            
+            localStorage.setItem('shifa_backups', JSON.stringify(backups));
+            systemSettings.backupCount = backups.length;
+            localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
+            
+            alert(`✅ تم إنشاء نسخة احتياطية بنجاح!\nرقم النسخة: ${backups.length}\nالوقت: ${new Date().toLocaleString('ar-EG')}`);
+        }
+
+        function createAutoBackup() {
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                patients: patients,
+                labRequests: labRequests,
+                pharmOrders: pharmOrders,
+                nursingTasks: nursingTasks,
+                dailySales: dailySales,
+                type: 'auto_reset_backup'
+            };
+            
+            backups.unshift(backupData);
+            if (backups.length > 10) backups = backups.slice(0, 10);
+            
+            localStorage.setItem('shifa_backups', JSON.stringify(backups));
+        }
+
+        // ============================================
+        // دوال واجهة المدير
+        // ============================================
+
+        function switchAdminTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.admin-tab-content').forEach(el => {
+                el.classList.add('hidden-section');
+            });
+            
+            // إزالة النشط من جميع الأزرار
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // إظهار المحتوى المطلوب
+            document.getElementById(`admin-${tabName}`).classList.remove('hidden-section');
+            
+            // تفعيل الزر المطلوب
+            event.target.classList.add('active');
+            
+            // إذا كانت تبويب الموظفين، تحميل القائمة
+            if (tabName === 'staff') {
+                loadStaffList();
+            }
+            
+            // إذا كانت تبويب التصفير، تحميل آخر وقت تصفير
+            if (tabName === 'reset') {
+                if (systemSettings.lastReset) {
+                    document.getElementById('lastResetTime').textContent = 
+                        new Date(systemSettings.lastReset).toLocaleString('ar-EG');
+                }
+            }
+        }
 
         // ============================================
         // دوال الروشتة الطبية
@@ -1580,6 +2159,19 @@
                     dailySales = { total: 0, prescriptions: [] };
                 }
             }
+            
+            // تحميل إعدادات النظام
+            const savedSettings = localStorage.getItem('shifa_settings');
+            if (savedSettings) {
+                try {
+                    systemSettings = JSON.parse(savedSettings);
+                } catch (e) {
+                    systemSettings = { lastReset: null, dailyResetAuto: false, backupCount: 0 };
+                }
+            }
+            
+            // تهيئة بيانات الموظفين
+            initStaffMembers();
             
             updateBadges();
         };
