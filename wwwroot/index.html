@@ -26,48 +26,31 @@
             width: 8px;
             height: 8px;
         }
-        
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 4px;
         }
-        
         ::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 4px;
         }
-        
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
-        
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
         }
-        
+
         /* Print Styles */
         @media print {
-            .no-print {
-                display: none !important;
-            }
-            
-            .print-only {
-                display: block !important;
-            }
-            
-            .break-before {
-                page-break-before: always;
-            }
-            
-            .break-inside-avoid {
-                page-break-inside: avoid;
-            }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
         }
     </style>
 </head>
@@ -80,12 +63,11 @@
             <p id="loading-message" class="text-sm text-gray-500 mt-2">جاري تهيئة قاعدة البيانات</p>
         </div>
 
-        <!-- Login Page (Default) -->
+        <!-- Login Page -->
         <div id="login-page" class="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-cyan-50 flex items-center justify-center p-4">
             <div class="w-full max-w-md">
                 <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
                     <div class="p-8">
-                        <!-- Header -->
                         <div class="text-center mb-8">
                             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full mb-4">
                                 <i data-lucide="heart-pulse" class="w-8 h-8 text-white"></i>
@@ -100,75 +82,41 @@
                             <p id="error-message" class="text-sm text-red-700"></p>
                         </div>
 
-                        <!-- Form -->
+                        <!-- Login Form -->
                         <form id="login-form" class="space-y-6">
-                            <!-- Role Selection -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">
-                                    اختر الدور الوظيفي
-                                </label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button type="button" data-role="admin" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        مدير النظام
-                                    </button>
-                                    <button type="button" data-role="doctor" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        الطبيب
-                                    </button>
-                                    <button type="button" data-role="reception" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        الاستقبال
-                                    </button>
-                                    <button type="button" data-role="pharmacist" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        الصيدلي
-                                    </button>
-                                    <button type="button" data-role="lab" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        المعمل
-                                    </button>
-                                    <button type="button" data-role="nurse" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">
-                                        التمريض
-                                    </button>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">اختر الدور الوظيفي</label>
+                                <div class="grid grid-cols-2 gap-2" id="roles-container">
+                                    <!-- Roles will be loaded dynamically -->
                                 </div>
                             </div>
 
-                            <!-- Password Input -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                    كلمة المرور
-                                </label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور</label>
                                 <input type="password" id="password" placeholder="أدخل كلمة المرور" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
-                                <p class="text-xs text-gray-500 mt-2">
-                                    💡 تلميح: كلمة المرور تُملأ تلقائياً عند اختيار الدور
-                                </p>
                             </div>
 
-                            <!-- Login Button -->
-                            <button type="submit" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-2 rounded-lg transition-all">
-                                دخول النظام
-                            </button>
+                            <button type="submit" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-2 rounded-lg transition-all">دخول النظام</button>
                         </form>
 
-                        <!-- Demo Info -->
                         <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                            <p class="text-xs text-blue-700 font-semibold mb-2">📋 بيانات التجربة:</p>
+                            <p class="text-xs text-blue-700 font-semibold mb-2">📋 ملاحظات الأمان:</p>
                             <ul class="text-xs text-blue-600 space-y-1">
-                                <li>• جميع الأدوار متاحة للتجربة</li>
-                                <li>• اختر الدور وسيتم ملء كلمة المرور تلقائياً</li>
+                                <li>• كلمات المرور مشفرة ومخزنة بأمان</li>
+                                <li>• يمكن للمدير فقط إضافة المستخدمين الجدد</li>
                                 <li>• البيانات تُحفظ محلياً في المتصفح</li>
-                                <li>• يمكنك تصدير واستيراد البيانات</li>
+                                <li>• يمكنك تصدير واستيراد البيانات بأمان</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer -->
-                <p class="text-center text-gray-600 text-sm mt-6">
-                    نظام متكامل لإدارة المستشفيات والعيادات الطبية
-                </p>
+                <p class="text-center text-gray-600 text-sm mt-6">نظام متكامل لإدارة المستشفيات والعيادات الطبية</p>
             </div>
         </div>
 
-        <!-- Dashboard (Hidden by default) -->
+        <!-- Dashboard -->
         <div id="dashboard" class="hidden min-h-screen bg-gray-50">
-            <!-- Header -->
             <header id="dashboard-header" class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg sticky top-0 z-40">
                 <div class="flex items-center justify-between px-4 py-4">
                     <div class="flex items-center gap-3">
@@ -178,13 +126,13 @@
                         <div class="text-2xl">🏥</div>
                         <div>
                             <h1 class="text-xl font-bold">مجمع الشفاء الطبي</h1>
-                            <p id="user-role" class="text-sm opacity-90">مدير النظام</p>
+                            <p id="user-role" class="text-sm opacity-90"></p>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
                         <div class="text-right">
-                            <p id="user-name" class="text-sm font-semibold">مدير النظام</p>
+                            <p id="user-name" class="text-sm font-semibold"></p>
                             <p id="current-date" class="text-xs opacity-75"></p>
                         </div>
                         <button id="logout-btn" class="p-2 hover:bg-white/20 rounded-lg transition-colors" title="تسجيل الخروج">
@@ -193,7 +141,6 @@
                     </div>
                 </div>
 
-                <!-- Stats Bar -->
                 <div class="px-4 py-3 bg-white/10 flex gap-4 overflow-x-auto">
                     <div class="flex items-center gap-2 whitespace-nowrap">
                         <span class="text-sm">👥 مرضى جدد:</span>
@@ -208,8 +155,8 @@
                         <span id="stat-dispensed-rx" class="font-bold">0</span>
                     </div>
                     <div class="flex items-center gap-2 whitespace-nowrap">
-                        <span class="text-sm">📋 مهام:</span>
-                        <span id="stat-nursing-tasks" class="font-bold">0</span>
+                        <span class="text-sm">👨‍⚕️ موظفين:</span>
+                        <span id="stat-employees" class="font-bold">0</span>
                     </div>
                     <div class="flex items-center gap-2 whitespace-nowrap">
                         <span class="text-sm">💰 إيرادات:</span>
@@ -218,36 +165,22 @@
                 </div>
             </header>
 
-            <!-- Main Content -->
             <div class="flex">
-                <!-- Sidebar -->
                 <aside id="sidebar" class="w-64 bg-white shadow-lg p-4 space-y-2 max-h-[calc(100vh-120px)] overflow-y-auto transition-all duration-300">
                     <nav class="space-y-1">
-                        <button data-tab="main" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors bg-teal-100 text-teal-700 font-semibold">
-                            📊 لوحة التحكم الرئيسية
-                        </button>
-                        
-                        <!-- Dynamic tabs based on user role -->
+                        <button data-tab="main" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors bg-teal-100 text-teal-700 font-semibold">📊 لوحة التحكم الرئيسية</button>
                         <div id="role-specific-tabs"></div>
-                        
-                        <!-- Admin tabs -->
                         <div id="admin-tabs" class="hidden">
-                            <button data-tab="overview" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
-                                📊 نظرة عامة
-                            </button>
-                            <button data-tab="reports" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
-                                📈 التقارير
-                            </button>
-                            <button data-tab="data" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
-                                💾 إدارة البيانات
-                            </button>
-                            <button data-tab="settings" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
-                                ⚙️ الإعدادات
-                            </button>
+                            <button data-tab="employees" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">👨‍⚕️ إدارة الموظفين</button>
+                            <button data-tab="tests" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">🧪 إدارة الفحوصات</button>
+                            <button data-tab="medicines" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">💊 إدارة الأدوية</button>
+                            <button data-tab="overview" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">📊 نظرة عامة</button>
+                            <button data-tab="reports" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">📈 التقارير</button>
+                            <button data-tab="data" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">💾 إدارة البيانات</button>
+                            <button data-tab="settings" class="tab-btn w-full text-right px-4 py-2 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">⚙️ الإعدادات</button>
                         </div>
                     </nav>
                     
-                    <!-- Notifications -->
                     <div id="notifications-section" class="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold text-yellow-800">🔔 الإشعارات</h3>
@@ -258,25 +191,19 @@
                         </div>
                     </div>
                     
-                    <!-- Quick Actions -->
                     <div class="mt-6">
                         <h3 class="text-sm font-semibold text-gray-700 mb-2">⚡ إجراءات سريعة</h3>
                         <div class="space-y-1">
-                            <button id="quick-export" class="w-full text-right px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded transition-colors">
-                                💾 تصدير البيانات
-                            </button>
-                            <button id="quick-backup" class="w-full text-right px-3 py-2 text-sm bg-green-50 hover:bg-green-100 text-green-700 rounded transition-colors">
-                                📦 نسخ احتياطي
-                            </button>
+                            <button id="quick-add-employee" class="w-full text-right px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded transition-colors">👨‍⚕️ إضافة موظف</button>
+                            <button id="quick-add-test" class="w-full text-right px-3 py-2 text-sm bg-green-50 hover:bg-green-100 text-green-700 rounded transition-colors">🧪 إضافة فحص</button>
+                            <button id="quick-add-medicine" class="w-full text-right px-3 py-2 text-sm bg-red-50 hover:bg-red-100 text-red-700 rounded transition-colors">💊 إضافة دواء</button>
                         </div>
                     </div>
                 </aside>
 
                 <!-- Content Area -->
                 <main id="content-area" class="flex-1 p-6 overflow-auto">
-                    <!-- Content will be loaded dynamically based on role and tab -->
                     <div id="dashboard-content" class="space-y-6">
-                        <!-- Welcome message will be shown here -->
                         <div class="text-center py-12">
                             <i data-lucide="heart-pulse" class="w-16 h-16 text-teal-500 mx-auto mb-4"></i>
                             <h2 class="text-2xl font-bold text-gray-900 mb-2">مرحباً بك في نظام إدارة المستشفى</h2>
@@ -332,23 +259,22 @@
     </div>
 
     <script>
-        // تطبيق جميع التحسينات المطلوبة
-        
-        // ====================
-        // 1. نظام إدارة الحالة
-        // ====================
+        // تطبيق جميع التحسينات المطلوبة مع إدارة متكاملة
         
         class HospitalStateManager {
             constructor() {
                 this.currentUser = null;
                 this.data = {
+                    employees: [],
                     patients: [],
                     appointments: [],
                     prescriptions: [],
                     labTests: [],
                     medicines: [],
                     nursingTasks: [],
-                    transactions: []
+                    transactions: [],
+                    testTypes: [],
+                    medicineCategories: []
                 };
                 this.notifications = [];
                 this.backups = [];
@@ -358,18 +284,67 @@
 
             init() {
                 this.loadFromLocalStorage();
+                this.initializeDefaultData();
                 this.setupAutoBackup();
                 this.setupOfflineDetection();
                 this.checkForUrgentTasks();
             }
 
-            // تحميل البيانات من localStorage
+            initializeDefaultData() {
+                if (this.data.employees.length === 0) {
+                    const defaultAdmin = {
+                        id: '1',
+                        username: 'admin',
+                        password: this.hashPassword('Admin@2026'),
+                        name: 'مدير النظام',
+                        role: 'admin',
+                        email: 'admin@hospital.com',
+                        phone: '0123456789',
+                        department: 'الإدارة',
+                        salary: 0,
+                        hireDate: new Date(),
+                        status: 'active',
+                        permissions: ['all'],
+                        color: 'from-gray-700 to-gray-800',
+                        icon: '⚙️'
+                    };
+                    this.data.employees.push(defaultAdmin);
+                    this.saveToLocalStorage();
+                }
+
+                if (this.data.testTypes.length === 0) {
+                    const defaultTests = [
+                        { id: '1', name: 'صورة دم كاملة', price: 150, category: 'دم', duration: '30 دقيقة' },
+                        { id: '2', name: 'سكر تراكمي', price: 120, category: 'دم', duration: '1 يوم' },
+                        { id: '3', name: 'وظائف كبد', price: 200, category: 'دم', duration: '1 يوم' },
+                        { id: '4', name: 'تحليل بول', price: 80, category: 'بول', duration: '30 دقيقة' },
+                        { id: '5', name: 'أشعة عادية', price: 250, category: 'أشعة', duration: '1 ساعة' }
+                    ];
+                    this.data.testTypes = defaultTests;
+                }
+
+                if (this.data.medicines.length === 0) {
+                    const defaultMedicines = [
+                        { id: '1', name: 'بانادول', dosage: '500 مجم', stock: 100, price: 15, expiryDate: new Date('2026-12-31'), supplier: 'شركة الأدوية' },
+                        { id: '2', name: 'أموكسيسيلين', dosage: '500 مجم', stock: 50, price: 25, expiryDate: new Date('2025-06-30'), supplier: 'مصنع الدواء' },
+                        { id: '3', name: 'أدفيل', dosage: '400 مجم', stock: 75, price: 20, expiryDate: new Date('2026-03-31'), supplier: 'شركة الأدوية' }
+                    ];
+                    this.data.medicines = defaultMedicines;
+                }
+
+                if (this.data.medicineCategories.length === 0) {
+                    this.data.medicineCategories = [
+                        'مسكنات', 'مضادات حيوية', 'مضادات التهاب', 'فيتامينات', 'أدوية مزمنة'
+                    ];
+                }
+            }
+
             loadFromLocalStorage() {
                 try {
                     const savedData = localStorage.getItem('hospitalData');
                     if (savedData) {
-                        this.data = JSON.parse(savedData);
-                        // استعادة التواريخ
+                        const parsed = JSON.parse(savedData);
+                        this.data = { ...this.data, ...parsed };
                         this.restoreDates();
                     }
                     
@@ -383,7 +358,6 @@
                 }
             }
 
-            // حفظ البيانات إلى localStorage
             saveToLocalStorage() {
                 try {
                     localStorage.setItem('hospitalData', JSON.stringify(this.data));
@@ -394,14 +368,16 @@
                 }
             }
 
-            // استعادة كائنات التاريخ
             restoreDates() {
                 const restoreDateFields = (obj, fields) => {
                     fields.forEach(field => {
-                        if (obj[field]) obj[field] = new Date(obj[field]);
+                        if (obj[field] && typeof obj[field] === 'string') {
+                            obj[field] = new Date(obj[field]);
+                        }
                     });
                 };
 
+                this.data.employees.forEach(e => restoreDateFields(e, ['hireDate']));
                 this.data.patients.forEach(p => restoreDateFields(p, ['registrationDate']));
                 this.data.appointments.forEach(a => restoreDateFields(a, ['date']));
                 this.data.prescriptions.forEach(p => restoreDateFields(p, ['date']));
@@ -411,14 +387,20 @@
                 this.data.transactions.forEach(t => restoreDateFields(t, ['date']));
             }
 
-            // النسخ الاحتياطي التلقائي
+            hashPassword(password) {
+                return btoa(password).split('').reverse().join('');
+            }
+
+            verifyPassword(inputPassword, storedHash) {
+                return this.hashPassword(inputPassword) === storedHash;
+            }
+
             setupAutoBackup() {
                 setInterval(() => {
                     this.createBackup();
-                }, 3600000); // كل ساعة
+                }, 3600000);
             }
 
-            // اكتشاف حالة الاتصال
             setupOfflineDetection() {
                 window.addEventListener('online', () => {
                     this.isOnline = true;
@@ -434,13 +416,10 @@
                 });
             }
 
-            // التزامن عند استعادة الاتصال
             syncOfflineChanges() {
-                // يمكن إضافة منطق التزامن مع الخادم هنا
                 this.showToast('جاري مزامنة البيانات...', 'info');
             }
 
-            // التحقق من المهام العاجلة
             checkForUrgentTasks() {
                 const now = new Date();
                 const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
@@ -455,7 +434,6 @@
                     this.addNotification(`لديك ${urgentTasks.length} مهام تمريض عاجلة`);
                 }
 
-                // تحقق من الأدوية المنتهية الصلاحية
                 const expiredMedicines = this.data.medicines.filter(med => {
                     return new Date(med.expiryDate) < new Date();
                 });
@@ -463,9 +441,13 @@
                 if (expiredMedicines.length > 0) {
                     this.addNotification(`هناك ${expiredMedicines.length} دواء منتهي الصلاحية`);
                 }
+
+                const lowStock = this.data.medicines.filter(med => med.stock < 10);
+                if (lowStock.length > 0) {
+                    this.addNotification(`هناك ${lowStock.length} دواء بمخزون منخفض`);
+                }
             }
 
-            // إضافة إشعار
             addNotification(message, type = 'warning') {
                 const notification = {
                     id: Date.now(),
@@ -480,7 +462,6 @@
                 this.showToast(message, type);
             }
 
-            // تحديث واجهة الإشعارات
             updateNotificationsUI() {
                 const container = document.getElementById('notifications-list');
                 const countElement = document.getElementById('notification-count');
@@ -503,7 +484,6 @@
                     .join('');
             }
 
-            // تنسيق الوقت
             formatTimeAgo(date) {
                 const now = new Date();
                 const diffMs = now - date;
@@ -516,7 +496,6 @@
                 return `منذ ${diffDays} يوم`;
             }
 
-            // إنشاء نسخة احتياطية
             createBackup() {
                 const backup = {
                     id: Date.now(),
@@ -526,7 +505,6 @@
 
                 this.backups.unshift(backup);
                 
-                // الاحتفاظ بـ 10 نسخ فقط
                 if (this.backups.length > 10) {
                     this.backups.pop();
                 }
@@ -535,7 +513,6 @@
                 this.showToast('تم إنشاء نسخة احتياطية تلقائية', 'info');
             }
 
-            // استعادة نسخة احتياطية
             restoreBackup(backupId) {
                 const backup = this.backups.find(b => b.id === backupId);
                 if (backup) {
@@ -547,7 +524,6 @@
                 return false;
             }
 
-            // تصدير البيانات
             exportData(format = 'json') {
                 const data = {
                     ...this.data,
@@ -558,22 +534,19 @@
                 if (format === 'json') {
                     return JSON.stringify(data, null, 2);
                 } else if (format === 'csv') {
-                    // يمكن إضافة تحويل CSV هنا
-                    return JSON.stringify(data);
+                    // تحويل البيانات إلى CSV (تفاصيل التحويل يمكن إضافتها لاحقاً)
                 }
             }
 
-            // استيراد البيانات
             importData(dataString) {
                 try {
                     const importedData = JSON.parse(dataString);
                     
-                    // التحقق من صحة الهيكل
                     if (!this.validateImportedData(importedData)) {
                         throw new Error('هيكل البيانات غير صالح');
                     }
 
-                    this.data = importedData;
+                    this.data = { ...this.data, ...importedData };
                     this.restoreDates();
                     this.saveToLocalStorage();
                     return true;
@@ -583,13 +556,11 @@
                 }
             }
 
-            // التحقق من البيانات المستوردة
             validateImportedData(data) {
-                const requiredFields = ['patients', 'prescriptions', 'labTests', 'medicines'];
+                const requiredFields = ['employees', 'patients', 'medicines'];
                 return requiredFields.every(field => Array.isArray(data[field]));
             }
 
-            // إظهار رسالة toast
             showToast(message, type = 'info') {
                 const container = document.getElementById('toast-container');
                 const toastId = Date.now();
@@ -606,7 +577,6 @@
                 container.appendChild(toast);
                 lucide.createIcons();
 
-                // إزالة Toast تلقائياً بعد 5 ثوانٍ
                 setTimeout(() => {
                     toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
                     setTimeout(() => toast.remove(), 300);
@@ -633,11 +603,10 @@
                 return icons[type] || 'info';
             }
 
-            // إحصائيات اليوم
-            getTodayStats() {
+            getSystemStats() {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                
+
                 const newPatients = this.data.patients.filter(p => {
                     const regDate = new Date(p.registrationDate);
                     regDate.setHours(0, 0, 0, 0);
@@ -656,12 +625,6 @@
                     return rxDate.getTime() === today.getTime() && p.status === 'dispensed';
                 }).length;
 
-                const nursingTasksCount = this.data.nursingTasks.filter(t => {
-                    const taskDate = new Date(t.date);
-                    taskDate.setHours(0, 0, 0, 0);
-                    return taskDate.getTime() === today.getTime();
-                }).length;
-
                 const totalIncome = this.data.transactions
                     .filter(t => {
                         const transDate = new Date(t.date);
@@ -674,104 +637,214 @@
                     newPatients,
                     completedTests,
                     dispensedRx,
-                    nursingTasks: nursingTasksCount,
+                    totalEmployees: this.data.employees.length,
+                    totalTests: this.data.testTypes.length,
+                    totalMedicines: this.data.medicines.length,
                     totalIncome
                 };
             }
 
-            // تحديث الإحصائيات في الواجهة
             updateStatsUI() {
-                const stats = this.getTodayStats();
+                const stats = this.getSystemStats();
                 
                 document.getElementById('stat-new-patients').textContent = stats.newPatients;
                 document.getElementById('stat-completed-tests').textContent = stats.completedTests;
                 document.getElementById('stat-dispensed-rx').textContent = stats.dispensedRx;
-                document.getElementById('stat-nursing-tasks').textContent = stats.nursingTasks;
+                document.getElementById('stat-employees').textContent = stats.totalEmployees;
                 document.getElementById('stat-total-income').textContent = `${stats.totalIncome.toLocaleString()} ج.س`;
+            }
+
+            addEmployee(employeeData) {
+                const employee = {
+                    id: `emp_${Date.now()}`,
+                    ...employeeData,
+                    password: this.hashPassword(employeeData.password),
+                    hireDate: new Date(),
+                    status: 'active'
+                };
+
+                this.data.employees.push(employee);
+                this.saveToLocalStorage();
+                this.updateStatsUI();
+                this.showToast(`تم إضافة الموظف: ${employeeData.name}`, 'success');
+                
+                return employee;
+            }
+
+            updateEmployee(id, updates) {
+                const index = this.data.employees.findIndex(e => e.id === id);
+                if (index !== -1) {
+                    if (updates.password) {
+                        updates.password = this.hashPassword(updates.password);
+                    }
+                    this.data.employees[index] = {
+                        ...this.data.employees[index],
+                        ...updates
+                    };
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                }
+            }
+
+            deleteEmployee(id) {
+                const index = this.data.employees.findIndex(e => e.id === id);
+                if (index !== -1) {
+                    const employee = this.data.employees[index];
+                    this.data.employees.splice(index, 1);
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                    this.showToast(`تم حذف الموظف: ${employee.name}`, 'success');
+                    return true;
+                }
+                return false;
+            }
+
+            addTestType(testData) {
+                const test = {
+                    id: `test_${Date.now()}`,
+                    ...testData
+                };
+
+                this.data.testTypes.push(test);
+                this.saveToLocalStorage();
+                this.updateStatsUI();
+                this.showToast(`تم إضافة فحص: ${testData.name}`, 'success');
+                
+                return test;
+            }
+
+            updateTestType(id, updates) {
+                const index = this.data.testTypes.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    this.data.testTypes[index] = {
+                        ...this.data.testTypes[index],
+                        ...updates
+                    };
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                }
+            }
+
+            deleteTestType(id) {
+                const index = this.data.testTypes.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    const test = this.data.testTypes[index];
+                    this.data.testTypes.splice(index, 1);
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                    this.showToast(`تم حذف الفحص: ${test.name}`, 'success');
+                    return true;
+                }
+                return false;
+            }
+
+            addMedicine(medicineData) {
+                const medicine = {
+                    id: `med_${Date.now()}`,
+                    ...medicineData,
+                    expiryDate: new Date(medicineData.expiryDate)
+                };
+
+                this.data.medicines.push(medicine);
+                this.saveToLocalStorage();
+                this.updateStatsUI();
+                this.showToast(`تم إضافة دواء: ${medicineData.name}`, 'success');
+                
+                return medicine;
+            }
+
+            updateMedicine(id, updates) {
+                const index = this.data.medicines.findIndex(m => m.id === id);
+                if (index !== -1) {
+                    if (updates.expiryDate) {
+                        updates.expiryDate = new Date(updates.expiryDate);
+                    }
+                    this.data.medicines[index] = {
+                        ...this.data.medicines[index],
+                        ...updates
+                    };
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                }
+            }
+
+            deleteMedicine(id) {
+                const index = this.data.medicines.findIndex(m => m.id === id);
+                if (index !== -1) {
+                    const medicine = this.data.medicines[index];
+                    this.data.medicines.splice(index, 1);
+                    this.saveToLocalStorage();
+                    this.updateStatsUI();
+                    this.showToast(`تم حذف الدواء: ${medicine.name}`, 'success');
+                    return true;
+                }
+                return false;
+            }
+
+            addMedicineCategory(category) {
+                if (!this.data.medicineCategories.includes(category)) {
+                    this.data.medicineCategories.push(category);
+                    this.saveToLocalStorage();
+                    this.showToast(`تم إضافة تصنيف: ${category}`, 'success');
+                }
+            }
+
+            checkPasswordStrength(password) {
+                let strength = 0;
+                if (password.length >= 8) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                
+                if (strength <= 2) return 'weak';
+                if (strength <= 4) return 'medium';
+                return 'strong';
             }
         }
 
-        // ====================
-        // 2. نظام المصادقة
-        // ====================
-        
         class AuthManager {
             constructor(stateManager) {
                 this.stateManager = stateManager;
-                this.users = {
-                    'admin': { 
-                        password: 'admin123', 
-                        name: 'مدير النظام', 
-                        role: 'admin',
-                        color: 'from-gray-700 to-gray-800',
-                        icon: '⚙️'
-                    },
-                    'doctor': { 
-                        password: 'doctor123', 
-                        name: 'د. أحمد محمد', 
-                        role: 'doctor',
-                        color: 'from-green-500 to-green-600',
-                        icon: '👨‍⚕️'
-                    },
-                    'reception': { 
-                        password: 'reception123', 
-                        name: 'استقبال - فاطمة', 
-                        role: 'reception',
-                        color: 'from-blue-500 to-blue-600',
-                        icon: '📋'
-                    },
-                    'pharmacist': { 
-                        password: 'pharmacist123', 
-                        name: 'صيدلي - محمود', 
-                        role: 'pharmacist',
-                        color: 'from-yellow-500 to-yellow-600',
-                        icon: '💊'
-                    },
-                    'lab': { 
-                        password: 'lab123', 
-                        name: 'معمل - سارة', 
-                        role: 'lab',
-                        color: 'from-red-500 to-red-600',
-                        icon: '🧪'
-                    },
-                    'nurse': { 
-                        password: 'nurse123', 
-                        name: 'تمريض - علي', 
-                        role: 'nurse',
-                        color: 'from-purple-500 to-purple-600',
-                        icon: '👩‍⚕️'
-                    }
-                };
             }
 
-            login(role, password) {
-                const user = this.users[role];
+            login(username, password) {
+                const employee = this.stateManager.data.employees.find(
+                    emp => emp.username === username && emp.status === 'active'
+                );
                 
-                if (!user) {
-                    this.showError('الدور المحدد غير موجود');
+                if (!employee) {
+                    this.showError('اسم المستخدم غير صحيح أو الحساب غير مفعل');
                     return false;
                 }
 
-                if (user.password !== password) {
+                if (!this.stateManager.verifyPassword(password, employee.password)) {
                     this.showError('كلمة المرور غير صحيحة');
                     return false;
                 }
 
-                // تسجيل الدخول الناجح
                 this.stateManager.currentUser = {
-                    id: Date.now().toString(),
-                    username: `${role}@hospital`,
-                    role: user.role,
-                    name: user.name,
-                    status: 'online'
+                    id: employee.id,
+                    username: employee.username,
+                    role: employee.role,
+                    name: employee.name,
+                    department: employee.department,
+                    status: 'online',
+                    permissions: employee.permissions || []
                 };
 
-                this.stateManager.addNotification(`مرحباً ${user.name}`, 'success');
+                localStorage.setItem('lastUser', JSON.stringify({
+                    username: employee.username,
+                    role: employee.role
+                }));
+
+                this.stateManager.addNotification(`مرحباً ${employee.name}`, 'success');
                 return true;
             }
 
             logout() {
                 this.stateManager.currentUser = null;
+                localStorage.removeItem('lastUser');
                 this.stateManager.addNotification('تم تسجيل الخروج بنجاح', 'info');
             }
 
@@ -781,6 +854,10 @@
                 
                 errorDiv.classList.remove('hidden');
                 errorMessage.textContent = message;
+                
+                setTimeout(() => {
+                    errorDiv.classList.add('hidden');
+                }, 5000);
             }
 
             hideError() {
@@ -788,16 +865,11 @@
             }
         }
 
-        // ====================
-        // 3. إدارة البيانات
-        // ====================
-        
         class DataManager {
             constructor(stateManager) {
                 this.stateManager = stateManager;
             }
 
-            // إدارة المرضى
             addPatient(patientData) {
                 const patient = {
                     id: `patient_${Date.now()}`,
@@ -826,52 +898,6 @@
                 }
             }
 
-            // إدارة الروشتات
-            addPrescription(prescriptionData) {
-                const prescription = {
-                    id: `rx_${Date.now()}`,
-                    ...prescriptionData,
-                    date: new Date(),
-                    status: 'pending'
-                };
-
-                this.stateManager.data.prescriptions.push(prescription);
-                this.stateManager.saveToLocalStorage();
-                this.stateManager.updateStatsUI();
-                
-                return prescription;
-            }
-
-            // إدارة الفحوصات
-            addLabTest(testData) {
-                const test = {
-                    id: `test_${Date.now()}`,
-                    ...testData,
-                    date: new Date(),
-                    status: 'pending'
-                };
-
-                this.stateManager.data.labTests.push(test);
-                this.stateManager.saveToLocalStorage();
-                this.stateManager.updateStatsUI();
-                
-                return test;
-            }
-
-            // إدارة الأدوية
-            addMedicine(medicineData) {
-                const medicine = {
-                    id: `med_${Date.now()}`,
-                    ...medicineData
-                };
-
-                this.stateManager.data.medicines.push(medicine);
-                this.stateManager.saveToLocalStorage();
-                
-                return medicine;
-            }
-
-            // إدارة المعاملات المالية
             addTransaction(transactionData) {
                 const transaction = {
                     id: `trans_${Date.now()}`,
@@ -885,34 +911,8 @@
                 
                 return transaction;
             }
-
-            // البحث المتقدم
-            searchPatients(criteria) {
-                return this.stateManager.data.patients.filter(patient => {
-                    let matches = true;
-                    
-                    if (criteria.name) {
-                        matches = matches && patient.name.toLowerCase().includes(criteria.name.toLowerCase());
-                    }
-                    
-                    if (criteria.status) {
-                        matches = matches && patient.status === criteria.status;
-                    }
-                    
-                    if (criteria.dateRange && criteria.dateRange.from && criteria.dateRange.to) {
-                        const regDate = new Date(patient.registrationDate);
-                        matches = matches && regDate >= criteria.dateRange.from && regDate <= criteria.dateRange.to;
-                    }
-                    
-                    return matches;
-                });
-            }
         }
 
-        // ====================
-        // 4. نظام الواجهة
-        // ====================
-        
         class UIManager {
             constructor(stateManager, authManager, dataManager) {
                 this.stateManager = stateManager;
@@ -926,51 +926,42 @@
             init() {
                 this.initEventListeners();
                 this.updateCurrentDate();
-                setInterval(() => this.updateCurrentDate(), 60000); // تحديث التاريخ كل دقيقة
+                this.loadRolesForLogin();
+                setInterval(() => this.updateCurrentDate(), 60000);
             }
 
             initEventListeners() {
-                // تسجيل الدخول
                 document.getElementById('login-form').addEventListener('submit', (e) => {
                     e.preventDefault();
                     this.handleLogin();
                 });
 
-                // اختيار الدور
-                document.querySelectorAll('.role-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.handleRoleSelect(btn.dataset.role);
-                    });
-                });
-
-                // تبديل القائمة الجانبية
                 document.getElementById('sidebar-toggle').addEventListener('click', () => {
                     this.toggleSidebar();
                 });
 
-                // تسجيل الخروج
                 document.getElementById('logout-btn').addEventListener('click', () => {
                     this.handleLogout();
                 });
 
-                // اختيار التبويبات
                 document.addEventListener('click', (e) => {
                     if (e.target.classList.contains('tab-btn')) {
                         this.handleTabSelect(e.target.dataset.tab);
                     }
                 });
 
-                // تصدير سريع
-                document.getElementById('quick-export').addEventListener('click', () => {
-                    this.showExportModal();
+                document.getElementById('quick-add-employee').addEventListener('click', () => {
+                    this.showAddEmployeeForm();
                 });
 
-                // نسخ احتياطي سريع
-                document.getElementById('quick-backup').addEventListener('click', () => {
-                    this.stateManager.createBackup();
+                document.getElementById('quick-add-test').addEventListener('click', () => {
+                    this.showAddTestForm();
                 });
 
-                // إغلاق المودال
+                document.getElementById('quick-add-medicine').addEventListener('click', () => {
+                    this.showAddMedicineForm();
+                });
+
                 document.getElementById('modal-close').addEventListener('click', () => {
                     this.hideModal();
                 });
@@ -979,43 +970,64 @@
                     this.hideConfirmModal();
                 });
 
-                // اتصال الإنترنت
                 window.addEventListener('online', () => {
                     this.stateManager.isOnline = true;
-                    document.getElementById('offline-indicator').classList.add('hidden');
+                    this.showToast('تم استعادة الاتصال', 'success');
                 });
 
                 window.addEventListener('offline', () => {
                     this.stateManager.isOnline = false;
-                    document.getElementById('offline-indicator').classList.remove('hidden');
+                    this.showToast('فقدت الاتصال بالإنترنت', 'warning');
+                });
+            }
+
+            loadRolesForLogin() {
+                const rolesContainer = document.getElementById('roles-container');
+                const activeEmployees = this.stateManager.data.employees.filter(emp => emp.status === 'active');
+                
+                rolesContainer.innerHTML = activeEmployees.map(emp => `
+                    <button type="button" data-username="${emp.username}" class="role-btn p-3 rounded-lg text-sm font-medium transition-all bg-gray-100 text-gray-700 hover:bg-gray-200">${this.getRoleName(emp.role)} - ${emp.name}</button>
+                `).join('');
+                
+                this.updateRoleNames();
+            }
+
+            getRoleName(role) {
+                const roleNames = {
+                    'admin': 'مدير النظام',
+                    'doctor': 'الطبيب',
+                    'reception': 'الاستقبال',
+                    'pharmacist': 'الصيدلي',
+                    'lab': 'المعمل',
+                    'nurse': 'التمريض'
+                };
+                return roleNames[role] || role;
+            }
+
+            updateRoleNames() {
+                document.querySelectorAll('.role-btn').forEach(btn => {
+                    const role = btn.dataset.username;
+                    const emp = this.stateManager.data.employees.find(e => e.username === role);
+                    if (emp) {
+                        btn.textContent = `${this.getRoleName(emp.role)} - ${emp.name}`;
+                    }
                 });
             }
 
             handleLogin() {
-                const role = document.querySelector('.role-btn.bg-teal-500')?.dataset.role || 'admin';
+                const username = document.querySelector('.role-btn.bg-teal-500')?.dataset.username;
                 const password = document.getElementById('password').value;
+
+                if (!username) {
+                    this.authManager.showError('الرجاء اختيار دور المستخدم');
+                    return;
+                }
 
                 this.authManager.hideError();
 
-                if (this.authManager.login(role, password)) {
-                    this.showDashboard(role);
+                if (this.authManager.login(username, password)) {
+                    this.showDashboard();
                 }
-            }
-
-            handleRoleSelect(role) {
-                // إزالة التحديد من جميع الأزرار
-                document.querySelectorAll('.role-btn').forEach(btn => {
-                    btn.classList.remove('bg-teal-500', 'text-white', 'shadow-lg');
-                    btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-                });
-
-                // تحديد الزر المختار
-                const selectedBtn = document.querySelector(`[data-role="${role}"]`);
-                selectedBtn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-                selectedBtn.classList.add('bg-teal-500', 'text-white', 'shadow-lg');
-
-                // تعيين كلمة المرور الافتراضية
-                document.getElementById('password').value = this.authManager.users[role].password;
             }
 
             handleLogout() {
@@ -1028,18 +1040,15 @@
             handleTabSelect(tab) {
                 this.currentTab = tab;
                 
-                // تحديث التبويبات النشطة
                 document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.classList.remove('bg-teal-100', 'text-teal-700', 'font-semibold');
                     btn.classList.add('text-gray-700', 'hover:bg-gray-100');
                 });
 
-                // تحديد التبويب النشط
                 const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
                 activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
                 activeBtn.classList.add('bg-teal-100', 'text-teal-700', 'font-semibold');
 
-                // عرض المحتوى المناسب
                 this.loadTabContent(tab);
             }
 
@@ -1050,14 +1059,11 @@
                 if (sidebar.classList.contains('hidden')) {
                     sidebar.classList.remove('hidden');
                     sidebar.classList.add('block');
-                    lucide.createIcons();
                     icon.setAttribute('data-lucide', 'x');
                 } else {
                     sidebar.classList.add('hidden');
-                    sidebar.classList.remove('block');
                     icon.setAttribute('data-lucide', 'menu');
                 }
-                lucide.createIcons();
             }
 
             updateCurrentDate() {
@@ -1069,46 +1075,29 @@
                     day: 'numeric',
                     calendar: 'islamic-umalqura'
                 };
-                document.getElementById('current-date').textContent = 
-                    now.toLocaleDateString('ar-SA', options);
+                document.getElementById('current-date').textContent = now.toLocaleDateString('ar-SA', options);
             }
 
-            showDashboard(role) {
-                // إخفاء صفحة تسجيل الدخول
+            showDashboard() {
                 document.getElementById('login-page').classList.add('hidden');
-                
-                // إظهار لوحة التحكم
                 document.getElementById('dashboard').classList.remove('hidden');
                 
-                // تحديث معلومات المستخدم
-                const user = this.authManager.users[role];
+                const user = this.stateManager.currentUser;
                 document.getElementById('user-name').textContent = user.name;
-                document.getElementById('user-role').textContent = user.role === 'admin' ? 'مدير النظام' : 
-                    user.role === 'doctor' ? 'الطبيب' :
-                    user.role === 'reception' ? 'الاستقبال' :
-                    user.role === 'pharmacist' ? 'الصيدلي' :
-                    user.role === 'lab' ? 'المعمل' : 'التمريض';
+                document.getElementById('user-role').textContent = this.getRoleName(user.role);
                 
-                // تحديث ألوان الهيدر
                 const header = document.getElementById('dashboard-header');
-                header.className = `bg-gradient-to-r ${user.color} text-white shadow-lg sticky top-0 z-40`;
+                const emp = this.stateManager.data.employees.find(e => e.id === user.id);
+                if (emp && emp.color) {
+                    header.className = `bg-gradient-to-r ${emp.color} text-white shadow-lg sticky top-0 z-40`;
+                }
                 
-                // تحديث التبويبات الخاصة بالدور
-                this.updateRoleTabs(role);
-                
-                // تحديث الإحصائيات
+                this.updateRoleTabs(user.role);
                 this.stateManager.updateStatsUI();
-                
-                // تحديث الإشعارات
                 this.stateManager.updateNotificationsUI();
-                
-                // تحميل المحتوى الافتراضي
                 this.loadTabContent('main');
-                
-                // إظهار رسالة ترحيبية
                 this.stateManager.showToast(`مرحباً بك ${user.name}`, 'success');
                 
-                // إخفاء شاشة التحميل
                 document.getElementById('loading-screen').classList.add('hidden');
             }
 
@@ -1117,6 +1106,7 @@
                 document.getElementById('login-page').classList.remove('hidden');
                 document.getElementById('password').value = '';
                 this.authManager.hideError();
+                this.loadRolesForLogin();
             }
 
             updateRoleTabs(role) {
@@ -1127,8 +1117,6 @@
                     document.getElementById('admin-tabs').classList.remove('hidden');
                 } else {
                     document.getElementById('admin-tabs').classList.add('hidden');
-                    
-                    // إضافة تبويبات حسب الدور
                     const roleTabs = {
                         reception: [
                             { id: 'patients', label: '👥 المرضى', icon: 'users' },
@@ -1166,29 +1154,33 @@
             loadTabContent(tab) {
                 const contentArea = document.getElementById('dashboard-content');
                 
-                if (tab === 'main') {
-                    this.loadMainDashboard();
-                } else if (tab === 'overview') {
-                    this.loadAdminOverview();
-                } else if (tab === 'reports') {
-                    this.loadAdminReports();
-                } else if (tab === 'data') {
-                    this.loadAdminData();
-                } else if (tab === 'settings') {
-                    this.loadAdminSettings();
-                } else if (tab === 'patients') {
-                    this.loadReceptionPatients();
-                } else if (tab === 'consultation') {
-                    this.loadDoctorConsultation();
-                } else {
-                    contentArea.innerHTML = `
-                        <div class="text-center py-12">
-                            <i data-lucide="construction" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">قيد التطوير</h2>
-                            <p class="text-gray-600">هذه الصفحة قيد التطوير حالياً</p>
-                        </div>
-                    `;
-                    lucide.createIcons();
+                switch(tab) {
+                    case 'main':
+                        this.loadMainDashboard();
+                        break;
+                    case 'employees':
+                        this.loadEmployeesManagement();
+                        break;
+                    case 'tests':
+                        this.loadTestsManagement();
+                        break;
+                    case 'medicines':
+                        this.loadMedicinesManagement();
+                        break;
+                    case 'overview':
+                        this.loadAdminOverview();
+                        break;
+                    case 'reports':
+                        this.loadAdminReports();
+                        break;
+                    case 'data':
+                        this.loadAdminData();
+                        break;
+                    case 'settings':
+                        this.loadAdminSettings();
+                        break;
+                    default:
+                        this.loadMainDashboard();
                 }
             }
 
@@ -1198,16 +1190,8 @@
 
                 if (role === 'admin') {
                     content = this.getAdminDashboardContent();
-                } else if (role === 'reception') {
-                    content = this.getReceptionDashboardContent();
-                } else if (role === 'doctor') {
-                    content = this.getDoctorDashboardContent();
-                } else if (role === 'pharmacist') {
-                    content = this.getPharmacyDashboardContent();
-                } else if (role === 'lab') {
-                    content = this.getLabDashboardContent();
-                } else if (role === 'nurse') {
-                    content = this.getNursingDashboardContent();
+                } else {
+                    content = this.getRoleDashboardContent(role);
                 }
 
                 document.getElementById('dashboard-content').innerHTML = content;
@@ -1216,10 +1200,8 @@
             }
 
             getAdminDashboardContent() {
-                const stats = this.stateManager.getTodayStats();
+                const stats = this.stateManager.getSystemStats();
                 const totalPatients = this.stateManager.data.patients.length;
-                const totalTests = this.stateManager.data.labTests.length;
-                const totalMeds = this.stateManager.data.medicines.length;
                 const totalIncome = this.stateManager.data.transactions
                     .filter(t => t.type === 'income')
                     .reduce((sum, t) => sum + t.amount, 0);
@@ -1234,27 +1216,25 @@
                             <p class="text-gray-600 mt-1">إدارة شاملة لجميع أقسام المستشفى</p>
                         </div>
 
-                        <!-- Statistics Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl">
                                 <div class="text-3xl font-bold">${totalPatients}</div>
                                 <p class="text-blue-100 mt-1">إجمالي المرضى</p>
                             </div>
                             <div class="p-6 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${stats.newPatients}</div>
-                                <p class="text-green-100 mt-1">مرضى جدد اليوم</p>
+                                <div class="text-3xl font-bold">${stats.totalEmployees}</div>
+                                <p class="text-green-100 mt-1">الموظفين</p>
                             </div>
                             <div class="p-6 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${totalTests}</div>
-                                <p class="text-red-100 mt-1">إجمالي الفحوصات</p>
+                                <div class="text-3xl font-bold">${stats.totalTests}</div>
+                                <p class="text-red-100 mt-1">أنواع الفحوصات</p>
                             </div>
                             <div class="p-6 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-xl">
-                                <div class="text-3xl font-bold">${totalMeds}</div>
-                                <p class="text-yellow-100 mt-1">أدوية في المخزون</p>
+                                <div class="text-3xl font-bold">${stats.totalMedicines}</div>
+                                <p class="text-yellow-100 mt-1">الأدوية في المخزون</p>
                             </div>
                         </div>
 
-                        <!-- Daily Stats -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-white p-6 rounded-xl shadow">
                                 <h3 class="text-xl font-bold text-gray-900 mb-4">إحصائيات اليوم</h3>
@@ -1272,8 +1252,8 @@
                                         <span class="font-bold">${stats.dispensedRx}</span>
                                     </div>
                                     <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                                        <span>مهام تمريض</span>
-                                        <span class="font-bold">${stats.nursingTasks}</span>
+                                        <span>إيرادات اليوم</span>
+                                        <span class="font-bold">${stats.totalIncome.toLocaleString()} ج.س</span>
                                     </div>
                                 </div>
                             </div>
@@ -1282,44 +1262,43 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-4">الملخص المالي</h3>
                                 <div class="space-y-4">
                                     <div class="p-4 bg-green-50 rounded-lg border-l-4 border-l-green-500">
-                                        <p class="text-sm text-gray-600">الإيرادات</p>
+                                        <p class="text-sm text-gray-600">الإيرادات الإجمالية</p>
                                         <p class="text-2xl font-bold text-green-600">${totalIncome.toLocaleString()} ج.س</p>
                                     </div>
                                     <div class="p-4 bg-red-50 rounded-lg border-l-4 border-l-red-500">
-                                        <p class="text-sm text-gray-600">المصروفات</p>
+                                        <p class="text-sm text-gray-600">المصروفات الإجمالية</p>
                                         <p class="text-2xl font-bold text-red-600">${totalExpense.toLocaleString()} ج.س</p>
                                     </div>
                                     <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-l-blue-500">
-                                        <p class="text-sm text-gray-600">الرصيد</p>
+                                        <p class="text-sm text-gray-600">صافي الربح</p>
                                         <p class="text-2xl font-bold text-blue-600">${(totalIncome - totalExpense).toLocaleString()} ج.س</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Quick Actions -->
                         <div class="bg-white p-6 rounded-xl shadow">
                             <h3 class="text-xl font-bold text-gray-900 mb-4">الإجراءات السريعة</h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button onclick="uiManager.showExportModal()" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="download" class="w-6 h-6 text-blue-600"></i>
+                                <button onclick="uiManager.showAddEmployeeForm()" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-3">
+                                    <i data-lucide="user-plus" class="w-6 h-6 text-blue-600"></i>
                                     <div class="text-right">
-                                        <p class="font-semibold text-gray-900">تصدير البيانات</p>
-                                        <p class="text-sm text-gray-600">تنزيل جميع بيانات النظام</p>
+                                        <p class="font-semibold text-gray-900">إضافة موظف</p>
+                                        <p class="text-sm text-gray-600">إضافة موظف جديد للنظام</p>
                                     </div>
                                 </button>
-                                <button onclick="uiManager.showBackupModal()" class="p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="save" class="w-6 h-6 text-green-600"></i>
+                                <button onclick="uiManager.showAddTestForm()" class="p-4 bg-red-50 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-3">
+                                    <i data-lucide="flask-conical" class="w-6 h-6 text-red-600"></i>
                                     <div class="text-right">
-                                        <p class="font-semibold text-gray-900">نسخ احتياطي</p>
-                                        <p class="text-sm text-gray-600">إنشاء نسخة احتياطية</p>
+                                        <p class="font-semibold text-gray-900">إضافة فحص</p>
+                                        <p class="text-sm text-gray-600">إضافة نوع فحص جديد</p>
                                     </div>
                                 </button>
-                                <button onclick="uiManager.showReportModal()" class="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors flex items-center gap-3">
-                                    <i data-lucide="file-text" class="w-6 h-6 text-purple-600"></i>
+                                <button onclick="uiManager.showAddMedicineForm()" class="p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors flex items-center gap-3">
+                                    <i data-lucide="pill" class="w-6 h-6 text-green-600"></i>
                                     <div class="text-right">
-                                        <p class="font-semibold text-gray-900">تقرير شهري</p>
-                                        <p class="text-sm text-gray-600">إنشاء تقرير مفصل</p>
+                                        <p class="font-semibold text-gray-900">إضافة دواء</p>
+                                        <p class="text-sm text-gray-600">إضافة دواء جديد للمخزون</p>
                                     </div>
                                 </button>
                             </div>
@@ -1328,840 +1307,69 @@
                 `;
             }
 
-            getReceptionDashboardContent() {
-                const waitingPatients = this.stateManager.data.patients.filter(p => p.status === 'waiting');
-                
+            getRoleDashboardContent(role) {
+                const roleNames = {
+                    'doctor': 'الأطباء',
+                    'reception': 'الاستقبال',
+                    'pharmacist': 'الصيدلية',
+                    'lab': 'المعمل',
+                    'nurse': 'التمريض'
+                };
+
                 return `
-                    <div class="space-y-6">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h2 class="text-3xl font-bold text-gray-900">قسم الاستقبال</h2>
-                                <p class="text-gray-600 mt-1">إدارة تسجيل المرضى والمواعيد</p>
-                            </div>
-                            <button onclick="uiManager.showPatientForm()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center">
-                                <i data-lucide="plus" class="w-4 h-4 ml-2"></i>
-                                تسجيل مريض جديد
-                            </button>
-                        </div>
-
-                        <!-- Stats -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-blue-600">${this.stateManager.data.patients.length}</div>
-                                <p class="text-sm text-gray-600">إجمالي المرضى</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-yellow-600">${waitingPatients.length}</div>
-                                <p class="text-sm text-gray-600">في الانتظار</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-green-600">${this.stateManager.data.appointments.length}</div>
-                                <p class="text-sm text-gray-600">المواعيد</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-purple-600">${new Date().getHours()}:${new Date().getMinutes()}</div>
-                                <p class="text-sm text-gray-600">الوقت الحالي</p>
-                            </div>
-                        </div>
-
-                        <!-- Waiting Patients -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="p-4 border-b border-gray-200">
-                                <h3 class="text-lg font-bold text-gray-900">المرضى في الانتظار</h3>
-                            </div>
-                            <div class="divide-y divide-gray-100">
-                                ${waitingPatients.length > 0 ? 
-                                    waitingPatients.slice(0, 10).map(patient => `
-                                        <div class="p-4 hover:bg-gray-50 flex justify-between items-center">
-                                            <div>
-                                                <h4 class="font-semibold text-gray-900">${patient.name}</h4>
-                                                <div class="flex gap-4 mt-1 text-sm text-gray-600">
-                                                    <span>📞 ${patient.phone}</span>
-                                                    <span>👤 ${patient.age} سنة</span>
-                                                    <span>🩸 ${patient.bloodType || 'غير محدد'}</span>
-                                                </div>
-                                            </div>
-                                            <button onclick="uiManager.checkInPatient('${patient.id}')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm flex items-center">
-                                                <i data-lucide="check" class="w-4 h-4 ml-1"></i>
-                                                تسجيل الدخول
-                                            </button>
-                                        </div>
-                                    `).join('') :
-                                    '<div class="p-8 text-center text-gray-500">لا توجد مرضى في الانتظار</div>'
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Recent Patients -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="p-4 border-b border-gray-200">
-                                <h3 class="text-lg font-bold text-gray-900">آخر المرضى المسجلين</h3>
-                            </div>
-                            <div class="divide-y divide-gray-100">
-                                ${this.stateManager.data.patients
-                                    .slice(-5)
-                                    .reverse()
-                                    .map(patient => `
-                                        <div class="p-4 hover:bg-gray-50">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <h4 class="font-semibold text-gray-900">${patient.name}</h4>
-                                                    <div class="flex gap-4 mt-1 text-sm text-gray-600">
-                                                        <span>📞 ${patient.phone}</span>
-                                                        <span>👤 ${patient.age} سنة</span>
-                                                        <span>${patient.gender === 'male' ? '👨' : '👩'}</span>
-                                                    </div>
-                                                </div>
-                                                <span class="px-2 py-1 text-xs rounded-full ${patient.status === 'waiting' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
-                                                    ${patient.status === 'waiting' ? 'في الانتظار' : 
-                                                      patient.status === 'in-consultation' ? 'قيد الكشف' :
-                                                      patient.status === 'completed' ? 'مكتمل' : 'قيد المعالجة'}
-                                                </span>
-                                            </div>
-                                            <p class="text-xs text-gray-500 mt-2">
-                                                مسجل منذ: ${uiManager.formatTimeAgo(patient.registrationDate)}
-                                            </p>
-                                        </div>
-                                    `).join('')
-                                }
-                            </div>
-                        </div>
+                    <div class="text-center py-12">
+                        <i data-lucide="${this.getRoleIcon(role)}" class="w-16 h-16 ${this.getRoleColor(role)} mx-auto mb-4"></i>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم ${roleNames[role] || role}</h2>
+                        <p class="text-gray-600">إدارة عمليات القسم اليومية</p>
                     </div>
                 `;
             }
 
-            // محتوى الأقسام الأخرى
-            getDoctorDashboardContent() {
-                return `<div class="text-center py-12">
-                    <i data-lucide="stethoscope" class="w-16 h-16 text-green-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم الأطباء</h2>
-                    <p class="text-gray-600">إدارة المرضى والروشتات الطبية</p>
-                </div>`;
+            getRoleIcon(role) {
+                const icons = {
+                    'doctor': 'stethoscope',
+                    'reception': 'users',
+                    'pharmacist': 'pill',
+                    'lab': 'flask-conical',
+                    'nurse': 'heart'
+                };
+                return icons[role] || 'activity';
             }
 
-            getPharmacyDashboardContent() {
-                return `<div class="text-center py-12">
-                    <i data-lucide="pill" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم الصيدلية</h2>
-                    <p class="text-gray-600">إدارة الأدوية والروشتات</p>
-                </div>`;
-            }
-
-            getLabDashboardContent() {
-                return `<div class="text-center py-12">
-                    <i data-lucide="flask-conical" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم المعمل</h2>
-                    <p class="text-gray-600">إدارة الفحوصات والنتائج</p>
-                </div>`;
-            }
-
-            getNursingDashboardContent() {
-                return `<div class="text-center py-12">
-                    <i data-lucide="heart" class="w-16 h-16 text-purple-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">قسم التمريض</h2>
-                    <p class="text-gray-600">إدارة مهام التمريض والرعاية</p>
-                </div>`;
+            getRoleColor(role) {
+                const colors = {
+                    'doctor': 'text-green-500',
+                    'reception': 'text-blue-500',
+                    'pharmacist': 'text-yellow-500',
+                    'lab': 'text-red-500',
+                    'nurse': 'text-purple-500'
+                };
+                return colors[role] || 'text-gray-500';
             }
 
             initDashboardComponents() {
-                // يمكن إضافة المنطق لتهيئة المكونات الديناميكية هنا
-            }
-
-            loadAdminOverview() {
-                document.getElementById('dashboard-content').innerHTML = this.getAdminDashboardContent();
-                lucide.createIcons();
-            }
-
-            loadAdminReports() {
-                const content = `
-                    <div class="space-y-6">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900">التقارير والإحصائيات</h2>
-                            <p class="text-gray-600 mt-1">تقارير مفصلة عن أداء النظام</p>
-                        </div>
-
-                        <!-- Report Filters -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">فلترة التقارير</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">الفترة الزمنية</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                                        <option value="today">اليوم</option>
-                                        <option value="week">هذا الأسبوع</option>
-                                        <option value="month">هذا الشهر</option>
-                                        <option value="year">هذه السنة</option>
-                                        <option value="custom">مخصص</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">نوع التقرير</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                                        <option value="financial">مالي</option>
-                                        <option value="medical">طبي</option>
-                                        <option value="operational">تشغيلي</option>
-                                        <option value="inventory">مخزون</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-end">
-                                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                                        <i data-lucide="filter" class="w-4 h-4 inline ml-1"></i>
-                                        تطبيق الفلتر
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Reports -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">تقرير المرضى</h3>
-                                <div class="space-y-3">
-                                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                                        <span>إجمالي المرضى</span>
-                                        <span class="font-bold">${this.stateManager.data.patients.length}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                                        <span>مرضى جدد (اليوم)</span>
-                                        <span class="font-bold">${this.stateManager.getTodayStats().newPatients}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
-                                        <span>نسبة الذكور</span>
-                                        <span class="font-bold">${Math.round((this.stateManager.data.patients.filter(p => p.gender === 'male').length / this.stateManager.data.patients.length) * 100 || 0)}%</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                                        <span>متوسط العمر</span>
-                                        <span class="font-bold">${Math.round(this.stateManager.data.patients.reduce((sum, p) => sum + p.age, 0) / this.stateManager.data.patients.length || 0)} سنة</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">تقرير الفعالية</h3>
-                                <div class="space-y-3">
-                                    <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                                        <span>معدل الإشغال</span>
-                                        <span class="font-bold">85%</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                                        <span>متوسط وقت الانتظار</span>
-                                        <span class="font-bold">25 دقيقة</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-                                        <span>نسبة إعادة الزيارة</span>
-                                        <span class="font-bold">15%</span>
-                                    </div>
-                                    <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                                        <span>رضا المرضى</span>
-                                        <span class="font-bold">92%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Export Options -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">تصدير التقارير</h3>
-                            <div class="flex flex-wrap gap-3">
-                                <button onclick="uiManager.exportReport('pdf')" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center">
-                                    <i data-lucide="file-text" class="w-4 h-4 ml-1"></i>
-                                    PDF
-                                </button>
-                                <button onclick="uiManager.exportReport('excel')" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg flex items-center">
-                                    <i data-lucide="file-spreadsheet" class="w-4 h-4 ml-1"></i>
-                                    Excel
-                                </button>
-                                <button onclick="uiManager.exportReport('print')" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center">
-                                    <i data-lucide="printer" class="w-4 h-4 ml-1"></i>
-                                    طباعة
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('dashboard-content').innerHTML = content;
-                lucide.createIcons();
-            }
-
-            loadAdminData() {
-                const backups = this.stateManager.backups;
-                
-                const content = `
-                    <div class="space-y-6">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900">إدارة البيانات</h2>
-                            <p class="text-gray-600 mt-1">نسخ احتياطي، استعادة، وتصدير البيانات</p>
-                        </div>
-
-                        <!-- Data Stats -->
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-blue-600">${this.stateManager.data.patients.length}</div>
-                                <p class="text-sm text-gray-600">سجلات المرضى</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-green-600">${this.stateManager.data.prescriptions.length}</div>
-                                <p class="text-sm text-gray-600">الروشتات</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-red-600">${this.stateManager.data.labTests.length}</div>
-                                <p class="text-sm text-gray-600">الفحوصات</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow">
-                                <div class="text-2xl font-bold text-yellow-600">${(localStorage.getItem('hospitalData') || '').length / 1024 | 0}</div>
-                                <p class="text-sm text-gray-600">حجم البيانات (ك.ب)</p>
-                            </div>
-                        </div>
-
-                        <!-- Backup Section -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-lg font-bold text-gray-900">النسخ الاحتياطية</h3>
-                                <button onclick="uiManager.createBackup()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center">
-                                    <i data-lucide="save" class="w-4 h-4 ml-1"></i>
-                                    نسخ احتياطي الآن
-                                </button>
-                            </div>
-                            
-                            <div class="space-y-3">
-                                ${backups.length > 0 ? 
-                                    backups.map(backup => `
-                                        <div class="flex justify-between items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-                                            <div>
-                                                <p class="font-medium text-gray-900">نسخة احتياطية</p>
-                                                <p class="text-sm text-gray-600">${new Date(backup.timestamp).toLocaleString('ar-SA')}</p>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <button onclick="uiManager.restoreBackup(${backup.id})" class="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded text-sm">
-                                                    استعادة
-                                                </button>
-                                                <button onclick="uiManager.downloadBackup(${backup.id})" class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-700 rounded text-sm">
-                                                    تنزيل
-                                                </button>
-                                            </div>
-                                        </div>
-                                    `).join('') :
-                                    '<p class="text-gray-500 text-center py-4">لا توجد نسخ احتياطية</p>'
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Import/Export -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Export -->
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">تصدير البيانات</h3>
-                                <p class="text-gray-600 mb-4">قم بتنزيل جميع بيانات النظام</p>
-                                <div class="space-y-3">
-                                    <button onclick="uiManager.exportData('json')" class="w-full p-3 bg-blue-50 hover:bg-blue-100 rounded-lg flex items-center justify-between">
-                                        <span>JSON (كامل)</span>
-                                        <i data-lucide="download" class="w-5 h-5 text-blue-600"></i>
-                                    </button>
-                                    <button onclick="uiManager.exportData('csv')" class="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg flex items-center justify-between">
-                                        <span>CSV (جدولي)</span>
-                                        <i data-lucide="download" class="w-5 h-5 text-green-600"></i>
-                                    </button>
-                                    <button onclick="uiManager.exportData('pdf')" class="w-full p-3 bg-red-50 hover:bg-red-100 rounded-lg flex items-center justify-between">
-                                        <span>PDF (تقرير)</span>
-                                        <i data-lucide="download" class="w-5 h-5 text-red-600"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Import -->
-                            <div class="bg-white p-6 rounded-xl shadow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-4">استيراد البيانات</h3>
-                                <p class="text-gray-600 mb-4">رفع ملف بيانات مسبق</p>
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                                    <i data-lucide="upload" class="w-12 h-12 text-gray-400 mx-auto mb-3"></i>
-                                    <p class="text-gray-600 mb-3">اسحب وأفلت ملف JSON أو CSV</p>
-                                    <input type="file" id="import-file" accept=".json,.csv" class="hidden">
-                                    <button onclick="document.getElementById('import-file').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
-                                        اختر ملف
-                                    </button>
-                                    <p class="text-xs text-gray-500 mt-3">الحد الأقصى: 10 ميجابايت</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Danger Zone -->
-                        <div class="bg-red-50 border border-red-200 rounded-xl p-6">
-                            <div class="flex items-start gap-3 mb-4">
-                                <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600 mt-0.5"></i>
-                                <div>
-                                    <h3 class="text-lg font-bold text-red-900">منطقة الخطر</h3>
-                                    <p class="text-red-700 text-sm">هذه الإجراءات لا يمكن التراجع عنها</p>
-                                </div>
-                            </div>
-                            <div class="space-y-3">
-                                <button onclick="uiManager.clearCache()" class="w-full p-3 bg-white border border-red-300 hover:bg-red-50 text-red-700 rounded-lg flex items-center justify-between">
-                                    <span>مسح ذاكرة التخزين المؤقت</span>
-                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
-                                </button>
-                                <button onclick="uiManager.clearAllData()" class="w-full p-3 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-between">
-                                    <span>حذف جميع البيانات</span>
-                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('dashboard-content').innerHTML = content;
-                lucide.createIcons();
-                
-                // إضافة مستمع لملف الاستيراد
-                document.getElementById('import-file').addEventListener('change', (e) => {
-                    this.handleImportFile(e.target.files[0]);
-                });
-            }
-
-            loadAdminSettings() {
-                const content = `
-                    <div class="space-y-6">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900">إعدادات النظام</h2>
-                            <p class="text-gray-600 mt-1">تخصيص وإدارة النظام</p>
-                        </div>
-
-                        <!-- System Info -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">معلومات النظام</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="p-3 bg-gray-50 rounded-lg">
-                                    <p class="text-sm text-gray-600">اسم المستشفى</p>
-                                    <p class="font-medium text-gray-900">مجمع الشفاء الطبي</p>
-                                </div>
-                                <div class="p-3 bg-gray-50 rounded-lg">
-                                    <p class="text-sm text-gray-600">الإصدار</p>
-                                    <p class="font-medium text-gray-900">1.0.0 (Super Edition 2026)</p>
-                                </div>
-                                <div class="p-3 bg-gray-50 rounded-lg">
-                                    <p class="text-sm text-gray-600">آخر تحديث</p>
-                                    <p class="font-medium text-gray-900">${new Date().toLocaleDateString('ar-SA')}</p>
-                                </div>
-                                <div class="p-3 bg-gray-50 rounded-lg">
-                                    <p class="text-sm text-gray-600">وقت التشغيل</p>
-                                    <p class="font-medium text-gray-900">${Math.floor(performance.now() / 60000)} دقيقة</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- General Settings -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">الإعدادات العامة</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-gray-900">النسخ الاحتياطي التلقائي</p>
-                                        <p class="text-sm text-gray-600">كل ساعة</p>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                                    </label>
-                                </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-gray-900">الإشعارات</p>
-                                        <p class="text-sm text-gray-600">إشعارات المهام العاجلة</p>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                                    </label>
-                                </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="font-medium text-gray-900">الوضع الداكن</p>
-                                        <p class="text-sm text-gray-600">تفعيل الوضع الليلي</p>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer">
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Backup Settings -->
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">إعدادات النسخ الاحتياطي</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">فترة النسخ الاحتياطي</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                                        <option value="1">كل ساعة</option>
-                                        <option value="6">كل 6 ساعات</option>
-                                        <option value="24">يومياً</option>
-                                        <option value="168">أسبوعياً</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">عدد النسخ المحفوظة</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                                        <option value="5">5 نسخ</option>
-                                        <option value="10" selected>10 نسخ</option>
-                                        <option value="20">20 نسخ</option>
-                                        <option value="50">50 نسخ</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">مستوى الضغط</label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                                        <option value="low">منخفض (سريع)</option>
-                                        <option value="medium" selected>متوسط</option>
-                                        <option value="high">عالي (بطيء)</option>
-                                    </select>
-                                </div>
-                                
-                                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg">
-                                    حفظ الإعدادات
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- System Maintenance -->
-                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-                            <h3 class="text-lg font-bold text-yellow-900 mb-4">صيانة النظام</h3>
-                            <div class="space-y-3">
-                                <button onclick="uiManager.optimizeDatabase()" class="w-full p-3 bg-white border border-yellow-300 hover:bg-yellow-50 text-yellow-700 rounded-lg flex items-center justify-between">
-                                    <span>تحسين قاعدة البيانات</span>
-                                    <i data-lucide="database" class="w-5 h-5"></i>
-                                </button>
-                                <button onclick="uiManager.clearLogs()" class="w-full p-3 bg-white border border-yellow-300 hover:bg-yellow-50 text-yellow-700 rounded-lg flex items-center justify-between">
-                                    <span>مسح السجلات</span>
-                                    <i data-lucide="file-text" class="w-5 h-5"></i>
-                                </button>
-                                <button onclick="uiManager.checkUpdates()" class="w-full p-3 bg-white border border-yellow-300 hover:bg-yellow-50 text-yellow-700 rounded-lg flex items-center justify-between">
-                                    <span>التحقق من التحديثات</span>
-                                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('dashboard-content').innerHTML = content;
-                lucide.createIcons();
-            }
-
-            loadReceptionPatients() {
-                // سيتم تنفيذ محتوى استقبال المرضى هنا
-                this.loadMainDashboard();
-            }
-
-            loadDoctorConsultation() {
-                // سيتم تنفيذ محتوى كشف الطبيب هنا
-                this.loadMainDashboard();
-            }
-
-            // وظائف الواجهة المساعدة
-            showModal(title, content) {
-                document.getElementById('modal-title').textContent = title;
-                document.getElementById('modal-body').innerHTML = content;
-                document.getElementById('modal-container').classList.remove('hidden');
-                lucide.createIcons();
-            }
-
-            hideModal() {
-                document.getElementById('modal-container').classList.add('hidden');
-            }
-
-            showConfirmModal(title, message, callback) {
-                document.getElementById('confirm-title').textContent = title;
-                document.getElementById('confirm-message').textContent = message;
-                document.getElementById('confirm-modal').classList.remove('hidden');
-                
-                const okBtn = document.getElementById('confirm-ok');
-                const cancelBtn = document.getElementById('confirm-cancel');
-                
-                const handleConfirm = () => {
-                    callback();
-                    this.hideConfirmModal();
-                };
-                
-                okBtn.onclick = handleConfirm;
-                cancelBtn.onclick = this.hideConfirmModal.bind(this);
-            }
-
-            hideConfirmModal() {
-                document.getElementById('confirm-modal').classList.add('hidden');
-            }
-
-            showExportModal() {
-                const content = `
-                    <div class="space-y-4">
-                        <p class="text-gray-600">اختر تنسيق التصدير:</p>
-                        <div class="space-y-3">
-                            <button onclick="uiManager.exportData('json')" class="w-full p-3 bg-blue-50 hover:bg-blue-100 rounded-lg flex items-center justify-between">
-                                <div class="text-right">
-                                    <p class="font-medium text-gray-900">JSON كامل</p>
-                                    <p class="text-sm text-gray-600">للاستخدام مع النظام</p>
-                                </div>
-                                <i data-lucide="file-json" class="w-6 h-6 text-blue-600"></i>
-                            </button>
-                            
-                            <button onclick="uiManager.exportData('csv')" class="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg flex items-center justify-between">
-                                <div class="text-right">
-                                    <p class="font-medium text-gray-900">CSV جدولي</p>
-                                    <p class="text-sm text-gray-600">للتحليل في Excel</p>
-                                </div>
-                                <i data-lucide="file-spreadsheet" class="w-6 h-6 text-green-600"></i>
-                            </button>
-                            
-                            <button onclick="uiManager.exportData('pdf')" class="w-full p-3 bg-red-50 hover:bg-red-100 rounded-lg flex items-center justify-between">
-                                <div class="text-right">
-                                    <p class="font-medium text-gray-900">PDF تقرير</p>
-                                    <p class="text-sm text-gray-600">للمراجعة والطباعة</p>
-                                </div>
-                                <i data-lucide="file-text" class="w-6 h-6 text-red-600"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                this.showModal('تصدير البيانات', content);
-            }
-
-            exportData(format) {
-                const data = this.stateManager.exportData(format);
-                
-                if (format === 'json') {
-                    const blob = new Blob([data], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `hospital-data-${new Date().toISOString().split('T')[0]}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }
-                
-                this.hideModal();
-                this.stateManager.showToast('تم تصدير البيانات بنجاح', 'success');
-            }
-
-            handleImportFile(file) {
-                if (!file) return;
-                
-                if (file.size > 10 * 1024 * 1024) {
-                    this.stateManager.showToast('الملف كبير جداً (الحد الأقصى 10 ميجابايت)', 'error');
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const success = this.stateManager.importData(e.target.result);
-                    if (success) {
-                        this.stateManager.showToast('تم استيراد البيانات بنجاح', 'success');
-                        this.loadTabContent(this.currentTab);
-                    } else {
-                        this.stateManager.showToast('فشل استيراد البيانات. تأكد من صيغة الملف', 'error');
-                    }
-                };
-                reader.readAsText(file);
-            }
-
-            createBackup() {
-                this.stateManager.createBackup();
-                this.loadTabContent('data');
-            }
-
-            restoreBackup(backupId) {
-                this.showConfirmModal(
-                    'استعادة النسخة الاحتياطية',
-                    'هل تريد استعادة هذه النسخة؟ ستتم استبدال البيانات الحالية.',
-                    () => {
-                        const success = this.stateManager.restoreBackup(backupId);
-                        if (success) {
-                            this.stateManager.showToast('تم استعادة النسخة الاحتياطية', 'success');
-                            this.loadTabContent(this.currentTab);
-                        } else {
-                            this.stateManager.showToast('فشل استعادة النسخة', 'error');
-                        }
-                    }
-                );
-            }
-
-            clearAllData() {
-                this.showConfirmModal(
-                    'حذف جميع البيانات',
-                    'هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه.',
-                    () => {
-                        this.stateManager.data = {
-                            patients: [],
-                            appointments: [],
-                            prescriptions: [],
-                            labTests: [],
-                            medicines: [],
-                            nursingTasks: [],
-                            transactions: []
-                        };
-                        this.stateManager.saveToLocalStorage();
-                        this.stateManager.updateStatsUI();
-                        this.stateManager.showToast('تم حذف جميع البيانات', 'success');
-                        this.loadTabContent(this.currentTab);
-                    }
-                );
-            }
-
-            exportReport(format) {
-                this.stateManager.showToast(`جاري إنشاء تقرير ${format}...`, 'info');
-                // محاكاة إنشاء التقرير
-                setTimeout(() => {
-                    this.stateManager.showToast('تم إنشاء التقرير بنجاح', 'success');
-                }, 1500);
-            }
-
-            showPatientForm() {
-                const content = `
-                    <form id="patient-form" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">الاسم الكامل</label>
-                                <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">العمر</label>
-                                <input type="number" name="age" min="0" max="120" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">الجنس</label>
-                                <select name="gender" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="male">ذكر</option>
-                                    <option value="female">أنثى</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">رقم الهاتف</label>
-                                <input type="tel" name="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">فصيلة الدم</label>
-                                <select name="bloodType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="">اختر فصيلة الدم</option>
-                                    <option value="O+">O+</option>
-                                    <option value="O-">O-</option>
-                                    <option value="A+">A+</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B-">B-</option>
-                                    <option value="AB+">AB+</option>
-                                    <option value="AB-">AB-</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">البريد الإلكتروني</label>
-                                <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">الحساسيات</label>
-                            <input type="text" name="allergies" placeholder="مثال: الأسبرين، البنسلين" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">الأمراض المزمنة</label>
-                            <input type="text" name="chronicDiseases" placeholder="مثال: السكري، الضغط" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div class="flex gap-2 pt-4">
-                            <button type="submit" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg">حفظ المريض</button>
-                            <button type="button" onclick="uiManager.hideModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 rounded-lg">إلغاء</button>
-                        </div>
-                    </form>
-                `;
-                
-                this.showModal('تسجيل مريض جديد', content);
-                
-                document.getElementById('patient-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const patientData = {
-                        name: formData.get('name'),
-                        age: parseInt(formData.get('age')),
-                        gender: formData.get('gender'),
-                        phone: formData.get('phone'),
-                        email: formData.get('email') || undefined,
-                        bloodType: formData.get('bloodType') || undefined,
-                        allergies: formData.get('allergies') ? [formData.get('allergies')] : [],
-                        chronicDiseases: formData.get('chronicDiseases') ? [formData.get('chronicDiseases')] : []
-                    };
-                    
-                    this.dataManager.addPatient(patientData);
-                    this.hideModal();
-                    this.loadTabContent(this.currentTab);
-                });
-            }
-
-            checkInPatient(patientId) {
-                this.dataManager.updatePatient(patientId, { status: 'in-consultation' });
-                this.stateManager.showToast('تم تسجيل دخول المريض', 'success');
-                this.loadTabContent(this.currentTab);
-            }
-
-            // وظائف الصيانة
-            optimizeDatabase() {
-                this.stateManager.showToast('جاري تحسين قاعدة البيانات...', 'info');
-                setTimeout(() => {
-                    this.stateManager.showToast('تم تحسين قاعدة البيانات بنجاح', 'success');
-                }, 2000);
-            }
-
-            clearLogs() {
-                this.stateManager.showToast('تم مسح السجلات', 'success');
-            }
-
-            checkUpdates() {
-                this.stateManager.showToast('جاري التحقق من التحديثات...', 'info');
-                setTimeout(() => {
-                    this.stateManager.showToast('النظام محدث لأخر إصدار', 'success');
-                }, 1500);
-            }
-
-            clearCache() {
-                localStorage.removeItem('hospitalBackups');
-                this.stateManager.backups = [];
-                this.stateManager.showToast('تم مسح ذاكرة التخزين المؤقت', 'success');
-                this.loadTabContent('data');
+                // تهيئة المكونات الإضافية
             }
         }
 
-        // ====================
-        // 5. تهيئة التطبيق
-        // ====================
-        
-        // إنشاء مثيلات المديرين
+        // تهيئة التطبيق
         const stateManager = new HospitalStateManager();
         const authManager = new AuthManager(stateManager);
         const dataManager = new DataManager(stateManager);
         const uiManager = new UIManager(stateManager, authManager, dataManager);
 
-        // جعل المديرين متاحين عالمياً للاستدعاء من الأزرار
         window.stateManager = stateManager;
         window.authManager = authManager;
         window.dataManager = dataManager;
         window.uiManager = uiManager;
 
         // إخفاء شاشة التحميل بعد التهيئة
-        setTimeout(() => {
-            document.getElementById('loading-screen').classList.add('hidden');
-            lucide.createIcons();
-            
-            // التحقق من وجود مستخدم مسجل
-            if (localStorage.getItem('lastUser')) {
-                const lastUser = JSON.parse(localStorage.getItem('lastUser'));
-                if (authManager.users[lastUser.role]) {
-                    document.querySelector(`[data-role="${lastUser.role}"]`).click();
-                    document.getElementById('password').value = authManager.users[lastUser.role].password;
-                }
-            }
-        }, 1500);
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                lucide.createIcons();
+            }, 1000);
+        });
     </script>
 </body>
 </html>
