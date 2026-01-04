@@ -281,6 +281,170 @@
             border-radius: 10px;
             margin-bottom: 15px;
         }
+        
+        /* أنماط جديدة للمدير - الجداول المنسدلة */
+        .admin-data-table {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .admin-table-header {
+            background: linear-gradient(135deg, var(--primary-color), #1f5a5a);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .stock-table-row {
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px 0;
+            transition: all 0.2s;
+        }
+        
+        .stock-table-row:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .stock-value-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        /* أنماط جديدة للطبيب - ملف المريض */
+        .patient-file-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .patient-info-card {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-blue);
+        }
+        
+        .test-result-badge {
+            background: #0d6efd;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            cursor: pointer;
+        }
+        
+        .test-result-badge:hover {
+            background: #0a58ca;
+        }
+        
+        .medicine-search-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            width: 100%;
+            display: none;
+        }
+        
+        .medicine-search-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+            transition: all 0.2s;
+        }
+        
+        .medicine-search-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .medicine-search-item.highlight {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+        }
+        
+        .dosage-select {
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .concentration-input {
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+        
+        .frequency-select {
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .quick-action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .patient-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        
+        .status-waiting { background-color: #ffc107; }
+        .status-in-progress { background-color: #0d6efd; }
+        .status-completed { background-color: #28a745; }
+        
+        /* أنماط للأزرار السريعة */
+        .quick-action-btn {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-prescription {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-nursing {
+            background: linear-gradient(135deg, #6f42c1 0%, #c154c1 100%);
+            color: white;
+        }
+        
+        .btn-lab {
+            background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+            color: white;
+        }
+        
+        .btn-pharmacy {
+            background: linear-gradient(135deg, #ffc107 0%, #ffd166 100%);
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -405,6 +569,18 @@
                                     <div class="col-4"><input type="number" id="pAge" class="form-control" placeholder="العمر"></div>
                                     <div class="col-8"><input type="text" id="pAddress" class="form-control" placeholder="السكن / العنوان"></div>
                                 </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <select id="pGender" class="form-select">
+                                            <option value="">الجنس</option>
+                                            <option value="ذكر">ذكر</option>
+                                            <option value="أنثى">أنثى</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" id="pPhone" class="form-control" placeholder="رقم الهاتف">
+                                    </div>
+                                </div>
                                 <div class="bg-light p-2 rounded mb-3">
                                     <label class="small fw-bold">رسوم تذكرة الطبيب:</label>
                                     <input type="number" id="pTicket" class="form-control" value="2000">
@@ -431,38 +607,83 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <div id="doctorWorkArea" class="card p-4 hidden-section border-top border-success border-5">
-                                <h4 id="currentPatientName" class="text-success fw-bold"></h4>
-                                <hr>
-                                
-                                <!-- قسم الشكوى والتشخيص -->
-                                <label class="fw-bold">شكوى المريض:</label>
-                                <textarea id="complaint" class="form-control mb-3" rows="2"></textarea>
-                                
-                                <label class="fw-bold">التشخيص:</label>
-                                <textarea id="diagnosis" class="form-control mb-3" rows="2" placeholder="تشخيص الحالة..."></textarea>
-                                
-                                <!-- قسم طلب الفحوصات -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="fw-bold small">طلب فحوصات:</label>
-                                        <select id="labSelect" class="form-select mb-2" multiple style="height: 100px;"></select>
-                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="orderLab()">🧪 إرسال للمعمل</button>
+                            <!-- ملف المريض الكامل -->
+                            <div id="patientFileSection" class="hidden-section">
+                                <div class="patient-file-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 id="currentPatientFullName"></h4>
+                                        <button class="btn btn-light btn-sm" onclick="closePatientFile()">✕ إغلاق الملف</button>
                                     </div>
-                                    
-                                    <!-- قسم كتابة الروشتة الطبية -->
-                                    <div class="col-md-6">
-                                        <label class="fw-bold small">الروشتة الطبية:</label>
-                                        <button class="btn btn-sm btn-primary w-100 mb-2" onclick="addMedicineItem()">➕ إضافة دواء</button>
-                                        <div id="prescriptionItems" class="mb-2">
-                                            <!-- سيتم إضافة عناصر الأدوية هنا ديناميكياً -->
+                                    <div class="row mt-2">
+                                        <div class="col-md-3">
+                                            <small><strong>العمر:</strong> <span id="filePatientAge"></span></small>
                                         </div>
-                                        <button class="btn btn-sm btn-success w-100 mb-2" onclick="generatePrescription()">📝 إنشاء الروشتة</button>
-                                        <button class="btn btn-sm btn-warning w-100" onclick="orderPharmacy()">💊 إرسال للصيدلية</button>
+                                        <div class="col-md-3">
+                                            <small><strong>الجنس:</strong> <span id="filePatientGender"></span></small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <small><strong>التسجيل:</strong> <span id="filePatientRegDate"></span></small>
+                                        </div>
                                     </div>
                                 </div>
                                 
-                                <!-- عرض نتائج الفحوصات إذا كانت موجودة -->
+                                <!-- معلومات المريض الأساسية -->
+                                <div class="patient-info-card">
+                                    <h6>📋 المعلومات الأساسية</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>العنوان:</strong> <span id="filePatientAddress"></span></p>
+                                            <p><strong>الهاتف:</strong> <span id="filePatientPhone"></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>رقم الملف:</strong> <span id="filePatientId"></span></p>
+                                            <p><strong>حالة الملف:</strong> <span id="filePatientStatus"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- قسم الشكوى والتشخيص -->
+                                <div class="card p-3 mb-3">
+                                    <label class="fw-bold">شكوى المريض:</label>
+                                    <textarea id="complaint" class="form-control mb-3" rows="2"></textarea>
+                                    
+                                    <label class="fw-bold">التشخيص:</label>
+                                    <textarea id="diagnosis" class="form-control mb-3" rows="2" placeholder="تشخيص الحالة..."></textarea>
+                                </div>
+                                
+                                <!-- قسم طلب الفحوصات مع النتائج -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="card p-3 h-100">
+                                            <label class="fw-bold small">طلب فحوصات:</label>
+                                            <select id="labSelect" class="form-select mb-2" multiple style="height: 100px;"></select>
+                                            <button class="btn btn-sm btn-lab w-100" onclick="orderLab()">🧪 إرسال للمعمل</button>
+                                            
+                                            <!-- عرض نتائج الفحوصات -->
+                                            <div id="existingLabResults" class="mt-3 hidden-section">
+                                                <h6>📊 نتائج سابقة:</h6>
+                                                <div id="previousLabResults"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- قسم كتابة الروشتة الطبية المحسنة -->
+                                    <div class="col-md-6">
+                                        <div class="card p-3 h-100">
+                                            <label class="fw-bold small">الروشتة الطبية:</label>
+                                            <button class="btn btn-sm btn-primary w-100 mb-2" onclick="addMedicineItem()">➕ إضافة دواء</button>
+                                            <div id="prescriptionItems" class="mb-2">
+                                                <!-- سيتم إضافة عناصر الأدوية هنا ديناميكياً -->
+                                            </div>
+                                            <div class="quick-action-buttons">
+                                                <button class="btn btn-sm btn-prescription w-50" onclick="generatePrescription()">📝 إنشاء الروشتة</button>
+                                                <button class="btn btn-sm btn-pharmacy w-50" onclick="orderPharmacy()">💊 إرسال للصيدلية</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- عرض نتائج الفحوصات الحالية إذا كانت موجودة -->
                                 <div id="labResultsPanel" class="lab-results-panel hidden-section">
                                     <h6>📋 نتائج الفحوصات:</h6>
                                     <div id="labResultsDisplay"></div>
@@ -471,9 +692,22 @@
                                 <div class="mb-3 p-2 bg-light rounded">
                                     <label class="fw-bold small">إجراءات تمريضية (حقن/دريبات):</label>
                                     <input type="text" id="nurseNotes" class="form-control mb-2" placeholder="اكتب التعليمات...">
-                                    <button class="btn btn-sm btn-outline-purple w-100" onclick="orderNurse()">💉 إرسال للتمريض</button>
+                                    <button class="btn btn-sm btn-nursing w-100" onclick="orderNurse()">💉 إرسال للتمريض</button>
                                 </div>
-                                <button class="btn btn-success w-100 fw-bold" onclick="completeVisit()">🏁 إنهاء الزيارة بالكامل</button>
+                                
+                                <!-- أزرار الإجراءات -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-secondary me-md-2" onclick="savePatientFile()">💾 حفظ الملف</button>
+                                    <button class="btn btn-success" onclick="completeVisit()">🏁 إنهاء الزيارة</button>
+                                </div>
+                            </div>
+                            
+                            <!-- منطقة عمل الطبيب الرئيسية -->
+                            <div id="doctorWorkArea" class="hidden-section">
+                                <div class="card p-5 text-center">
+                                    <h4 class="text-muted">👨‍⚕️ اختر مريضاً من القائمة لبدء الكشف</h4>
+                                    <p class="text-muted">اضغط على اسم المريض لفتح ملفه الطبي الكامل</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -528,6 +762,8 @@
                     <!-- تبويبات قسم المدير -->
                     <div class="admin-tabs mb-4">
                         <button class="admin-tab-btn active" onclick="switchAdminTab('dashboard')">📊 لوحة التحكم</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab('lab-tests')">🧪 إدارة الفحوصات</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab('medicines')">💊 إدارة الأدوية</button>
                         <button class="admin-tab-btn" onclick="switchAdminTab('staff')">👥 إدارة الموظفين</button>
                         <button class="admin-tab-btn" onclick="switchAdminTab('reset')">🔄 تصفير النظام</button>
                     </div>
@@ -568,6 +804,87 @@
                                     <div id="reportArea" class="bg-light p-3 rounded">اختر نوع التقرير للعرض...</div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- إدارة الفحوصات -->
+                    <div id="admin-lab-tests" class="admin-tab-content hidden-section">
+                        <div class="admin-data-table">
+                            <div class="admin-table-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">🧪 قائمة الفحوصات المتوفرة</h5>
+                                <span class="badge bg-light text-dark">عدد الفحوصات: <span id="labTestsCount">0</span></span>
+                            </div>
+                            <div id="labTestsTable">
+                                <!-- سيتم تعبئة الجدول ديناميكياً -->
+                            </div>
+                        </div>
+                        
+                        <div class="card p-4">
+                            <h5 class="fw-bold mb-3">➕ إضافة فحص جديد</h5>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="newLabTestName" class="form-control" placeholder="اسم الفحص">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" id="newLabTestPrice" class="form-control" placeholder="السعر (ج.س)">
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="newLabTestCategory" class="form-select">
+                                        <option value="دم">فحوصات الدم</option>
+                                        <option value="بول">فحوصات البول</option>
+                                        <option value="أشعة">الأشعة</option>
+                                        <option value="هرمونات">الهرمونات</option>
+                                        <option value="أخرى">أخرى</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="addNewLabTest()">➕ إضافة فحص جديد</button>
+                        </div>
+                    </div>
+                    
+                    <!-- إدارة الأدوية -->
+                    <div id="admin-medicines" class="admin-tab-content hidden-section">
+                        <div class="admin-data-table">
+                            <div class="admin-table-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">💊 قائمة الأدوية في المخزون</h5>
+                                <span class="badge bg-light text-dark">القيمة الإجمالية: <span id="totalStockValue">0</span> ج.س</span>
+                            </div>
+                            <div id="medicinesTable">
+                                <!-- سيتم تعبئة الجدول ديناميكياً -->
+                            </div>
+                        </div>
+                        
+                        <div class="card p-4">
+                            <h5 class="fw-bold mb-3">➕ إضافة دواء جديد للمخزون</h5>
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-4">
+                                    <input type="text" id="newMedicineName" class="form-control" placeholder="اسم الدواء">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" id="newMedicinePrice" class="form-control" placeholder="سعر الوحدة">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" id="newMedicineQty" class="form-control" placeholder="الكمية">
+                                </div>
+                                <div class="col-md-4">
+                                    <select id="newMedicineType" class="form-select">
+                                        <option value="حبوب">حبوب</option>
+                                        <option value="شراب">شراب</option>
+                                        <option value="حقن">حقن</option>
+                                        <option value="مرهم">مرهم</option>
+                                        <option value="قطرات">قطرات</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="newMedicineCompany" class="form-control" placeholder="الشركة المصنعة">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" id="newMedicineExpiry" class="form-control" placeholder="تاريخ الانتهاء">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="addNewMedicine()">➕ إضافة دواء جديد</button>
                         </div>
                     </div>
                     
@@ -730,6 +1047,29 @@
         </div>
     </div>
 
+    <!-- Modal نتائج الفحوصات -->
+    <div id="labResultsModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">📊 نتائج الفحوصات</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="labResultsContent">
+                        <!-- سيتم تعبئة نتائج الفحوصات هنا -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- منطقة البحث عن الأدوية -->
+    <div id="medicineSearchDropdown" class="medicine-search-dropdown"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -766,20 +1106,24 @@
         let backups = JSON.parse(localStorage.getItem('shifa_backups')) || [];
         let securityLog = JSON.parse(localStorage.getItem('shifa_security_log')) || [];
         
-        // بيانات جديدة
+        // بيانات جديدة محسنة
         let labTests = JSON.parse(localStorage.getItem('shifa_labTests')) || [
-            {name: 'CBC', price: 5000},
-            {name: 'Malaria', price: 2000},
-            {name: 'Glucose', price: 1000},
-            {name: 'Cholesterol', price: 3000}
+            {id: 1, name: 'CBC - صورة دم كاملة', price: 5000, category: 'دم'},
+            {id: 2, name: 'Malaria - ملاريا', price: 2000, category: 'دم'},
+            {id: 3, name: 'Glucose - سكر', price: 1000, category: 'دم'},
+            {id: 4, name: 'Cholesterol - كوليسترول', price: 3000, category: 'دم'},
+            {id: 5, name: 'Urine Analysis - تحليل بول', price: 1500, category: 'بول'},
+            {id: 6, name: 'Liver Function - وظائف كبد', price: 4000, category: 'دم'}
         ];
         
         let inventory = JSON.parse(localStorage.getItem('shifa_inventory')) || [
-            {name: 'Panadol', price: 1000, qty: 100},
-            {name: 'Antibiotic', price: 2500, qty: 50},
-            {name: 'Vitamin C', price: 1500, qty: 75}
+            {id: 1, name: 'Panadol Extra', price: 1000, qty: 100, type: 'حبوب', company: 'GSK', expiry: '2025-12-31'},
+            {id: 2, name: 'Antibiotic 500mg', price: 2500, qty: 50, type: 'حبوب', company: 'Pfizer', expiry: '2025-10-15'},
+            {id: 3, name: 'Vitamin C 1000mg', price: 1500, qty: 75, type: 'حبوب', company: 'Bayer', expiry: '2025-11-30'},
+            {id: 4, name: 'Amoxicillin 250mg', price: 1800, qty: 60, type: 'شراب', company: 'Sanofi', expiry: '2025-09-20'},
+            {id: 5, name: 'Paracetamol 500mg', price: 800, qty: 200, type: 'حبوب', company: 'Janssen', expiry: '2025-08-15'}
         ];
-        
+
         // المبيعات اليومية
         let dailySales = JSON.parse(localStorage.getItem('shifa_daily_sales')) || {
             total: 0,
@@ -791,6 +1135,7 @@
         let lastActivityTime = Date.now();
         let activePatient = null;
         let prescriptionItems = [];
+        let currentSearchResults = [];
         
         // إعدادات النظام
         let systemSettings = JSON.parse(localStorage.getItem('shifa_settings')) || {
@@ -800,363 +1145,311 @@
         };
 
         // ============================================
-        // دوال إدارة الموظفين
+        // دوال النظام الأساسية
         // ============================================
 
-        function initStaffMembers() {
-            // إذا لم توجد بيانات الموظفين، قم بتهيئتها من USERS
-            if (staffMembers.length === 0) {
-                staffMembers = Object.keys(USERS).map(username => ({
-                    id: Date.now() + Math.random(),
-                    username: username,
-                    password: USERS[username].password,
-                    name: USERS[username].name,
-                    role: USERS[username].role,
-                    status: 'active',
-                    created: new Date().toISOString(),
-                    lastLogin: null
-                }));
-                localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            }
+        function registerPatient() {
+            const name = document.getElementById('pName').value;
+            const price = parseFloat(document.getElementById('pTicket').value);
+            if(!name) return alert("الاسم مطلوب!");
+            
+            const p = {
+                id: Date.now(),
+                name,
+                age: document.getElementById('pAge').value,
+                gender: document.getElementById('pGender').value,
+                phone: document.getElementById('pPhone').value,
+                address: document.getElementById('pAddress').value,
+                status: 'waiting_doctor',
+                date: new Date().toISOString(),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                ticketPrice: price,
+                tests: [], 
+                meds: [], 
+                complaint: '',
+                diagnosis: '',
+                labResults: [],
+                prescription: null,
+                pharmacyDispensed: null,
+                nursingInstructions: '',
+                nursingReport: null
+            };
+            patients.push(p);
+            saveData();
+            alert("✅ تم التسجيل والتحويل للطبيب");
+            loadReception();
+            
+            // مسح الحقول
+            document.getElementById('pName').value = '';
+            document.getElementById('pAge').value = '';
+            document.getElementById('pPhone').value = '';
+            document.getElementById('pAddress').value = '';
+            document.getElementById('pGender').value = '';
         }
 
-        function loadStaffList() {
-            const container = document.getElementById('staffList');
-            if (!container) return;
-            
-            container.innerHTML = staffMembers.map(staff => `
-                <div class="col-md-6">
-                    <div class="card p-3 staff-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h6 class="mb-1">${staff.name}</h6>
-                                <small class="text-muted">@${staff.username}</small>
-                                <div class="mt-2">
-                                    <span class="staff-role-badge staff-${staff.role}">
-                                        ${getRoleName(staff.role)}
-                                    </span>
-                                    <span class="badge ${staff.status === 'active' ? 'bg-success' : 'bg-secondary'}">
-                                        ${staff.status === 'active' ? 'نشط' : 'غير نشط'}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-warning" onclick="editStaff('${staff.id}')">✏️</button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteStaff('${staff.id}')">🗑️</button>
-                            </div>
+        function loadReception() {
+            const list = document.getElementById('receptionList');
+            list.innerHTML = patients.slice().reverse().map(p => `
+                <div class="card p-2 mb-2 bg-medical small">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <b>${p.name}</b> (${p.age || '--'}) 
+                            <br><small>${p.status === 'completed' ? '✅ مكتمل' : 
+                                       p.status === 'waiting_doctor' ? '🟡 عند الطبيب' :
+                                       p.status === 'waiting_lab' ? '🔵 في المعمل' :
+                                       p.status === 'waiting_pharmacy' ? '🟠 في الصيدلية' : '🟣 في التمريض'}</small>
                         </div>
-                        <div class="mt-2 small text-muted">
-                            <div>تاريخ الإنشاء: ${new Date(staff.created).toLocaleDateString('ar-EG')}</div>
-                            ${staff.lastLogin ? `<div>آخر دخول: ${new Date(staff.lastLogin).toLocaleDateString('ar-EG')}</div>` : ''}
+                        <div class="text-end">
+                            <small class="text-muted">${p.time}</small><br>
+                            <small>${p.ticketPrice || 0} ج.س</small>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function getRoleName(role) {
-            const roles = {
-                'admin': '👑 مدير',
-                'doctor': '👨‍⚕️ طبيب',
-                'reception': '📋 استقبال',
-                'pharmacy': '💊 صيدلي',
-                'lab': '🧪 معمل',
-                'nursing': '💉 تمريض'
-            };
-            return roles[role] || role;
-        }
-
-        function addNewStaff() {
-            const username = document.getElementById('newStaffUsername').value.trim();
-            const password = document.getElementById('newStaffPassword').value;
-            const name = document.getElementById('newStaffName').value.trim();
-            const role = document.getElementById('newStaffRole').value;
-            
-            if (!username || !password || !name || !role) {
-                alert('⚠️ يرجى ملء جميع الحقول!');
-                return;
-            }
-            
-            // التحقق من عدم تكرار اسم المستخدم
-            if (staffMembers.some(staff => staff.username === username)) {
-                alert('⚠️ اسم المستخدم موجود بالفعل!');
-                return;
-            }
-            
-            const newStaff = {
-                id: Date.now() + Math.random(),
-                username: username,
-                password: password,
-                name: name,
-                role: role,
-                status: 'active',
-                created: new Date().toISOString(),
-                lastLogin: null
-            };
-            
-            staffMembers.push(newStaff);
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            
-            // تحديث USERS للدخول الفوري
-            USERS[username] = {
-                password: password,
-                role: role,
-                name: name
-            };
-            
-            // مسح الحقول
-            document.getElementById('newStaffUsername').value = '';
-            document.getElementById('newStaffPassword').value = '';
-            document.getElementById('newStaffName').value = '';
-            document.getElementById('newStaffRole').value = '';
-            
-            loadStaffList();
-            alert('✅ تم إضافة الموظف بنجاح!');
-        }
-
-        function editStaff(staffId) {
-            const staff = staffMembers.find(s => s.id === staffId);
-            if (!staff) return;
-            
-            document.getElementById('editStaffId').value = staffId;
-            document.getElementById('editStaffUsername').value = staff.username;
-            document.getElementById('editStaffName').value = staff.name;
-            document.getElementById('editStaffRole').value = staff.role;
-            document.getElementById('editStaffPassword').value = '';
-            
-            const modal = new bootstrap.Modal(document.getElementById('editStaffModal'));
-            modal.show();
-        }
-
-        function saveStaffChanges() {
-            const staffId = document.getElementById('editStaffId').value;
-            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
-            
-            if (staffIndex === -1) return;
-            
-            const username = document.getElementById('editStaffUsername').value.trim();
-            const name = document.getElementById('editStaffName').value.trim();
-            const role = document.getElementById('editStaffRole').value;
-            const password = document.getElementById('editStaffPassword').value;
-            
-            if (!username || !name || !role) {
-                alert('⚠️ يرجى ملء جميع الحقول المطلوبة!');
-                return;
-            }
-            
-            // التحقق من عدم تكرار اسم المستخدم (باستثناء المستخدم الحالي)
-            const duplicate = staffMembers.find((s, index) => 
-                s.username === username && index !== staffIndex
-            );
-            if (duplicate) {
-                alert('⚠️ اسم المستخدم موجود بالفعل!');
-                return;
-            }
-            
-            // حفظ التغييرات
-            staffMembers[staffIndex].username = username;
-            staffMembers[staffIndex].name = name;
-            staffMembers[staffIndex].role = role;
-            
-            if (password) {
-                staffMembers[staffIndex].password = password;
-            }
-            
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            
-            // تحديث USERS
-            USERS[username] = {
-                password: password || staffMembers[staffIndex].password,
-                role: role,
-                name: name
-            };
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editStaffModal'));
-            modal.hide();
-            
-            loadStaffList();
-            alert('✅ تم تحديث بيانات الموظف بنجاح!');
-        }
-
-        function confirmDeleteStaff(staffId) {
-            const staff = staffMembers.find(s => s.id === staffId);
-            if (!staff) return;
-            
-            // منع حذف المدير الرئيسي
-            if (staff.username === 'admin') {
-                alert('⚠️ لا يمكن حذف حساب المدير الرئيسي!');
-                return;
-            }
-            
-            // منع حذف المستخدم الحالي
-            if (currentUser && staff.username === currentUser.u) {
-                alert('⚠️ لا يمكن حذف حسابك أثناء تسجيل الدخول!');
-                return;
-            }
-            
-            document.getElementById('deleteStaffId').value = staffId;
-            const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-            modal.show();
-        }
-
-        function deleteStaffConfirmed() {
-            const staffId = document.getElementById('deleteStaffId').value;
-            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
-            
-            if (staffIndex === -1) return;
-            
-            const username = staffMembers[staffIndex].username;
-            
-            // حذف من staffMembers
-            staffMembers.splice(staffIndex, 1);
-            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
-            
-            // حذف من USERS
-            delete USERS[username];
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
-            modal.hide();
-            
-            loadStaffList();
-            alert('✅ تم حذف الموظف بنجاح!');
-        }
-
-        // ============================================
-        // دوال تصفير النظام
-        // ============================================
-
-        function resetDailySystem() {
-            if (!confirm('⚠️ هل أنت متأكد من تصفير النظام اليومي؟\n\nسيتم حذف جميع البيانات اليومية التالية:\n• قائمة المرضى اليومية\n• طلبات المعمل المعلقة\n• طلبات الصيدلية المعلقة\n• مهام التمريض المعلقة\n• مبيعات الصيدلية اليومية\n\nهذا الإجراء لا يمكن التراجع عنه!')) {
-                return;
-            }
-            
-            // حفظ نسخة احتياطية تلقائية
-            createAutoBackup();
-            
-            // 1. تصفير المرضى - إبقاء فقط المرضى المكتملين في السجل التاريخي
-            const completedPatients = patients.filter(p => p.status === 'completed');
-            const today = new Date().toISOString().split('T')[0];
-            
-            // نبدأ يوم جديد بمرضى جدد فقط
-            patients = completedPatients; // نحتفظ بالمرضى المكتملين كسجل تاريخي
-            
-            // 2. تصفير طلبات المعمل
-            labRequests = [];
-            localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
-            
-            // 3. تصفير طلبات الصيدلية
-            pharmOrders = [];
-            localStorage.setItem('shifa_rx', JSON.stringify(pharmOrders));
-            
-            // 4. تصفير مهام التمريض
-            nursingTasks = [];
-            localStorage.setItem('shifa_nursing_tasks', JSON.stringify(nursingTasks));
-            
-            // 5. تصفير المبيعات اليومية
-            dailySales = {
-                total: 0,
-                prescriptions: []
-            };
-            localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
-            
-            // 6. تحديث بيانات المرضى
+        function saveData() {
             localStorage.setItem('shifa_pats', JSON.stringify(patients));
-            
-            // 7. تحديث إعدادات النظام
-            systemSettings.lastReset = new Date().toISOString();
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+            localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
+            localStorage.setItem('shifa_rx', JSON.stringify(pharmOrders));
+            localStorage.setItem('shifa_nursing_tasks', JSON.stringify(nursingTasks));
+            localStorage.setItem('shifa_fin', JSON.stringify(financials));
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
             localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
-            
-            // 8. تحديث العدادات
             updateBadges();
-            
-            // 9. تحديث العرض في الأقسام
-            if (currentUser) {
-                switchSection(currentUser.r);
-            }
-            
-            // 10. تحديث وقت آخر تصفير
-            document.getElementById('lastResetTime').textContent = new Date().toLocaleString('ar-EG');
-            
-            alert('✅ تم تصفير النظام اليومي بنجاح!\nتم الاحتفاظ بالسجلات التاريخية للمرضى المكتملين.');
         }
 
-        function createSystemBackup() {
-            const backupData = {
-                timestamp: new Date().toISOString(),
-                patients: patients,
-                labRequests: labRequests,
-                pharmOrders: pharmOrders,
-                nursingTasks: nursingTasks,
-                dailySales: dailySales,
-                staffMembers: staffMembers,
-                labTests: labTests,
-                inventory: inventory
+        function updateBadges() {
+            const b = {
+                doctor: patients.filter(p => p.status === 'waiting_doctor').length,
+                lab: patients.filter(p => p.status === 'waiting_lab').length,
+                pharmacy: patients.filter(p => p.status === 'waiting_pharmacy').length,
+                nurse: patients.filter(p => p.status === 'waiting_nurse').length
             };
-            
-            backups.unshift(backupData);
-            if (backups.length > 10) backups = backups.slice(0, 10); // الاحتفاظ بـ 10 نسخ فقط
-            
-            localStorage.setItem('shifa_backups', JSON.stringify(backups));
-            systemSettings.backupCount = backups.length;
-            localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
-            
-            alert(`✅ تم إنشاء نسخة احتياطية بنجاح!\nرقم النسخة: ${backups.length}\nالوقت: ${new Date().toLocaleString('ar-EG')}`);
-        }
-
-        function createAutoBackup() {
-            const backupData = {
-                timestamp: new Date().toISOString(),
-                patients: patients,
-                labRequests: labRequests,
-                pharmOrders: pharmOrders,
-                nursingTasks: nursingTasks,
-                dailySales: dailySales,
-                type: 'auto_reset_backup'
-            };
-            
-            backups.unshift(backupData);
-            if (backups.length > 10) backups = backups.slice(0, 10);
-            
-            localStorage.setItem('shifa_backups', JSON.stringify(backups));
-        }
-
-        // ============================================
-        // دوال واجهة المدير
-        // ============================================
-
-        function switchAdminTab(tabName) {
-            // إخفاء جميع المحتويات
-            document.querySelectorAll('.admin-tab-content').forEach(el => {
-                el.classList.add('hidden-section');
-            });
-            
-            // إزالة النشط من جميع الأزرار
-            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // إظهار المحتوى المطلوب
-            document.getElementById(`admin-${tabName}`).classList.remove('hidden-section');
-            
-            // تفعيل الزر المطلوب
-            event.target.classList.add('active');
-            
-            // إذا كانت تبويب الموظفين، تحميل القائمة
-            if (tabName === 'staff') {
-                loadStaffList();
-            }
-            
-            // إذا كانت تبويب التصفير، تحميل آخر وقت تصفير
-            if (tabName === 'reset') {
-                if (systemSettings.lastReset) {
-                    document.getElementById('lastResetTime').textContent = 
-                        new Date(systemSettings.lastReset).toLocaleString('ar-EG');
+            for(let k in b) {
+                const el = document.getElementById(`${k}Badge`);
+                if(el) { 
+                    el.textContent = b[k]; 
+                    b[k]>0 ? el.classList.remove('hidden-section') : el.classList.add('hidden-section'); 
                 }
             }
         }
 
+        function playNotify() { 
+            try { 
+                document.getElementById('notificationSound').play().catch(()=>{}); 
+            } catch(e) {} 
+        }
+
         // ============================================
-        // دوال الروشتة الطبية
+        // دوال قسم الطبيب
+        // ============================================
+
+        function loadDoctorLists() {
+            updateLabTestsSelect();
+        }
+
+        function loadDoctor() {
+            const q = document.getElementById('doctorQueue');
+            const waiting = patients.filter(p => p.status === 'waiting_doctor');
+            q.innerHTML = waiting.map(p => {
+                let badges = '';
+                
+                if (p.labResults && p.labResults.length > 0) {
+                    badges += '<span class="test-result-badge" style="margin-right: 5px;">نتائج</span>';
+                }
+                
+                if (p.prescription) {
+                    badges += '<span class="badge bg-warning" style="margin-right: 5px;">روشتة</span>';
+                }
+                
+                return `
+                    <button class="patient-btn d-flex justify-content-between align-items-center" onclick="selectPatient(${p.id})">
+                        <div class="text-start">
+                            <strong>${p.name}</strong>
+                            <div class="small text-muted">
+                                ${p.age || '--'} سنة | ${p.gender || '--'} 
+                                <span class="patient-status-indicator status-${p.status.replace('waiting_', '')}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            ${badges}
+                            <span class="badge bg-info">${new Date(p.date).toLocaleDateString('ar-EG')}</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectPatient(id) {
+            activePatient = patients.find(p => p.id === id);
+            if (!activePatient) return;
+            
+            // إظهار ملف المريض وإخفاء منطقة العمل الرئيسية
+            document.getElementById('patientFileSection').classList.remove('hidden-section');
+            document.getElementById('doctorWorkArea').classList.add('hidden-section');
+            
+            // تعبئة بيانات المريض
+            document.getElementById('currentPatientFullName').textContent = activePatient.name;
+            document.getElementById('filePatientAge').textContent = activePatient.age || '--';
+            document.getElementById('filePatientGender').textContent = activePatient.gender || '--';
+            document.getElementById('filePatientAddress').textContent = activePatient.address || '--';
+            document.getElementById('filePatientPhone').textContent = activePatient.phone || '--';
+            document.getElementById('filePatientId').textContent = activePatient.id;
+            document.getElementById('filePatientRegDate').textContent = new Date(activePatient.date).toLocaleDateString('ar-EG');
+            
+            // تحديث حالة الملف
+            const statusText = getPatientStatusText(activePatient.status);
+            document.getElementById('filePatientStatus').textContent = statusText;
+            
+            // تعبئة البيانات الحالية
+            document.getElementById('complaint').value = activePatient.complaint || '';
+            document.getElementById('diagnosis').value = activePatient.diagnosis || '';
+            document.getElementById('nurseNotes').value = activePatient.nursingInstructions || '';
+            
+            // تحميل نتائج الفحوصات
+            loadPatientLabResults();
+            
+            // تحميل الروشتة السابقة إذا وجدت
+            loadPreviousPrescription();
+            
+            // تحميل الفحوصات السابقة
+            loadPreviousTests();
+            
+            // تحديث قائمة الأدوية للبحث
+            initializeMedicineSearch();
+        }
+
+        function getPatientStatusText(status) {
+            const statusMap = {
+                'waiting_doctor': '🟡 في انتظار الطبيب',
+                'waiting_lab': '🔵 في المعمل',
+                'waiting_pharmacy': '🟠 في الصيدلية',
+                'waiting_nurse': '🟣 في التمريض',
+                'completed': '✅ مكتمل'
+            };
+            return statusMap[status] || status;
+        }
+
+        function closePatientFile() {
+            document.getElementById('patientFileSection').classList.add('hidden-section');
+            document.getElementById('doctorWorkArea').classList.remove('hidden-section');
+            activePatient = null;
+            prescriptionItems = [];
+        }
+
+        function savePatientFile() {
+            if (!activePatient) return;
+            
+            // حفظ البيانات الحالية
+            activePatient.complaint = document.getElementById('complaint').value;
+            activePatient.diagnosis = document.getElementById('diagnosis').value;
+            activePatient.nursingInstructions = document.getElementById('nurseNotes').value;
+            
+            // حفظ الأدوية إذا كانت موجودة
+            if (prescriptionItems.length > 0) {
+                activePatient.meds = prescriptionItems;
+            }
+            
+            saveData();
+            alert('✅ تم حفظ ملف المريض بنجاح!');
+        }
+
+        function orderLab() {
+            if (!activePatient) {
+                alert('⚠️ يرجى اختيار مريض أولاً');
+                return;
+            }
+            
+            const selectedOptions = Array.from(document.getElementById('labSelect').selectedOptions);
+            if (selectedOptions.length === 0) {
+                alert('⚠️ يرجى اختيار فحوصات');
+                return;
+            }
+            
+            activePatient.tests = selectedOptions.map(option => {
+                const testId = parseInt(option.value);
+                const test = labTests.find(t => t.id === testId);
+                return {
+                    id: testId,
+                    name: test.name,
+                    price: test.price,
+                    result: ''
+                };
+            });
+            
+            activePatient.status = 'waiting_lab';
+            activePatient.complaint = document.getElementById('complaint').value;
+            activePatient.diagnosis = document.getElementById('diagnosis').value;
+            saveData();
+            
+            alert(`✅ تم إرسال ${selectedOptions.length} فحص للمعمل`);
+            closePatientFile();
+            loadDoctor();
+        }
+
+        function orderPharmacy() {
+            if (!activePatient) {
+                alert('⚠️ يرجى اختيار مريض أولاً');
+                return;
+            }
+            
+            if (prescriptionItems.length === 0) {
+                alert('⚠️ يرجى إنشاء الروشتة أولاً');
+                return;
+            }
+            
+            activePatient.status = 'waiting_pharmacy';
+            saveData();
+            
+            alert(`✅ تم إرسال الروشتة للصيدلية`);
+            closePatientFile();
+            loadDoctor();
+        }
+
+        function orderNurse() {
+            if (!activePatient) {
+                alert('⚠️ يرجى اختيار مريض أولاً');
+                return;
+            }
+            
+            const notes = document.getElementById('nurseNotes').value;
+            if (!notes.trim()) {
+                alert('⚠️ يرجى كتابة تعليمات التمريض');
+                return;
+            }
+            
+            activePatient.nursingInstructions = notes;
+            activePatient.status = 'waiting_nurse';
+            activePatient.complaint = document.getElementById('complaint').value;
+            activePatient.diagnosis = document.getElementById('diagnosis').value;
+            saveData();
+            
+            alert('✅ تم إرسال التعليمات للتمريض');
+            closePatientFile();
+            loadDoctor();
+        }
+
+        function completeVisit() {
+            if (!activePatient) {
+                alert('⚠️ يرجى اختيار مريض أولاً');
+                return;
+            }
+            
+            activePatient.status = 'completed';
+            activePatient.completedDate = new Date().toISOString();
+            saveData();
+            
+            alert('✅ تم إنهاء زيارة المريض بنجاح');
+            closePatientFile();
+            loadDoctor();
+        }
+
+        // ============================================
+        // دوال الروشتة الطبية المحسنة
         // ============================================
 
         function addMedicineItem() {
@@ -1167,26 +1460,66 @@
                 <div class="medicine-entry" id="medItem-${itemId}">
                     <div class="row g-2 mb-2">
                         <div class="col-md-5">
-                            <select class="form-select medicine-select" onchange="updateMedicineDetails(${itemId})">
-                                <option value="">اختر الدواء</option>
-                                ${inventory.map(med => `<option value="${med.name}" data-price="${med.price}">${med.name} - ${med.price} ج.س</option>`).join('')}
-                            </select>
+                            <div class="position-relative">
+                                <input type="text" 
+                                       class="form-control medicine-search-input"
+                                       id="medicineName-${itemId}"
+                                       data-dropdown="medicineSearchDropdown"
+                                       data-item-id="${itemId}"
+                                       placeholder="ابحث عن الدواء..."
+                                       onkeydown="handleMedicineSearch(event, ${itemId})">
+                            </div>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control qty-input" value="1" min="1" placeholder="الكمية" onchange="updateMedicineDetails(${itemId})">
+                            <div class="input-group">
+                                <input type="number" class="form-control concentration-input" 
+                                       id="concentration-${itemId}" value="500" min="1">
+                                <select class="form-select dosage-select" id="concentrationUnit-${itemId}" style="width: 80px;">
+                                    <option value="mg">ملج</option>
+                                    <option value="g">جرام</option>
+                                    <option value="ml">مل</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control dosage-input" placeholder="الجرعة (مثال: 3 مرات يومياً)">
+                        <div class="col-md-2">
+                            <select class="form-select dosage-select" id="dosageForm-${itemId}">
+                                <option value="حبة">حبة</option>
+                                <option value="حقنة">حقنة</option>
+                                <option value="ملعقة">ملعقة</option>
+                                <option value="سي سي">سي سي</option>
+                                <option value="جرعة">جرعة</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="number" class="form-control" id="quantity-${itemId}" 
+                                   value="1" min="1" placeholder="العدد" onchange="updateMedicineDetails(${itemId})">
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-danger btn-sm w-100" onclick="removeMedicineItem(${itemId})">✕</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input type="text" class="form-control notes-input" placeholder="ملاحظات إضافية">
-                        </div>
+                    
+                    <div class="row g-2 mt-2">
                         <div class="col-md-4">
+                            <select class="form-select frequency-select" id="frequency-${itemId}">
+                                <option value="مرة يومياً">مرة يومياً</option>
+                                <option value="مرتين يومياً">مرتين يومياً</option>
+                                <option value="ثلاث مرات يومياً">ثلاث مرات يومياً</option>
+                                <option value="كل 6 ساعات">كل 6 ساعات</option>
+                                <option value="كل 8 ساعات">كل 8 ساعات</option>
+                                <option value="كل 12 ساعة">كل 12 ساعة</option>
+                                <option value="عند الحاجة">عند الحاجة</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" id="duration-${itemId}" 
+                                   value="5" min="1" placeholder="المدة بالأيام">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="notes-${itemId}" 
+                                   placeholder="ملاحظات خاصة">
+                        </div>
+                        <div class="col-md-2">
                             <span class="badge bg-info price-display" id="price-${itemId}">0 ج.س</span>
                         </div>
                     </div>
@@ -1194,14 +1527,26 @@
             `;
             
             container.insertAdjacentHTML('beforeend', itemHTML);
+            
+            // تهيئة عنصر الدواء الجديد
             prescriptionItems.push({
                 id: itemId,
                 name: '',
                 price: 0,
-                qty: 1,
-                dosage: '',
+                concentration: 500,
+                concentrationUnit: 'mg',
+                dosageForm: 'حبة',
+                quantity: 1,
+                frequency: 'مرة يومياً',
+                duration: 5,
                 notes: '',
                 total: 0
+            });
+            
+            // إضافة مستمع للأحداث للبحث
+            const searchInput = document.getElementById(`medicineName-${itemId}`);
+            searchInput.addEventListener('input', function(e) {
+                handleMedicineSearchInput(e, itemId);
             });
         }
 
@@ -1213,33 +1558,312 @@
             }
         }
 
+        function handleMedicineSearchInput(e, itemId) {
+            const searchTerm = e.target.value.toLowerCase();
+            const dropdown = document.getElementById('medicineSearchDropdown');
+            
+            if (searchTerm.length < 1) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            
+            // البحث في قائمة الأدوية
+            currentSearchResults = inventory.filter(medicine => 
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            
+            showMedicineDropdownForItem(currentSearchResults, itemId, e.target);
+        }
+
+        function handleMedicineSearch(event, itemId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = document.getElementById(`medicineName-${itemId}`);
+                const searchResults = currentSearchResults;
+                
+                if (searchResults.length > 0) {
+                    selectMedicineFromDropdown(searchResults[0].name, input.id);
+                }
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                navigateDropdown(1);
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                navigateDropdown(-1);
+            }
+        }
+
+        function navigateDropdown(direction) {
+            const items = document.querySelectorAll('.medicine-search-item');
+            if (items.length === 0) return;
+            
+            let currentIndex = -1;
+            items.forEach((item, index) => {
+                if (item.classList.contains('highlight')) {
+                    currentIndex = index;
+                }
+            });
+            
+            let newIndex = currentIndex + direction;
+            if (newIndex < 0) newIndex = items.length - 1;
+            if (newIndex >= items.length) newIndex = 0;
+            
+            items.forEach(item => item.classList.remove('highlight'));
+            items[newIndex].classList.add('highlight');
+        }
+
+        function showMedicineDropdownForItem(medicines, itemId, inputElement) {
+            const dropdown = document.getElementById('medicineSearchDropdown');
+            if (!medicines || medicines.length === 0) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            
+            let html = '';
+            medicines.slice(0, 10).forEach((medicine, index) => {
+                html += `
+                    <div class="medicine-search-item ${index === 0 ? 'highlight' : ''}" 
+                         onclick="selectMedicineForItem('${medicine.name}', ${itemId})"
+                         onmouseover="highlightDropdownItem(this)">
+                        <strong>${medicine.name}</strong>
+                        <div class="small text-muted">
+                            ${medicine.type} | ${medicine.price.toLocaleString()} ج.س | متوفر: ${medicine.qty}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            dropdown.innerHTML = html;
+            dropdown.style.display = 'block';
+            dropdown.style.top = `${inputElement.offsetTop + inputElement.offsetHeight}px`;
+            dropdown.style.left = `${inputElement.offsetLeft}px`;
+            dropdown.style.width = `${inputElement.offsetWidth}px`;
+        }
+
+        function highlightDropdownItem(element) {
+            document.querySelectorAll('.medicine-search-item').forEach(item => {
+                item.classList.remove('highlight');
+            });
+            element.classList.add('highlight');
+        }
+
+        function selectMedicineForItem(medicineName, itemId) {
+            const input = document.getElementById(`medicineName-${itemId}`);
+            input.value = medicineName;
+            document.getElementById('medicineSearchDropdown').style.display = 'none';
+            
+            updateMedicineDetails(itemId);
+        }
+
+        function selectMedicineFromDropdown(medicineName, inputId) {
+            const input = document.getElementById(inputId);
+            const dropdown = document.getElementById('medicineSearchDropdown');
+            
+            input.value = medicineName;
+            dropdown.style.display = 'none';
+            
+            // تحديث تفاصيل الدواء إذا كان العنصر موجوداً
+            const itemId = input.getAttribute('data-item-id');
+            if (itemId) {
+                updateMedicineDetails(parseInt(itemId));
+            }
+        }
+
         function updateMedicineDetails(itemId) {
             const element = document.getElementById(`medItem-${itemId}`);
             if (!element) return;
             
-            const select = element.querySelector('.medicine-select');
-            const qtyInput = element.querySelector('.qty-input');
-            const dosageInput = element.querySelector('.dosage-input');
-            const notesInput = element.querySelector('.notes-input');
-            const priceDisplay = element.querySelector('.price-display');
+            const medicineName = document.getElementById(`medicineName-${itemId}`).value;
+            const concentration = parseInt(document.getElementById(`concentration-${itemId}`).value) || 500;
+            const concentrationUnit = document.getElementById(`concentrationUnit-${itemId}`).value;
+            const dosageForm = document.getElementById(`dosageForm-${itemId}`).value;
+            const quantity = parseInt(document.getElementById(`quantity-${itemId}`).value) || 1;
+            const frequency = document.getElementById(`frequency-${itemId}`).value;
+            const duration = parseInt(document.getElementById(`duration-${itemId}`).value) || 5;
+            const notes = document.getElementById(`notes-${itemId}`).value;
             
-            const selectedMedicine = inventory.find(med => med.name === select.value);
-            const qty = parseInt(qtyInput.value) || 1;
-            
+            const selectedMedicine = inventory.find(med => med.name === medicineName);
             const itemIndex = prescriptionItems.findIndex(item => item.id === itemId);
-            if (itemIndex !== -1 && selectedMedicine) {
+            
+            if (itemIndex !== -1) {
                 prescriptionItems[itemIndex] = {
                     id: itemId,
-                    name: selectedMedicine.name,
-                    price: selectedMedicine.price,
-                    qty: qty,
-                    dosage: dosageInput.value,
-                    notes: notesInput.value,
-                    total: selectedMedicine.price * qty
+                    name: medicineName,
+                    price: selectedMedicine ? selectedMedicine.price : 0,
+                    concentration: concentration,
+                    concentrationUnit: concentrationUnit,
+                    dosageForm: dosageForm,
+                    quantity: quantity,
+                    frequency: frequency,
+                    duration: duration,
+                    notes: notes,
+                    total: selectedMedicine ? selectedMedicine.price * quantity : 0
                 };
                 
+                const priceDisplay = document.getElementById(`price-${itemId}`);
                 priceDisplay.textContent = `${prescriptionItems[itemIndex].total.toLocaleString()} ج.س`;
             }
+        }
+
+        function initializeMedicineSearch() {
+            const searchInputs = document.querySelectorAll('.medicine-search-input');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const dropdown = document.getElementById('medicineSearchDropdown');
+                    
+                    if (searchTerm.length < 1) {
+                        dropdown.style.display = 'none';
+                        return;
+                    }
+                    
+                    // البحث في قائمة الأدوية
+                    currentSearchResults = inventory.filter(medicine => 
+                        medicine.name.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    showMedicineDropdown(dropdown, currentSearchResults, e.target);
+                });
+            });
+        }
+
+        function showMedicineDropdown(dropdown, medicines, inputElement) {
+            if (!medicines || medicines.length === 0) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            
+            let html = '';
+            medicines.slice(0, 10).forEach((medicine, index) => {
+                html += `
+                    <div class="medicine-search-item ${index === 0 ? 'highlight' : ''}" 
+                         onclick="selectMedicineFromDropdown('${medicine.name}', '${inputElement.id}')"
+                         onmouseover="highlightDropdownItem(this)">
+                        <strong>${medicine.name}</strong>
+                        <div class="small text-muted">
+                            ${medicine.type} | ${medicine.price.toLocaleString()} ج.س | متوفر: ${medicine.qty}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            dropdown.innerHTML = html;
+            dropdown.style.display = 'block';
+            dropdown.style.top = `${inputElement.offsetTop + inputElement.offsetHeight}px`;
+            dropdown.style.left = `${inputElement.offsetLeft}px`;
+            dropdown.style.width = `${inputElement.offsetWidth}px`;
+        }
+
+        // إغلاق القائمة المنسدلة عند النقر خارجها
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('medicineSearchDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        function loadPreviousPrescription() {
+            const container = document.getElementById('prescriptionItems');
+            if (!activePatient || !activePatient.prescription) {
+                container.innerHTML = '';
+                prescriptionItems = [];
+                addMedicineItem();
+                return;
+            }
+            
+            container.innerHTML = '';
+            prescriptionItems = activePatient.prescription.medicines || [];
+            
+            if (prescriptionItems.length === 0) {
+                addMedicineItem();
+                return;
+            }
+            
+            prescriptionItems.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="medicine-entry" id="medItem-${item.id || Date.now() + index}">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-5">
+                                <div class="position-relative">
+                                    <input type="text" 
+                                           class="form-control medicine-search-input"
+                                           id="medicineName-${item.id || Date.now() + index}"
+                                           data-dropdown="medicineSearchDropdown"
+                                           data-item-id="${item.id || Date.now() + index}"
+                                           value="${item.name}"
+                                           placeholder="ابحث عن الدواء..."
+                                           onkeydown="handleMedicineSearch(event, ${item.id || Date.now() + index})">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group">
+                                    <input type="number" class="form-control concentration-input" 
+                                           id="concentration-${item.id || Date.now() + index}" 
+                                           value="${item.concentration || 500}" min="1">
+                                    <select class="form-select dosage-select" id="concentrationUnit-${item.id || Date.now() + index}" style="width: 80px;">
+                                        <option value="mg" ${(item.concentrationUnit || 'mg') === 'mg' ? 'selected' : ''}>ملج</option>
+                                        <option value="g" ${(item.concentrationUnit || 'mg') === 'g' ? 'selected' : ''}>جرام</option>
+                                        <option value="ml" ${(item.concentrationUnit || 'mg') === 'ml' ? 'selected' : ''}>مل</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select dosage-select" id="dosageForm-${item.id || Date.now() + index}">
+                                    <option value="حبة" ${(item.dosageForm || 'حبة') === 'حبة' ? 'selected' : ''}>حبة</option>
+                                    <option value="حقنة" ${(item.dosageForm || 'حبة') === 'حقنة' ? 'selected' : ''}>حقنة</option>
+                                    <option value="ملعقة" ${(item.dosageForm || 'حبة') === 'ملعقة' ? 'selected' : ''}>ملعقة</option>
+                                    <option value="سي سي" ${(item.dosageForm || 'حبة') === 'سي سي' ? 'selected' : ''}>سي سي</option>
+                                    <option value="جرعة" ${(item.dosageForm || 'حبة') === 'جرعة' ? 'selected' : ''}>جرعة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                                <input type="number" class="form-control" id="quantity-${item.id || Date.now() + index}" 
+                                       value="${item.quantity || 1}" min="1" placeholder="العدد" onchange="updateMedicineDetails(${item.id || Date.now() + index})">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger btn-sm w-100" onclick="removeMedicineItem(${item.id || Date.now() + index})">✕</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-2 mt-2">
+                            <div class="col-md-4">
+                                <select class="form-select frequency-select" id="frequency-${item.id || Date.now() + index}">
+                                    <option value="مرة يومياً" ${(item.frequency || 'مرة يومياً') === 'مرة يومياً' ? 'selected' : ''}>مرة يومياً</option>
+                                    <option value="مرتين يومياً" ${(item.frequency || 'مرة يومياً') === 'مرتين يومياً' ? 'selected' : ''}>مرتين يومياً</option>
+                                    <option value="ثلاث مرات يومياً" ${(item.frequency || 'مرة يومياً') === 'ثلاث مرات يومياً' ? 'selected' : ''}>ثلاث مرات يومياً</option>
+                                    <option value="كل 6 ساعات" ${(item.frequency || 'مرة يومياً') === 'كل 6 ساعات' ? 'selected' : ''}>كل 6 ساعات</option>
+                                    <option value="كل 8 ساعات" ${(item.frequency || 'مرة يومياً') === 'كل 8 ساعات' ? 'selected' : ''}>كل 8 ساعات</option>
+                                    <option value="كل 12 ساعة" ${(item.frequency || 'مرة يومياً') === 'كل 12 ساعة' ? 'selected' : ''}>كل 12 ساعة</option>
+                                    <option value="عند الحاجة" ${(item.frequency || 'مرة يومياً') === 'عند الحاجة' ? 'selected' : ''}>عند الحاجة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="duration-${item.id || Date.now() + index}" 
+                                       value="${item.duration || 5}" min="1" placeholder="المدة بالأيام">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="notes-${item.id || Date.now() + index}" 
+                                       value="${item.notes || ''}" placeholder="ملاحظات خاصة">
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge bg-info price-display" id="price-${item.id || Date.now() + index}">${(item.total || 0).toLocaleString()} ج.س</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', itemHTML);
+            });
+            
+            // إضافة زر لإضافة دواء جديد
+            const addButtonHTML = `
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-primary w-50" onclick="addMedicineItem()">
+                        ➕ إضافة دواء جديد
+                    </button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', addButtonHTML);
         }
 
         function generatePrescription() {
@@ -1247,6 +1871,11 @@
                 alert('⚠️ يرجى اختيار مريض أولاً');
                 return;
             }
+            
+            // تحديث جميع الأدوية قبل الإنشاء
+            prescriptionItems.forEach(item => {
+                updateMedicineDetails(item.id);
+            });
             
             if (prescriptionItems.length === 0) {
                 alert('⚠️ يرجى إضافة أدوية للروشتة');
@@ -1287,9 +1916,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>اسم الدواء</th>
+                                <th>التركيز</th>
+                                <th>الشكل</th>
                                 <th>الكمية</th>
-                                <th>الجرعة</th>
-                                <th>الملاحظات</th>
+                                <th>التكرار</th>
+                                <th>المدة</th>
                                 <th>السعر</th>
                             </tr>
                         </thead>
@@ -1298,16 +1929,18 @@
                                 <tr>
                                     <td>${index + 1}</td>
                                     <td>${item.name}</td>
-                                    <td>${item.qty}</td>
-                                    <td>${item.dosage || '--'}</td>
-                                    <td>${item.notes || '--'}</td>
+                                    <td>${item.concentration || '--'} ${item.concentrationUnit || ''}</td>
+                                    <td>${item.dosageForm || '--'}</td>
+                                    <td>${item.quantity || 1}</td>
+                                    <td>${item.frequency || '--'}</td>
+                                    <td>${item.duration || '--'} أيام</td>
                                     <td>${item.total.toLocaleString()} ج.س</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                         <tfoot class="table-success">
                             <tr>
-                                <td colspan="5" class="text-end"><strong>الإجمالي:</strong></td>
+                                <td colspan="7" class="text-end"><strong>الإجمالي:</strong></td>
                                 <td><strong>${totalAmount.toLocaleString()} ج.س</strong></td>
                             </tr>
                         </tfoot>
@@ -1362,45 +1995,165 @@
         }
 
         // ============================================
-        // دوال قسم الصيدلية - المبيعات اليومية
+        // دوال نتائج الفحوصات
         // ============================================
 
-        function loadDailySales() {
-            document.getElementById('dailySalesTotal').textContent = dailySales.total.toLocaleString();
-            
-            const container = document.getElementById('dailyPrescriptionsList');
-            container.innerHTML = dailySales.prescriptions.map((pres, index) => `
-                <div class="prescription-list-item">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <strong>${index + 1}. ${pres.patientName}</strong>
-                            <small class="d-block">${pres.date}</small>
-                        </div>
-                        <div class="text-end">
-                            <span class="badge bg-success">${pres.totalAmount.toLocaleString()} ج.س</span>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <small><strong>الأدوية:</strong> ${pres.medicines.map(m => `${m.name} (${m.qty})`).join('، ')}</small>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function resetDailySales() {
-            if (confirm('هل تريد تصفير عداد المبيعات اليومية؟ سيتم حذف جميع الروشتات المسجلة اليوم.')) {
-                dailySales = {
-                    total: 0,
-                    prescriptions: []
-                };
-                localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
-                loadDailySales();
-                alert('✅ تم تصفير عداد المبيعات اليومية');
+        function loadPatientLabResults() {
+            const resultsContainer = document.getElementById('labResultsDisplay');
+            if (!activePatient.labResults || activePatient.labResults.length === 0) {
+                document.getElementById('labResultsPanel').classList.add('hidden-section');
+                return;
             }
+            
+            const latestResults = activePatient.labResults[activePatient.labResults.length - 1];
+            let resultsHTML = `
+                <div class="mb-2">
+                    <strong>📅 تاريخ الفحص:</strong> ${new Date(latestResults.date).toLocaleDateString('ar-EG')}
+                    <span class="lab-result-badge ms-2" onclick="showAllLabResults()">${latestResults.technician}</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-info">
+                            <tr>
+                                <th>اسم الفحص</th>
+                                <th>النتيجة</th>
+                                <th>الحالة</th>
+                                <th>السعر</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            (latestResults.tests || []).forEach(test => {
+                const status = test.result ? '🟢 مكتمل' : '🔴 غير مكتمل';
+                resultsHTML += `
+                    <tr>
+                        <td>${test.name}</td>
+                        <td><strong>${test.result || '--'}</strong></td>
+                        <td><span class="badge ${test.result ? 'bg-success' : 'bg-danger'}">${status}</span></td>
+                        <td>${test.price} ج.س</td>
+                    </tr>
+                `;
+            });
+            
+            resultsHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            resultsContainer.innerHTML = resultsHTML;
+            document.getElementById('labResultsPanel').classList.remove('hidden-section');
+        }
+
+        function loadPreviousTests() {
+            const container = document.getElementById('previousLabResults');
+            if (!activePatient.labResults || activePatient.labResults.length === 0) {
+                document.getElementById('existingLabResults').classList.add('hidden-section');
+                return;
+            }
+            
+            let html = '';
+            activePatient.labResults.forEach((result, index) => {
+                html += `
+                    <div class="card p-2 mb-2">
+                        <div class="d-flex justify-content-between">
+                            <small><strong>📅 ${new Date(result.date).toLocaleDateString('ar-EG')}</strong></small>
+                            <span class="test-result-badge" onclick="showSpecificLabResult(${index})">عرض النتائج</span>
+                        </div>
+                        <small>عدد الفحوصات: ${result.tests.length}</small>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('existingLabResults').classList.remove('hidden-section');
+        }
+
+        function showAllLabResults() {
+            if (!activePatient.labResults || activePatient.labResults.length === 0) return;
+            
+            let content = '<h5>📊 جميع نتائج الفحوصات</h5>';
+            
+            activePatient.labResults.forEach((result, index) => {
+                content += `
+                    <div class="card p-3 mb-3">
+                        <h6>📅 ${new Date(result.date).toLocaleDateString('ar-EG')}</h6>
+                        <p><small>الفني: ${result.technician}</small></p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>الفحص</th>
+                                    <th>النتيجة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                result.tests.forEach(test => {
+                    content += `
+                        <tr>
+                            <td>${test.name}</td>
+                            <td><strong>${test.result || '--'}</strong></td>
+                        </tr>
+                    `;
+                });
+                
+                content += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('labResultsContent').innerHTML = content;
+            const modal = new bootstrap.Modal(document.getElementById('labResultsModal'));
+            modal.show();
+        }
+
+        function showSpecificLabResult(index) {
+            if (!activePatient.labResults || !activePatient.labResults[index]) return;
+            
+            const result = activePatient.labResults[index];
+            let content = `
+                <h5>📊 نتائج الفحوصات</h5>
+                <div class="card p-3">
+                    <p><strong>التاريخ:</strong> ${new Date(result.date).toLocaleDateString('ar-EG')}</p>
+                    <p><strong>الفني:</strong> ${result.technician}</p>
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-info">
+                            <tr>
+                                <th>الفحص</th>
+                                <th>النتيجة</th>
+                                <th>السعر</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            result.tests.forEach(test => {
+                content += `
+                    <tr>
+                        <td>${test.name}</td>
+                        <td><strong>${test.result || '--'}</strong></td>
+                        <td>${test.price} ج.س</td>
+                    </tr>
+                `;
+            });
+            
+            content += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('labResultsContent').innerHTML = content;
+            const modal = new bootstrap.Modal(document.getElementById('labResultsModal'));
+            modal.show();
         }
 
         // ============================================
-        // دوال قسم المعمل - نتائج الفحوصات
+        // دوال قسم المعمل
         // ============================================
 
         function loadLab() {
@@ -1461,51 +2214,7 @@
         }
 
         // ============================================
-        // دوال قسم العيادة - عرض نتائج الفحوصات
-        // ============================================
-
-        function displayLabResults() {
-            if (!activePatient || !activePatient.labResults || activePatient.labResults.length === 0) {
-                document.getElementById('labResultsPanel').classList.add('hidden-section');
-                return;
-            }
-            
-            const latestResults = activePatient.labResults[activePatient.labResults.length - 1];
-            const display = document.getElementById('labResultsDisplay');
-            
-            let resultsHTML = `
-                <div class="mb-2">
-                    <strong>📅 تاريخ الفحص:</strong> ${new Date(latestResults.date).toLocaleDateString('ar-EG')}
-                    <span class="lab-result-badge ms-2">${latestResults.technician}</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-info">
-                            <tr>
-                                <th>اسم الفحص</th>
-                                <th>النتيجة</th>
-                                <th>السعر</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${(latestResults.tests || []).map(test => `
-                                <tr>
-                                    <td>${test.name}</td>
-                                    <td><strong>${test.result || 'لم يتم إدخال النتيجة'}</strong></td>
-                                    <td>${test.price} ج.س</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            display.innerHTML = resultsHTML;
-            document.getElementById('labResultsPanel').classList.remove('hidden-section');
-        }
-
-        // ============================================
-        // دوال قسم الصيدلية - المخزون والمبيعات
+        // دوال قسم الصيدلية
         // ============================================
 
         function loadPharmacy() {
@@ -1530,7 +2239,7 @@
                                     <span>${m.name}</span>
                                     <span>${m.qty || 1} × ${m.price} ج.س</span>
                                 </div>
-                                ${m.dosage ? `<small class="text-muted">الجرعة: ${m.dosage}</small><br>` : ''}
+                                ${m.dosageForm ? `<small class="text-muted">الشكل: ${m.dosageForm}</small><br>` : ''}
                                 <small class="text-muted">المخزون المتاح: ${getMedicineStock(m.name)}</small>
                             </div>
                         `).join('')}
@@ -1566,7 +2275,7 @@
             // التحقق من توفر المخزون
             medicines.forEach(m => {
                 const medicine = inventory.find(med => med.name === m.name);
-                if (!medicine || medicine.qty < (m.qty || 1)) {
+                if (!medicine || medicine.qty < (m.quantity || 1)) {
                     canDispense = false;
                     insufficientMedicines.push(m.name);
                 }
@@ -1582,7 +2291,7 @@
             medicines.forEach(m => {
                 const medicine = inventory.find(med => med.name === m.name);
                 if (medicine) {
-                    const quantity = m.qty || 1;
+                    const quantity = m.quantity || 1;
                     medicine.qty -= quantity;
                     totalAmount += medicine.price * quantity;
                 }
@@ -1656,8 +2365,8 @@
                             ${prescription.medicines.map((med, idx) => `
                                 <tr>
                                     <td>${med.name}</td>
-                                    <td>${med.qty}</td>
-                                    <td>${med.dosage || '--'}</td>
+                                    <td>${med.quantity}</td>
+                                    <td>${med.frequency || '--'}</td>
                                     <td>${med.total.toLocaleString()} ج.س</td>
                                 </tr>
                             `).join('')}
@@ -1671,234 +2380,38 @@
             modal.show();
         }
 
-        // ============================================
-        // دوال نظام التسجيل والاستقبال
-        // ============================================
-
-        function registerPatient() {
-            const name = document.getElementById('pName').value;
-            const price = parseFloat(document.getElementById('pTicket').value);
-            if(!name) return alert("الاسم مطلوب!");
+        function loadDailySales() {
+            document.getElementById('dailySalesTotal').textContent = dailySales.total.toLocaleString();
             
-            const p = {
-                id: Date.now(),
-                name,
-                age: document.getElementById('pAge').value,
-                address: document.getElementById('pAddress').value,
-                status: 'waiting_doctor',
-                date: new Date().toISOString().split('T')[0],
-                time: new Date().toLocaleTimeString('ar-EG'),
-                ticketPrice: price,
-                tests: [], 
-                meds: [], 
-                complaint: '',
-                diagnosis: '',
-                labResults: [],
-                prescription: null,
-                pharmacyDispensed: null
-            };
-            patients.push(p);
-            saveData();
-            alert("✅ تم التسجيل والتحويل للطبيب");
-            loadReception();
-        }
-
-        function loadReception() {
-            const list = document.getElementById('receptionList');
-            list.innerHTML = patients.slice().reverse().map(p => `
-                <div class="card p-2 mb-2 bg-medical small">
-                    <div class="d-flex justify-content-between align-items-center">
+            const container = document.getElementById('dailyPrescriptionsList');
+            container.innerHTML = dailySales.prescriptions.map((pres, index) => `
+                <div class="prescription-list-item">
+                    <div class="d-flex justify-content-between">
                         <div>
-                            <b>${p.name}</b> (${p.age || '--'}) 
-                            <br><small>${p.status === 'completed' ? '✅ مكتمل' : 
-                                       p.status === 'waiting_doctor' ? '🟡 عند الطبيب' :
-                                       p.status === 'waiting_lab' ? '🔵 في المعمل' :
-                                       p.status === 'waiting_pharmacy' ? '🟠 في الصيدلية' : '🟣 في التمريض'}</small>
+                            <strong>${index + 1}. ${pres.patientName}</strong>
+                            <small class="d-block">${pres.date}</small>
                         </div>
                         <div class="text-end">
-                            <small class="text-muted">${p.time}</small><br>
-                            <small>${p.ticketPrice || 0} ج.س</small>
+                            <span class="badge bg-success">${pres.totalAmount.toLocaleString()} ج.س</span>
                         </div>
+                    </div>
+                    <div class="mt-2">
+                        <small><strong>الأدوية:</strong> ${pres.medicines.map(m => `${m.name} (${m.quantity})`).join('، ')}</small>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ============================================
-        // دوال قسم الطبيب
-        // ============================================
-
-        function loadDoctorLists() {
-            const lSel = document.getElementById('labSelect');
-            lSel.innerHTML = labTests.map(t => `<option value="${t.name}">${t.name} (${t.price} ج.س)</option>`).join('');
-            
-            // تهيئة الروشتة الطبية
-            prescriptionItems = [];
-            document.getElementById('prescriptionItems').innerHTML = '';
-            addMedicineItem(); // إضافة عنصر دواء افتراضي
-        }
-
-        function loadDoctor() {
-            const q = document.getElementById('doctorQueue');
-            const waiting = patients.filter(p => p.status === 'waiting_doctor');
-            q.innerHTML = waiting.map(p => `
-                <button class="btn btn-light w-100 mb-2 border" onclick="selectPatient(${p.id})">
-                    ${p.name}
-                    ${p.labResults && p.labResults.length > 0 ? '<span class="badge bg-info ms-1">نتائج</span>' : ''}
-                </button>
-            `).join('');
-        }
-
-        function selectPatient(id) {
-            activePatient = patients.find(p => p.id === id);
-            document.getElementById('doctorWorkArea').classList.remove('hidden-section');
-            document.getElementById('currentPatientName').textContent = activePatient.name;
-            document.getElementById('complaint').value = activePatient.complaint || '';
-            document.getElementById('diagnosis').value = activePatient.diagnosis || '';
-            
-            // تحميل نتائج الفحوصات إن وجدت
-            displayLabResults();
-            
-            // تحميل الأدوية إذا كانت موجودة
-            if (activePatient.prescription?.medicines) {
-                prescriptionItems = [...activePatient.prescription.medicines];
-                document.getElementById('prescriptionItems').innerHTML = '';
-                prescriptionItems.forEach((item, index) => {
-                    const itemHTML = `
-                        <div class="medicine-entry" id="medItem-${item.id || Date.now() + index}">
-                            <div class="row g-2 mb-2">
-                                <div class="col-md-5">
-                                    <select class="form-select medicine-select" onchange="updateMedicineDetails(${item.id || Date.now() + index})">
-                                        <option value="">اختر الدواء</option>
-                                        ${inventory.map(med => `
-                                            <option value="${med.name}" data-price="${med.price}" ${med.name === item.name ? 'selected' : ''}>
-                                                ${med.name} - ${med.price} ج.س
-                                            </option>
-                                        `).join('')}
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="number" class="form-control qty-input" value="${item.qty}" min="1" placeholder="الكمية" onchange="updateMedicineDetails(${item.id || Date.now() + index})">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control dosage-input" placeholder="الجرعة" value="${item.dosage || ''}">
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-danger btn-sm w-100" onclick="removeMedicineItem(${item.id || Date.now() + index})">✕</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control notes-input" placeholder="ملاحظات إضافية" value="${item.notes || ''}">
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="badge bg-info price-display" id="price-${item.id || Date.now() + index}">${item.total.toLocaleString()} ج.س</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    document.getElementById('prescriptionItems').insertAdjacentHTML('beforeend', itemHTML);
-                });
-            } else {
-                prescriptionItems = [];
-                document.getElementById('prescriptionItems').innerHTML = '';
-                addMedicineItem();
+        function resetDailySales() {
+            if (confirm('هل تريد تصفير عداد المبيعات اليومية؟ سيتم حذف جميع الروشتات المسجلة اليوم.')) {
+                dailySales = {
+                    total: 0,
+                    prescriptions: []
+                };
+                localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
+                loadDailySales();
+                alert('✅ تم تصفير عداد المبيعات اليومية');
             }
-        }
-
-        function orderLab() {
-            if (!activePatient) {
-                alert('⚠️ يرجى اختيار مريض أولاً');
-                return;
-            }
-            
-            const selected = Array.from(document.getElementById('labSelect').selectedOptions).map(o => o.value);
-            if (selected.length === 0) {
-                alert('⚠️ يرجى اختيار فحوصات');
-                return;
-            }
-            
-            activePatient.tests = selected.map(name => ({
-                name, 
-                price: labTests.find(t => t.name === name).price, 
-                result: ''
-            }));
-            activePatient.status = 'waiting_lab';
-            activePatient.complaint = document.getElementById('complaint').value;
-            activePatient.diagnosis = document.getElementById('diagnosis').value;
-            saveData(); 
-            
-            alert(`✅ تم إرسال ${selected.length} فحص للمعمل`);
-            switchSection('doctor');
-        }
-
-        function orderPharmacy() {
-            if (!activePatient) {
-                alert('⚠️ يرجى اختيار مريض أولاً');
-                return;
-            }
-            
-            // تحديث جميع الأدوية قبل الإرسال
-            prescriptionItems.forEach(item => {
-                updateMedicineDetails(item.id);
-            });
-            
-            if (prescriptionItems.length === 0) {
-                alert('⚠️ يرجى إضافة أدوية للروشتة');
-                return;
-            }
-            
-            activePatient.meds = prescriptionItems;
-            activePatient.status = 'waiting_pharmacy';
-            activePatient.complaint = document.getElementById('complaint').value;
-            activePatient.diagnosis = document.getElementById('diagnosis').value;
-            saveData(); 
-            
-            alert(`✅ تم إرسال ${prescriptionItems.length} دواء للصيدلية`);
-            switchSection('doctor');
-        }
-
-        function orderNurse() {
-            if (!activePatient) {
-                alert('⚠️ يرجى اختيار مريض أولاً');
-                return;
-            }
-            
-            const notes = document.getElementById('nurseNotes').value;
-            if (!notes.trim()) {
-                alert('⚠️ يرجى كتابة تعليمات التمريض');
-                return;
-            }
-            
-            activePatient.nursingInstructions = notes;
-            activePatient.status = 'waiting_nurse';
-            activePatient.complaint = document.getElementById('complaint').value;
-            activePatient.diagnosis = document.getElementById('diagnosis').value;
-            saveData();
-            
-            alert('✅ تم إرسال التعليمات للتمريض');
-            switchSection('doctor');
-        }
-
-        function completeVisit() {
-            if (!activePatient) {
-                alert('⚠️ يرجى اختيار مريض أولاً');
-                return;
-            }
-            
-            activePatient.status = 'completed';
-            activePatient.complaint = document.getElementById('complaint').value;
-            activePatient.diagnosis = document.getElementById('diagnosis').value;
-            activePatient.completedDate = new Date().toISOString();
-            saveData();
-            
-            document.getElementById('doctorWorkArea').classList.add('hidden-section');
-            prescriptionItems = [];
-            document.getElementById('prescriptionItems').innerHTML = '';
-            addMedicineItem();
-            
-            alert('✅ تم إنهاء زيارة المريض بنجاح');
-            loadDoctor();
         }
 
         // ============================================
@@ -1958,12 +2471,13 @@
             const name = document.getElementById('admLabName').value;
             const price = parseFloat(document.getElementById('admLabPrice').value);
             if(name && price) {
-                labTests.push({name, price});
+                labTests.push({id: Date.now(), name, price, category: 'أخرى'});
                 localStorage.setItem('shifa_tests', JSON.stringify(labTests));
                 document.getElementById('admLabName').value = '';
                 document.getElementById('admLabPrice').value = '';
                 alert("✅ تمت إضافة الفحص بنجاح");
-                loadDoctorLists();
+                loadLabTestsTable();
+                updateLabTestsSelect();
             } else {
                 alert("⚠️ يرجى ملء جميع الحقول");
             }
@@ -1974,13 +2488,13 @@
             const price = parseFloat(document.getElementById('admMedPrice').value);
             const qty = parseInt(document.getElementById('admMedQty').value);
             if(name && price && qty) {
-                inventory.push({name, price, qty});
+                inventory.push({id: Date.now(), name, price, qty, type: 'حبوب', company: 'غير محدد', expiry: '2025-12-31'});
                 localStorage.setItem('shifa_stock', JSON.stringify(inventory));
                 document.getElementById('admMedName').value = '';
                 document.getElementById('admMedPrice').value = '';
                 document.getElementById('admMedQty').value = '';
                 alert("✅ تم تحديث المخزون بنجاح");
-                loadDoctorLists();
+                loadMedicinesTable();
             } else {
                 alert("⚠️ يرجى ملء جميع الحقول");
             }
@@ -2063,7 +2577,582 @@
         }
 
         // ============================================
-        // دوال النظام العامة
+        // دوال المدير - الجداول المنسدلة
+        // ============================================
+
+        function loadLabTestsTable() {
+            const container = document.getElementById('labTestsTable');
+            if (!container) return;
+            
+            let html = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>اسم الفحص</th>
+                                <th>الفئة</th>
+                                <th>السعر (ج.س)</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            labTests.forEach((test, index) => {
+                html += `
+                    <tr class="stock-table-row">
+                        <td>${index + 1}</td>
+                        <td><strong>${test.name}</strong></td>
+                        <td><span class="badge bg-info">${test.category || 'عام'}</span></td>
+                        <td><strong>${test.price.toLocaleString()}</strong></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-warning me-1" onclick="editLabTest(${test.id})">✏️</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteLabTest(${test.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            document.getElementById('labTestsCount').textContent = labTests.length;
+        }
+
+        function loadMedicinesTable() {
+            const container = document.getElementById('medicinesTable');
+            if (!container) return;
+            
+            let totalValue = 0;
+            
+            let html = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>اسم الدواء</th>
+                                <th>النوع</th>
+                                <th>الشركة</th>
+                                <th>السعر</th>
+                                <th>الكمية</th>
+                                <th>القيمة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            inventory.forEach((medicine, index) => {
+                const value = medicine.price * medicine.qty;
+                totalValue += value;
+                
+                // تحقق من انتهاء الصلاحية
+                const expiryDate = new Date(medicine.expiry);
+                const today = new Date();
+                const daysToExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                
+                let expiryBadge = '';
+                if (daysToExpiry < 0) {
+                    expiryBadge = '<span class="badge bg-danger ms-1">منتهي</span>';
+                } else if (daysToExpiry < 30) {
+                    expiryBadge = '<span class="badge bg-warning ms-1">قريب الانتهاء</span>';
+                }
+                
+                html += `
+                    <tr class="stock-table-row">
+                        <td>${index + 1}</td>
+                        <td>
+                            <strong>${medicine.name}</strong>
+                            ${expiryBadge}
+                        </td>
+                        <td><span class="badge bg-secondary">${medicine.type || 'غير محدد'}</span></td>
+                        <td>${medicine.company || '--'}</td>
+                        <td><strong>${medicine.price.toLocaleString()}</strong></td>
+                        <td>
+                            <span class="badge ${medicine.qty < 10 ? 'bg-danger' : medicine.qty < 30 ? 'bg-warning' : 'bg-success'}">
+                                ${medicine.qty}
+                            </span>
+                        </td>
+                        <td><span class="stock-value-badge">${value.toLocaleString()}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-warning me-1" onclick="editMedicine(${medicine.id})">✏️</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteMedicine(${medicine.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            document.getElementById('totalStockValue').textContent = totalValue.toLocaleString();
+        }
+
+        function addNewLabTest() {
+            const name = document.getElementById('newLabTestName').value.trim();
+            const price = parseFloat(document.getElementById('newLabTestPrice').value);
+            const category = document.getElementById('newLabTestCategory').value;
+            
+            if (!name || !price) {
+                alert('⚠️ يرجى إدخال اسم الفحص والسعر!');
+                return;
+            }
+            
+            const newTest = {
+                id: Date.now(),
+                name: name,
+                price: price,
+                category: category
+            };
+            
+            labTests.push(newTest);
+            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+            
+            // مسح الحقول
+            document.getElementById('newLabTestName').value = '';
+            document.getElementById('newLabTestPrice').value = '';
+            
+            loadLabTestsTable();
+            updateLabTestsSelect();
+            alert('✅ تم إضافة الفحص بنجاح!');
+        }
+
+        function addNewMedicine() {
+            const name = document.getElementById('newMedicineName').value.trim();
+            const price = parseFloat(document.getElementById('newMedicinePrice').value);
+            const qty = parseInt(document.getElementById('newMedicineQty').value);
+            const type = document.getElementById('newMedicineType').value;
+            const company = document.getElementById('newMedicineCompany').value.trim();
+            const expiry = document.getElementById('newMedicineExpiry').value;
+            
+            if (!name || !price || !qty) {
+                alert('⚠️ يرجى إدخال اسم الدواء والسعر والكمية!');
+                return;
+            }
+            
+            const newMedicine = {
+                id: Date.now(),
+                name: name,
+                price: price,
+                qty: qty,
+                type: type,
+                company: company || 'غير محدد',
+                expiry: expiry || '2025-12-31'
+            };
+            
+            inventory.push(newMedicine);
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            
+            // مسح الحقول
+            document.getElementById('newMedicineName').value = '';
+            document.getElementById('newMedicinePrice').value = '';
+            document.getElementById('newMedicineQty').value = '';
+            document.getElementById('newMedicineCompany').value = '';
+            document.getElementById('newMedicineExpiry').value = '';
+            
+            loadMedicinesTable();
+            alert('✅ تم إضافة الدواء بنجاح!');
+        }
+
+        function editLabTest(testId) {
+            const test = labTests.find(t => t.id === testId);
+            if (!test) return;
+            
+            const newName = prompt('أدخل الاسم الجديد للفحص:', test.name);
+            if (newName === null) return;
+            
+            const newPrice = prompt('أدخل السعر الجديد:', test.price);
+            if (newPrice === null) return;
+            
+            test.name = newName.trim();
+            test.price = parseFloat(newPrice);
+            
+            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+            loadLabTestsTable();
+            updateLabTestsSelect();
+            alert('✅ تم تحديث الفحص بنجاح!');
+        }
+
+        function editMedicine(medicineId) {
+            const medicine = inventory.find(m => m.id === medicineId);
+            if (!medicine) return;
+            
+            const newName = prompt('أدخل الاسم الجديد للدواء:', medicine.name);
+            if (newName === null) return;
+            
+            const newPrice = prompt('أدخل السعر الجديد:', medicine.price);
+            if (newPrice === null) return;
+            
+            const newQty = prompt('أدخل الكمية الجديدة:', medicine.qty);
+            if (newQty === null) return;
+            
+            medicine.name = newName.trim();
+            medicine.price = parseFloat(newPrice);
+            medicine.qty = parseInt(newQty);
+            
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            loadMedicinesTable();
+            alert('✅ تم تحديث الدواء بنجاح!');
+        }
+
+        function deleteLabTest(testId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الفحص؟')) return;
+            
+            labTests = labTests.filter(t => t.id !== testId);
+            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
+            loadLabTestsTable();
+            updateLabTestsSelect();
+            alert('✅ تم حذف الفحص بنجاح!');
+        }
+
+        function deleteMedicine(medicineId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الدواء؟')) return;
+            
+            inventory = inventory.filter(m => m.id !== medicineId);
+            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
+            loadMedicinesTable();
+            alert('✅ تم حذف الدواء بنجاح!');
+        }
+
+        function updateLabTestsSelect() {
+            const select = document.getElementById('labSelect');
+            if (!select) return;
+            
+            // تجميع الفحوصات حسب الفئة
+            const testsByCategory = {};
+            labTests.forEach(test => {
+                if (!testsByCategory[test.category]) {
+                    testsByCategory[test.category] = [];
+                }
+                testsByCategory[test.category].push(test);
+            });
+            
+            select.innerHTML = '';
+            
+            // إضافة الفحوصات حسب الفئات
+            Object.keys(testsByCategory).forEach(category => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = `📁 ${category}`;
+                
+                testsByCategory[category].forEach(test => {
+                    const option = document.createElement('option');
+                    option.value = test.id;
+                    option.textContent = `${test.name} - ${test.price.toLocaleString()} ج.س`;
+                    optgroup.appendChild(option);
+                });
+                
+                select.appendChild(optgroup);
+            });
+        }
+
+        // ============================================
+        // دوال إدارة الموظفين
+        // ============================================
+
+        function initStaffMembers() {
+            if (staffMembers.length === 0) {
+                staffMembers = Object.keys(USERS).map(username => ({
+                    id: Date.now() + Math.random(),
+                    username: username,
+                    password: USERS[username].password,
+                    name: USERS[username].name,
+                    role: USERS[username].role,
+                    status: 'active',
+                    created: new Date().toISOString(),
+                    lastLogin: null
+                }));
+                localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            }
+        }
+
+        function loadStaffList() {
+            const container = document.getElementById('staffList');
+            if (!container) return;
+            
+            container.innerHTML = staffMembers.map(staff => `
+                <div class="col-md-6">
+                    <div class="card p-3 staff-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">${staff.name}</h6>
+                                <small class="text-muted">@${staff.username}</small>
+                                <div class="mt-2">
+                                    <span class="staff-role-badge staff-${staff.role}">
+                                        ${getRoleName(staff.role)}
+                                    </span>
+                                    <span class="badge ${staff.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+                                        ${staff.status === 'active' ? 'نشط' : 'غير نشط'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-warning" onclick="editStaff('${staff.id}')">✏️</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteStaff('${staff.id}')">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="mt-2 small text-muted">
+                            <div>تاريخ الإنشاء: ${new Date(staff.created).toLocaleDateString('ar-EG')}</div>
+                            ${staff.lastLogin ? `<div>آخر دخول: ${new Date(staff.lastLogin).toLocaleDateString('ar-EG')}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRoleName(role) {
+            const roles = {
+                'admin': '👑 مدير',
+                'doctor': '👨‍⚕️ طبيب',
+                'reception': '📋 استقبال',
+                'pharmacy': '💊 صيدلي',
+                'lab': '🧪 معمل',
+                'nursing': '💉 تمريض'
+            };
+            return roles[role] || role;
+        }
+
+        function addNewStaff() {
+            const username = document.getElementById('newStaffUsername').value.trim();
+            const password = document.getElementById('newStaffPassword').value;
+            const name = document.getElementById('newStaffName').value.trim();
+            const role = document.getElementById('newStaffRole').value;
+            
+            if (!username || !password || !name || !role) {
+                alert('⚠️ يرجى ملء جميع الحقول!');
+                return;
+            }
+            
+            if (staffMembers.some(staff => staff.username === username)) {
+                alert('⚠️ اسم المستخدم موجود بالفعل!');
+                return;
+            }
+            
+            const newStaff = {
+                id: Date.now() + Math.random(),
+                username: username,
+                password: password,
+                name: name,
+                role: role,
+                status: 'active',
+                created: new Date().toISOString(),
+                lastLogin: null
+            };
+            
+            staffMembers.push(newStaff);
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            USERS[username] = {
+                password: password,
+                role: role,
+                name: name
+            };
+            
+            document.getElementById('newStaffUsername').value = '';
+            document.getElementById('newStaffPassword').value = '';
+            document.getElementById('newStaffName').value = '';
+            document.getElementById('newStaffRole').value = '';
+            
+            loadStaffList();
+            alert('✅ تم إضافة الموظف بنجاح!');
+        }
+
+        function editStaff(staffId) {
+            const staff = staffMembers.find(s => s.id === staffId);
+            if (!staff) return;
+            
+            document.getElementById('editStaffId').value = staffId;
+            document.getElementById('editStaffUsername').value = staff.username;
+            document.getElementById('editStaffName').value = staff.name;
+            document.getElementById('editStaffRole').value = staff.role;
+            document.getElementById('editStaffPassword').value = '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('editStaffModal'));
+            modal.show();
+        }
+
+        function saveStaffChanges() {
+            const staffId = document.getElementById('editStaffId').value;
+            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
+            
+            if (staffIndex === -1) return;
+            
+            const username = document.getElementById('editStaffUsername').value.trim();
+            const name = document.getElementById('editStaffName').value.trim();
+            const role = document.getElementById('editStaffRole').value;
+            const password = document.getElementById('editStaffPassword').value;
+            
+            if (!username || !name || !role) {
+                alert('⚠️ يرجى ملء جميع الحقول المطلوبة!');
+                return;
+            }
+            
+            const duplicate = staffMembers.find((s, index) => 
+                s.username === username && index !== staffIndex
+            );
+            if (duplicate) {
+                alert('⚠️ اسم المستخدم موجود بالفعل!');
+                return;
+            }
+            
+            staffMembers[staffIndex].username = username;
+            staffMembers[staffIndex].name = name;
+            staffMembers[staffIndex].role = role;
+            
+            if (password) {
+                staffMembers[staffIndex].password = password;
+            }
+            
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            USERS[username] = {
+                password: password || staffMembers[staffIndex].password,
+                role: role,
+                name: name
+            };
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editStaffModal'));
+            modal.hide();
+            
+            loadStaffList();
+            alert('✅ تم تحديث بيانات الموظف بنجاح!');
+        }
+
+        function confirmDeleteStaff(staffId) {
+            const staff = staffMembers.find(s => s.id === staffId);
+            if (!staff) return;
+            
+            if (staff.username === 'admin') {
+                alert('⚠️ لا يمكن حذف حساب المدير الرئيسي!');
+                return;
+            }
+            
+            if (currentUser && staff.username === currentUser.u) {
+                alert('⚠️ لا يمكن حذف حسابك أثناء تسجيل الدخول!');
+                return;
+            }
+            
+            document.getElementById('deleteStaffId').value = staffId;
+            const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            modal.show();
+        }
+
+        function deleteStaffConfirmed() {
+            const staffId = document.getElementById('deleteStaffId').value;
+            const staffIndex = staffMembers.findIndex(s => s.id === staffId);
+            
+            if (staffIndex === -1) return;
+            
+            const username = staffMembers[staffIndex].username;
+            
+            staffMembers.splice(staffIndex, 1);
+            localStorage.setItem('shifa_staff', JSON.stringify(staffMembers));
+            
+            delete USERS[username];
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+            modal.hide();
+            
+            loadStaffList();
+            alert('✅ تم حذف الموظف بنجاح!');
+        }
+
+        // ============================================
+        // دوال تصفير النظام
+        // ============================================
+
+        function resetDailySystem() {
+            if (!confirm('⚠️ هل أنت متأكد من تصفير النظام اليومي؟\n\nسيتم حذف جميع البيانات اليومية التالية:\n• قائمة المرضى اليومية\n• طلبات المعمل المعلقة\n• طلبات الصيدلية المعلقة\n• مهام التمريض المعلقة\n• مبيعات الصيدلية اليومية\n\nهذا الإجراء لا يمكن التراجع عنه!')) {
+                return;
+            }
+            
+            createAutoBackup();
+            
+            const completedPatients = patients.filter(p => p.status === 'completed');
+            patients = completedPatients;
+            
+            labRequests = [];
+            localStorage.setItem('shifa_lab', JSON.stringify(labRequests));
+            
+            pharmOrders = [];
+            localStorage.setItem('shifa_rx', JSON.stringify(pharmOrders));
+            
+            nursingTasks = [];
+            localStorage.setItem('shifa_nursing_tasks', JSON.stringify(nursingTasks));
+            
+            dailySales = {
+                total: 0,
+                prescriptions: []
+            };
+            localStorage.setItem('shifa_daily_sales', JSON.stringify(dailySales));
+            
+            localStorage.setItem('shifa_pats', JSON.stringify(patients));
+            
+            systemSettings.lastReset = new Date().toISOString();
+            localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
+            
+            updateBadges();
+            
+            if (currentUser) {
+                switchSection(currentUser.r);
+            }
+            
+            document.getElementById('lastResetTime').textContent = new Date().toLocaleString('ar-EG');
+            
+            alert('✅ تم تصفير النظام اليومي بنجاح!\nتم الاحتفاظ بالسجلات التاريخية للمرضى المكتملين.');
+        }
+
+        function createSystemBackup() {
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                patients: patients,
+                labRequests: labRequests,
+                pharmOrders: pharmOrders,
+                nursingTasks: nursingTasks,
+                dailySales: dailySales,
+                staffMembers: staffMembers,
+                labTests: labTests,
+                inventory: inventory
+            };
+            
+            backups.unshift(backupData);
+            if (backups.length > 10) backups = backups.slice(0, 10);
+            
+            localStorage.setItem('shifa_backups', JSON.stringify(backups));
+            systemSettings.backupCount = backups.length;
+            localStorage.setItem('shifa_settings', JSON.stringify(systemSettings));
+            
+            alert(`✅ تم إنشاء نسخة احتياطية بنجاح!\nرقم النسخة: ${backups.length}\nالوقت: ${new Date().toLocaleString('ar-EG')}`);
+        }
+
+        function createAutoBackup() {
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                patients: patients,
+                labRequests: labRequests,
+                pharmOrders: pharmOrders,
+                nursingTasks: nursingTasks,
+                dailySales: dailySales,
+                type: 'auto_reset_backup'
+            };
+            
+            backups.unshift(backupData);
+            if (backups.length > 10) backups = backups.slice(0, 10);
+            
+            localStorage.setItem('shifa_backups', JSON.stringify(backups));
+        }
+
+        // ============================================
+        // دوال واجهة المستخدم
         // ============================================
 
         function switchSection(id) {
@@ -2093,97 +3182,35 @@
             if(id === 'admin') loadAdmin();
         }
 
-        function saveData() {
-            localStorage.setItem('shifa_pats', JSON.stringify(patients));
-            localStorage.setItem('shifa_inventory', JSON.stringify(inventory));
-            localStorage.setItem('shifa_labTests', JSON.stringify(labTests));
-            updateBadges();
-        }
-
-        function updateBadges() {
-            const b = {
-                doctor: patients.filter(p => p.status === 'waiting_doctor').length,
-                lab: patients.filter(p => p.status === 'waiting_lab').length,
-                pharmacy: patients.filter(p => p.status === 'waiting_pharmacy').length,
-                nurse: patients.filter(p => p.status === 'waiting_nurse').length
-            };
-            for(let k in b) {
-                const el = document.getElementById(`${k}Badge`);
-                if(el) { 
-                    el.textContent = b[k]; 
-                    b[k]>0 ? el.classList.remove('hidden-section') : el.classList.add('hidden-section'); 
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => {
+                el.classList.add('hidden-section');
+            });
+            
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`admin-${tabName}`).classList.remove('hidden-section');
+            event.target.classList.add('active');
+            
+            if (tabName === 'lab-tests') {
+                loadLabTestsTable();
+            } else if (tabName === 'medicines') {
+                loadMedicinesTable();
+            } else if (tabName === 'staff') {
+                loadStaffList();
+            } else if (tabName === 'reset') {
+                if (systemSettings.lastReset) {
+                    document.getElementById('lastResetTime').textContent = 
+                        new Date(systemSettings.lastReset).toLocaleString('ar-EG');
                 }
             }
         }
 
-        function playNotify() { 
-            try { 
-                document.getElementById('notificationSound').play().catch(()=>{}); 
-            } catch(e) {} 
-        }
-
         // ============================================
-        // دوال النظام الأساسية
+        // دوال تسجيل الدخول
         // ============================================
-
-        window.onload = function() {
-            // تحديث الساعة
-            function updateClock() {
-                const now = new Date();
-                document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('ar-EG');
-            }
-            updateClock();
-            setInterval(updateClock, 1000);
-            
-            // تحميل بيانات الدخول السابقة
-            const savedUser = localStorage.getItem('shifa_user');
-            if (savedUser) {
-                try {
-                    currentUser = JSON.parse(savedUser);
-                    document.getElementById('loginOverlay').classList.add('hidden-section');
-                    document.getElementById('mainContent').classList.remove('hidden-section');
-                    document.getElementById('currentUserDisplay').innerHTML = `👤 <b>${currentUser.name}</b>`;
-                    
-                    switchSection(currentUser.r === 'admin' ? 'admin' : currentUser.r);
-                } catch (e) {
-                    console.error('Error loading user data:', e);
-                }
-            }
-            
-            // تحميل المبيعات اليومية
-            const savedSales = localStorage.getItem('shifa_daily_sales');
-            if (savedSales) {
-                try {
-                    dailySales = JSON.parse(savedSales);
-                } catch (e) {
-                    dailySales = { total: 0, prescriptions: [] };
-                }
-            }
-            
-            // تحميل إعدادات النظام
-            const savedSettings = localStorage.getItem('shifa_settings');
-            if (savedSettings) {
-                try {
-                    systemSettings = JSON.parse(savedSettings);
-                } catch (e) {
-                    systemSettings = { lastReset: null, dailyResetAuto: false, backupCount: 0 };
-                }
-            }
-            
-            // تهيئة بيانات الموظفين
-            initStaffMembers();
-            
-            updateBadges();
-        };
-
-        // ============================================
-        // دوال تسجيل الدخول (الموجودة سابقاً)
-        // ============================================
-
-        function logSecurityEvent(eventType, details) {
-            // تنفيذ دالة تسجيل الأحداث
-            console.log(`🔒 ${eventType}: ${details}`);
-        }
 
         function updateLoginPlaceholder() {
             const dept = document.getElementById('loginDept').value;
@@ -2214,7 +3241,6 @@
             }
             
             if (USERS[username] && USERS[username].password === password) {
-                // تسجيل الدخول الناجح
                 currentUser = {
                     u: username,
                     r: USERS[username].role,
@@ -2229,11 +3255,9 @@
                 document.getElementById('mainContent').classList.remove('hidden-section');
                 document.getElementById('currentUserDisplay').textContent = `👤 ${currentUser.name}`;
                 
-                // تحديث وقت آخر دخول
                 const lastLogin = new Date().toLocaleString('ar-EG');
                 document.getElementById('lastLoginTime').textContent = lastLogin;
                 
-                // تهيئة قسم المدير إذا كان المستخدم مديراً
                 if (currentUser.r === 'admin') {
                     initAdminSection();
                     switchSection('admin');
@@ -2275,11 +3299,79 @@
             alert('قائمة المستخدم قيد التطوير');
         }
 
-        // دالة تهيئة قسم المدير (إن وجدت)
         function initAdminSection() {
-            // تهيئة أي بيانات إضافية لقسم المدير
             console.log('تم تهيئة قسم المدير');
         }
+
+        function showRecoveryOptions() {
+            alert('للاسترجاع: اتصل بالمدير العام على الرقم: 0912345678');
+        }
+
+        function showEmergencyAccess() {
+            const code = prompt('أدخل كود الوصول الطارئ:');
+            if (code === SECURITY_SETTINGS.emergencyCode) {
+                alert('✅ تم منح الوصول الطارئ. سيتم إعادة توجيهك إلى لوحة التحكم.');
+                currentUser = {
+                    u: 'emergency',
+                    r: 'admin',
+                    name: 'وصول طارئ',
+                    loginTime: new Date().toISOString()
+                };
+                switchSection('admin');
+            } else {
+                alert('❌ كود الوصول غير صحيح!');
+            }
+        }
+
+        // ============================================
+        // تهيئة النظام
+        // ============================================
+
+        window.onload = function() {
+            function updateClock() {
+                const now = new Date();
+                document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('ar-EG');
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            const savedUser = localStorage.getItem('shifa_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('loginOverlay').classList.add('hidden-section');
+                    document.getElementById('mainContent').classList.remove('hidden-section');
+                    document.getElementById('currentUserDisplay').innerHTML = `👤 <b>${currentUser.name}</b>`;
+                    
+                    switchSection(currentUser.r === 'admin' ? 'admin' : currentUser.r);
+                } catch (e) {
+                    console.error('Error loading user data:', e);
+                }
+            }
+            
+            const savedSales = localStorage.getItem('shifa_daily_sales');
+            if (savedSales) {
+                try {
+                    dailySales = JSON.parse(savedSales);
+                } catch (e) {
+                    dailySales = { total: 0, prescriptions: [] };
+                }
+            }
+            
+            const savedSettings = localStorage.getItem('shifa_settings');
+            if (savedSettings) {
+                try {
+                    systemSettings = JSON.parse(savedSettings);
+                } catch (e) {
+                    systemSettings = { lastReset: null, dailyResetAuto: false, backupCount: 0 };
+                }
+            }
+            
+            initStaffMembers();
+            updateBadges();
+            
+            initializeMedicineSearch();
+        };
     </script>
 </body>
 </html>
