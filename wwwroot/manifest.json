@@ -1,0 +1,168 @@
+{
+  "name": "مجمع الشفاء الطبي",
+  "short_name": "الشفاء",
+  "description": "نظام متكامل لإدارة العيادات الطبية - تسجيل المرضى، الكشوفات، المعمل، الصيدلية، التمريض والإدارة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2c7a7b",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["medical", "health", "productivity", "business"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "تسجيل مريض جديد",
+      "short_name": "مريض جديد",
+      "description": "إضافة مريض جديد للنظام",
+      "url": "/#reception",
+      "icons": [{ "src": "/icons/patient-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "الكشوفات الطبية",
+      "short_name": "الكشوفات",
+      "description": "الكشف على المرضى وكتابة الروشتات",
+      "url": "/#doctor",
+      "icons": [{ "src": "/icons/doctor-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "المعمل والفحوصات",
+      "short_name": "المعمل",
+      "description": "طلبات ونتائج الفحوصات المخبرية",
+      "url": "/#lab",
+      "icons": [{ "src": "/icons/lab-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "الصيدلية والمخزون",
+      "short_name": "الصيدلية",
+      "description": "إدارة المخزون وصرف الأدوية",
+      "url": "/#pharmacy",
+      "icons": [{ "src": "/icons/pharmacy-icon.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "واجهة النظام على سطح المكتب"
+    },
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "واجهة النظام على الهاتف"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.alshifaclinic.app",
+      "id": "com.alshifaclinic.app"
+    },
+    {
+      "platform": "webapp",
+      "url": "https://alshifa-clinic-galgany.vercel.app"
+    }
+  ],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "id": "/",
+  "launch_handler": {
+    "client_mode": "auto"
+  },
+  "handle_links": "preferred",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+alshifa",
+      "url": "/?protocol=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/upload",
+      "accept": {
+        "image/*": [".jpg", ".jpeg", ".png", ".gif"],
+        "application/pdf": [".pdf"],
+        "text/plain": [".txt"]
+      }
+    }
+  ],
+  "display_override": ["window-controls-overlay", "minimal-ui"],
+  "capture_links": "new-client",
+  "permissions": [
+    "clipboard-write",
+    "notifications",
+    "geolocation",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  }
+}
