@@ -1,28 +1,18 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace Alshifa_clinic_galgany.Models
 {
     public class Medication
     {
         public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; } = string.Empty; // اسم الدواء
-
-        public string? Dosage { get; set; } // الجرعة (مثل 500mg)
-
-        [Range(0, int.MaxValue)]
-        public int StockQuantity { get; set; } // الكمية الموجودة في الرف
-
-        [Range(0, double.MaxValue)]
-        public decimal CostPrice { get; set; } // سعر الشراء (عشان نحسب الأرباح)
-
-        [Range(0, double.MaxValue)]
-        public decimal SellingPrice { get; set; } // سعر البيع للجمهور
-
-        public DateTime ExpiryDate { get; set; } // تاريخ انتهاء الصلاحية
-
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public string Name { get; set; } = string.Empty;
+        public string GenericName { get; set; } = string.Empty;
+        public decimal SellingPrice { get; set; }
+        public decimal CostPrice { get; set; }
+        public int Quantity { get; set; }
+        public string Unit { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Manufacturer { get; set; } = string.Empty;
+        public DateTime ExpiryDate { get; set; } = DateTime.Now.AddYears(2);
+        public bool IsActive { get; set; } = true;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }
