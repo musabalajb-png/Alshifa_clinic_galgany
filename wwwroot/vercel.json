@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/server",
+      "destination": "http://AlshifaClinic.somee.com/api.aspx"
+    }
+  ]
+}
