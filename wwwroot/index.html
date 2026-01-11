@@ -6,6 +6,7 @@
     <title>مجمع الشفاء الطبي - النظام المتكامل</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
     <style>
         :root {
@@ -13,315 +14,76 @@
             --info: #0dcaf0; --warning: #ffc107; --danger: #dc3545;
             --light: #f8f9fa; --dark: #212529;
         }
-        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
         .login-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--info)); }
         .login-card { width: 100%; max-width: 400px; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .sidebar { min-height: 100vh; background-color: var(--dark); color: white; }
-        .nav-link { color: rgba(255,255,255,0.8); margin-bottom: 5px; cursor: pointer; }
+        .sidebar { min-height: 100vh; background-color: var(--dark); color: white; position: sticky; top: 0; }
+        .nav-link { color: rgba(255,255,255,0.8); margin-bottom: 5px; cursor: pointer; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { color: white; background-color: var(--primary); border-radius: 5px; }
         .main-content { padding: 20px; }
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .status-badge { font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="visually-hidden">جاري التحميل...</span>
-        </div>
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
     </div>
 
-    <div id="loginSection" class="login-wrapper">
-        <div class="login-card text-center">
+    <div id="loginScreen" class="login-wrapper">
+        <div class="login-card text-center animate__animated animate__fadeIn">
             <i class="fas fa-hospital-user fa-4x text-primary mb-3"></i>
             <h3 class="mb-4 fw-bold">مجمع الشفاء الطبي</h3>
-            <div id="loginAlert" class="alert alert-danger d-none fs-6"></div>
             
-            <form onsubmit="event.preventDefault(); handleLogin();">
-                <div class="mb-3 text-start">
-                    <label class="form-label">اسم المستخدم</label>
-                    <input type="text" id="username" class="form-control" placeholder="admin" required>
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label">كلمة المرور</label>
-                    <input type="password" id="password" class="form-control" placeholder="****" required>
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label">القسم</label>
-                    <select id="selectedRole" class="form-select">
-                        <option value="admin">المدير العام (Admin)</option>
-                        <option value="reception">الاستقبال (Reception)</option>
-                        <option value="nurse">التمريض (Nursing)</option>
-                        <option value="doctor">العيادة (Doctor)</option>
-                        <option value="lab">المعمل (Lab)</option>
-                        <option value="pharmacy">الصيدلية (Pharmacy)</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">تسجيل الدخول</button>
-                <div class="mt-3 text-muted small">
-                    <i class="fas fa-shield-alt"></i> الاتصال مؤمن عبر Vercel Proxy
-                </div>
-            </form>
+            <div class="mb-3 text-start">
+                <label class="form-label">اسم المستخدم</label>
+                <input type="text" id="username" class="form-control" placeholder="أدخل اسمك">
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label">كلمة المرور</label>
+                <input type="password" id="password" class="form-control" placeholder="****">
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label">القسم</label>
+                <select id="department" class="form-select">
+                    <option value="admin">الإدارة العامة</option>
+                    <option value="reception">الاستقبال</option>
+                    <option value="doctor">العيادة</option>
+                    <option value="lab">المعمل</option>
+                    <option value="pharmacy">الصيدلية</option>
+                </select>
+            </div>
+            <button onclick="login()" class="btn btn-primary w-100 py-2 fw-bold">دخول للنظام</button>
+            
+            <div class="mt-3">
+                <span id="onlineBadge" class="badge bg-success d-none status-badge"><i class="fas fa-link"></i> متصل بالسيرفر</span>
+                <span id="offlineBadge" class="badge bg-danger status-badge"><i class="fas fa-unlink"></i> السيرفر غير متصل</span>
+            </div>
         </div>
     </div>
 
     <div id="mainApp" class="container-fluid d-none">
         <div class="row">
-            <div class="col-md-3 col-lg-2 sidebar p-3 d-none d-md-block">
+            <div class="col-md-3 col-lg-2 sidebar p-3 shadow">
                 <div class="text-center mb-4">
-                    <i class="fas fa-user-md fa-3x mb-2"></i>
-                    <h5 id="userDisplay">المستخدم</h5>
-                    <span id="roleDisplay" class="badge bg-success">الدور</span>
+                    <i class="fas fa-user-circle fa-3x mb-2 text-info"></i>
+                    <h6 id="userInfo" class="text-white">جاري التحميل...</h6>
                 </div>
                 <hr class="text-white">
-                <ul class="nav flex-column" id="sideMenu"></ul>
-                <button onclick="logout()" class="btn btn-danger w-100 mt-5"><i class="fas fa-sign-out-alt ms-2"></i> خروج</button>
+                <ul class="nav flex-column" id="mainTabs">
+                    </ul>
+                <button onclick="logout()" class="btn btn-outline-danger btn-sm w-100 mt-5">خروج</button>
             </div>
 
             <div class="col-md-9 col-lg-10 main-content">
-                <nav class="navbar navbar-light bg-white shadow-sm mb-4 d-md-none rounded">
-                    <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1 fw-bold text-primary">مجمع الشفاء</span>
-                        <button class="btn btn-outline-danger btn-sm" onclick="logout()">خروج</button>
+                <div id="sectionContent" class="animate__animated animate__fadeIn">
                     </div>
-                </nav>
-
-                <div id="contentArea">
-                    <div id="view-reception" class="view-section d-none">
-                        <h4 class="mb-3 border-bottom pb-2"><i class="fas fa-id-card text-primary"></i> الاستقبال وتسجيل المرضى</h4>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <div class="card shadow-sm">
-                                    <div class="card-header bg-primary text-white">تسجيل جديد</div>
-                                    <div class="card-body">
-                                        <form onsubmit="event.preventDefault(); addPatient();">
-                                            <div class="mb-2"><label>اسم المريض</label><input type="text" id="pName" class="form-control" required></div>
-                                            <div class="mb-2"><label>العمر</label><input type="number" id="pAge" class="form-control" required></div>
-                                            <div class="mb-3"><label>سعر التذكرة</label><input type="number" id="pTicket" class="form-control" value="3000"></div>
-                                            <button type="submit" class="btn btn-success w-100">حفظ وطباعة <i class="fas fa-print"></i></button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card shadow-sm">
-                                    <div class="card-header bg-white fw-bold">قائمة الانتظار</div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
-                                                <thead class="table-light"><tr><th>#</th><th>الاسم</th><th>العمر</th><th>الحالة</th></tr></thead>
-                                                <tbody id="receptionTable"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="view-nurse" class="view-section d-none">
-                        <h4 class="mb-3 border-bottom pb-2"><i class="fas fa-user-nurse text-info"></i> التمريض والفرز</h4>
-                        <div class="row" id="nurseList"></div>
-                    </div>
-
-                    <div id="view-doctor" class="view-section d-none">
-                        <h4 class="mb-3 border-bottom pb-2"><i class="fas fa-stethoscope text-success"></i> عيادة الطبيب</h4>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="list-group" id="doctorWaitingList"><button class="list-group-item">جاري التحميل...</button></div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-body text-center d-flex flex-column justify-content-center align-items-center" id="docWorkspace">
-                                        <i class="fas fa-user-md fa-4x text-muted mb-3"></i><h5>اختر مريضاً للكشف</h5>
-                                    </div>
-                                    <div class="card-body d-none" id="docForm">
-                                        <h5 class="card-title text-primary" id="currentPtName">...</h5>
-                                        <hr>
-                                        <div class="mb-3"><label class="fw-bold">التشخيص</label><textarea class="form-control" rows="3"></textarea></div>
-                                        <div class="mb-3"><label class="fw-bold">العلاج</label><textarea class="form-control" rows="3"></textarea></div>
-                                        <button class="btn btn-success w-100" onclick="alert('تم الحفظ')">حفظ وإنهاء</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="view-lab" class="view-section d-none"><div class="alert alert-info">المعمل: لا توجد طلبات.</div></div>
-                    <div id="view-pharmacy" class="view-section d-none"><div class="alert alert-warning">الصيدلية: لا توجد وصفات.</div></div>
-                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // ==========================================
-        // إعدادات الـ Proxy (الحل السحري)
-        // ==========================================
-        
-        // هنا بنشوف: لو شغالين على Vercel، بنستخدم البروكسي الداخلي
-        // لو شغالين Local أو على Somee مباشرة، بنستخدم الرابط القديم
-        const isVercel = window.location.hostname.includes('vercel.app');
-        
-        // الرابط السحري: بنرسل الطلب لنفس الدومين، و Vercel يحوله للسيرفر
-        const API_URL = isVercel ? "/api/server" : "api.aspx";
-        
-        let currentUser = null; 
-        let patientsData = [];
-
-        // دالة الاتصال الموحدة
-        async function apiCall(action, data = {}) {
-            document.getElementById('loader').style.display = 'flex';
-            data.action = action;
-            
-            try {
-                // استخدام POST دائماً عشان نتفادى الكاش والبيانات الكتيرة
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) throw new Error("Server Error");
-                
-                const result = await response.json();
-                document.getElementById('loader').style.display = 'none';
-                return result;
-            } catch (error) {
-                document.getElementById('loader').style.display = 'none';
-                console.error("Connection Error:", error);
-                
-                // رسالة واضحة للمستخدم
-                if(action === 'login') {
-                    document.getElementById('loginAlert').textContent = "فشل الاتصال بالسيرفر. تأكد من الإنترنت.";
-                    document.getElementById('loginAlert').classList.remove('d-none');
-                } else {
-                    alert("خطأ في الاتصال بالسيرفر!");
-                }
-                return { success: false };
-            }
-        }
-
-        // تسجيل الدخول
-        async function handleLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const role = document.getElementById('selectedRole').value;
-
-            const res = await apiCall('login', { u: u, p: p });
-
-            if (res.success) {
-                currentUser = { name: res.user.u, role: role };
-                setupUI(role);
-            } else {
-                const alertBox = document.getElementById('loginAlert');
-                alertBox.textContent = res.message || "بيانات الدخول غير صحيحة!";
-                alertBox.classList.remove('d-none');
-            }
-        }
-
-        function logout() {
-            currentUser = null;
-            document.getElementById('mainApp').classList.add('d-none');
-            document.getElementById('loginSection').classList.remove('d-none');
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        // بناء الواجهة
-        function setupUI(role) {
-            document.getElementById('loginSection').classList.add('d-none');
-            document.getElementById('mainApp').classList.remove('d-none');
-            document.getElementById('userDisplay').textContent = currentUser.name;
-            document.getElementById('roleDisplay').textContent = role.toUpperCase();
-
-            const menu = document.getElementById('sideMenu');
-            menu.innerHTML = '';
-            
-            const items = [];
-            if (role === 'admin') items.push('reception', 'nurse', 'doctor', 'lab', 'pharmacy');
-            else items.push(role); // لو مستخدم عادي يشوف قسمه بس
-
-            const labels = { 'reception': 'الاستقبال', 'nurse': 'التمريض', 'doctor': 'العيادة', 'lab': 'المعمل', 'pharmacy': 'الصيدلية' };
-            const icons = { 'reception': 'fa-id-card', 'nurse': 'fa-user-nurse', 'doctor': 'fa-stethoscope', 'lab': 'fa-vial', 'pharmacy': 'fa-pills' };
-
-            items.forEach((item, idx) => {
-                menu.innerHTML += `<li class="nav-item">
-                    <a class="nav-link ${idx===0?'active':''}" onclick="switchView('${item}', this)">
-                        <i class="fas ${icons[item]} ms-2"></i> ${labels[item]}
-                    </a>
-                </li>`;
-            });
-
-            if(items.length > 0) switchView(items[0]);
-            refreshData();
-        }
-
-        function switchView(viewId, el) {
-            if(el) {
-                document.querySelectorAll('.nav-link').forEach(e => e.classList.remove('active'));
-                el.classList.add('active');
-            }
-            document.querySelectorAll('.view-section').forEach(d => d.classList.add('d-none'));
-            const target = document.getElementById('view-' + viewId);
-            if(target) target.classList.remove('d-none');
-        }
-
-        // إدارة البيانات
-        async function refreshData() {
-            // هنا بنجيب البيانات من السيرفر عبر البروكسي
-            const res = await apiCall('getAllData'); 
-            if (res.success) {
-                patientsData = res.patients || [];
-                renderReceptionTable();
-                renderNurseList();
-                renderDoctorList();
-            }
-        }
-
-        async function addPatient() {
-            const data = {
-                name: document.getElementById('pName').value,
-                age: document.getElementById('pAge').value,
-                ticket: document.getElementById('pTicket').value
-            };
-            const res = await apiCall('addPatient', data);
-            if (res.success) {
-                alert("تم الحفظ برقم: " + res.id);
-                document.getElementById('pName').value = '';
-                refreshData();
-            }
-        }
-
-        function renderReceptionTable() {
-            const tbody = document.getElementById('receptionTable');
-            tbody.innerHTML = patientsData.map(p => 
-                `<tr><td>${p.id}</td><td>${p.name}</td><td>${p.age}</td><td><span class="badge bg-secondary">${p.status}</span></td></tr>`
-            ).join('');
-        }
-
-        function renderNurseList() {
-            const list = document.getElementById('nurseList');
-            const waiting = patientsData.filter(p => p.status === 'waiting');
-            list.innerHTML = waiting.length ? waiting.map(p => 
-                `<div class="col-md-4 mb-2"><div class="card"><div class="card-body"><h5>${p.name}</h5><button class="btn btn-info btn-sm text-white" onclick="alert('تم القياس')">علامات حيوية</button></div></div></div>`
-            ).join('') : '<div class="col-12 text-muted">لا يوجد مرضى</div>';
-        }
-
-        function renderDoctorList() {
-            const list = document.getElementById('doctorWaitingList');
-            const waiting = patientsData.filter(p => p.status === 'waiting');
-            list.innerHTML = waiting.length ? waiting.map(p => 
-                `<button class="list-group-item list-group-item-action" onclick="openPatientDoc('${p.name}')">${p.name} (${p.age})</button>`
-            ).join('') : '<div class="p-3">لا يوجد مرضى</div>';
-        }
-
-        function openPatientDoc(name) {
-            document.getElementById('docWorkspace').classList.add('d-none');
-            document.getElementById('docForm').classList.remove('d-none');
-            document.getElementById('currentPtName').textContent = name;
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
